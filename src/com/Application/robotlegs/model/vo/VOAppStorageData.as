@@ -1,63 +1,43 @@
-package com.Application.robotlegs.model {
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
-	import com.common.Constants;
-	import com.common.FileSerializer;
-	
-	import org.robotlegs.starling.mvcs.Actor;
-	
-	public class Model extends Actor implements IModel {						
+package com.Application.robotlegs.model.vo{
+	public class VOAppStorageData {
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		
+				
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _test:String = "";
-		
-		private var _VOAppStorage:VOAppStorageData;
+		private var _isStarScreenShow:String = "1";		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function Model()	{
-			super();
+		public function VOAppStorageData() {
 			
-			_VOAppStorage = new VOAppStorageData();
-			
-			var pObject:Object = FileSerializer.readObjectFromFile(Constants.FILE_PATH);			
-			if(pObject){
-				_VOAppStorage.parser(pObject);				
-			}		
-			
-			//FileSerializer.writeObjectToFile(_VOUserStorage,Constants.FILE_PATH);
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-				
+		public function parser(value:Object):void{						
+			_isStarScreenShow = value.isStarScreenShow;			
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get test():String { return _test;}
-		public function set test(value:String):void{
-			_test = value;	
-		}	
-		
-		public function get VOAppStorage():VOAppStorageData { return _VOAppStorage;}
-		public function set VOAppStorage(value:VOAppStorageData):void{
-			_VOAppStorage = value;	
-		}	
+		public function get isStarScreenShow():String { return _isStarScreenShow; }
+		public function set isStarScreenShow(value:String):void{
+			_isStarScreenShow = value;
+		}				
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

@@ -1,4 +1,4 @@
-package com.Application.robotlegs.views.mainmenu {
+package com.Application.robotlegs.views.main {
 	import com.Application.robotlegs.views.ViewAbstract;
 	
 	import feathers.controls.List;

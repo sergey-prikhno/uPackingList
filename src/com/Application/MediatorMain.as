@@ -1,4 +1,5 @@
 package com.Application {
+	import com.Application.robotlegs.model.vo.VOAppStorageData;
 	import com.http.robotlegs.model.modelLoading.EventActorLoader;
 	
 	import org.robotlegs.starling.mvcs.Mediator;
@@ -36,6 +37,7 @@ package com.Application {
 			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
 			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
 			
+			dispatch(new EventMain(EventMain.GET_APP_SETTINGS, null, false, _setSettings));
 		}			
 		
 		
@@ -60,7 +62,9 @@ package com.Application {
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
+		private function _setSettings(value:VOAppStorageData):void{
+			view.settings = value;
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
@@ -76,6 +80,8 @@ package com.Application {
 				view.removeLoader();
 			}			
 		}		
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

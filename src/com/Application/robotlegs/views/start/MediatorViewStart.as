@@ -1,7 +1,8 @@
-package com.Application.robotlegs.views.mainmenu {
+package com.Application.robotlegs.views.start {
 	import com.Application.robotlegs.views.MediatorViewAbstract;
+	import com.Application.robotlegs.views.main.EventViewMain;
 	
-	public class MediatorViewMainMenu extends MediatorViewAbstract {		
+	public class MediatorViewStart extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -20,7 +21,7 @@ package com.Application.robotlegs.views.mainmenu {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMainMenu() 	{
+		public function MediatorViewStart() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -31,16 +32,17 @@ package com.Application.robotlegs.views.mainmenu {
 		override public function onRegister():void{	
 			super.onRegister();
 			
-			addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+		//	addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
 			
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
-		
-			removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+			
+			//removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
 		}
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -60,9 +62,7 @@ package com.Application.robotlegs.views.mainmenu {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerCallTestService(event:EventViewMain):void{
-			dispatch(event);
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

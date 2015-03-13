@@ -1,7 +1,7 @@
 package com.Application.themes {
 	import com.Application.components.loadingIndicator.LoadingIndicator;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.mainmenu.ViewMain;
+	import com.Application.robotlegs.views.main.ViewMain;
 	
 	import feathers.themes.MetalWorksMobileThemeWithAssetManager;
 	

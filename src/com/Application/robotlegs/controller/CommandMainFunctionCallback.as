@@ -1,63 +1,50 @@
-package com.Application.robotlegs.model {
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
-	import com.common.Constants;
-	import com.common.FileSerializer;
+package com.Application.robotlegs.controller {
+	import com.Application.EventMain;
+	import com.Application.robotlegs.model.IModel;
 	
-	import org.robotlegs.starling.mvcs.Actor;
+	import org.robotlegs.starling.mvcs.Command;
 	
-	public class Model extends Actor implements IModel {						
+	public class CommandMainFunctionCallback extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
-		//---------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------		
+		[Inject]
+		public var model:IModel;
 		
-		
+		[Inject]
+		public var event:EventMain
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _test:String = "";
 		
-		private var _VOAppStorage:VOAppStorageData;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function Model()	{
+		public function CommandMainFunctionCallback() {
 			super();
-			
-			_VOAppStorage = new VOAppStorageData();
-			
-			var pObject:Object = FileSerializer.readObjectFromFile(Constants.FILE_PATH);			
-			if(pObject){
-				_VOAppStorage.parser(pObject);				
-			}		
-			
-			//FileSerializer.writeObjectToFile(_VOUserStorage,Constants.FILE_PATH);
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-				
+		override public function execute():void{
+			var pFunction:Function = event.functionCallback;
+			pFunction(model.VOAppStorage);						
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get test():String { return _test;}
-		public function set test(value:String):void{
-			_test = value;	
-		}	
 		
-		public function get VOAppStorage():VOAppStorageData { return _VOAppStorage;}
-		public function set VOAppStorage(value:VOAppStorageData):void{
-			_VOAppStorage = value;	
-		}	
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -82,5 +69,6 @@ package com.Application.robotlegs.model {
 		//  END CLASS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
+		 
 	}
 }

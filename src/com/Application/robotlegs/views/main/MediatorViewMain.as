@@ -1,35 +1,45 @@
-package com.Application.robotlegs.model.vo{
-	public class VOUserStorageData {
-		
+package com.Application.robotlegs.views.main {
+	import com.Application.robotlegs.views.MediatorViewAbstract;
+	
+	public class MediatorViewMain extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-				
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _deviceUniqueId:String = "";
-		private var _registration_hash:String = "";
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function VOUserStorageData() {
-			
+		public function MediatorViewMain() 	{
+			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function parser(value:Object):void{						
-			_deviceUniqueId = value.deviceUniqueId;
-			_registration_hash = value.registration_hash;
+		override public function onRegister():void{	
+			super.onRegister();
+			
+			addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+			
+		}
+		
+		
+		override public function onRemove():void {
+			super.onRemove();
+		
+			removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -37,15 +47,8 @@ package com.Application.robotlegs.model.vo{
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get deviceUniqueId():String { return _deviceUniqueId; }
-		public function set deviceUniqueId(value:String):void{
-			_deviceUniqueId = value;
-		}		
 		
-		public function get registration_hash():String { return _registration_hash;}
-		public function set registration_hash(value:String):void{
-			_registration_hash = value;
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -57,7 +60,9 @@ package com.Application.robotlegs.model.vo{
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		private function _handlerCallTestService(event:EventViewMain):void{
+			dispatch(event);
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

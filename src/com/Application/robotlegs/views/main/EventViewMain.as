@@ -1,4 +1,4 @@
-package com.Application.robotlegs.views.mainmenu {
+package com.Application.robotlegs.views.main {
 	import starling.events.Event;
 	
 	public class EventViewMain extends Event {

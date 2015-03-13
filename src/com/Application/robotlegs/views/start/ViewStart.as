@@ -1,11 +1,7 @@
-package com.Application.robotlegs.model {
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
-	import com.common.Constants;
-	import com.common.FileSerializer;
+package com.Application.robotlegs.views.start {
+	import com.Application.robotlegs.views.ViewAbstract;
 	
-	import org.robotlegs.starling.mvcs.Actor;
-	
-	public class Model extends Actor implements IModel {						
+	public class ViewStart extends ViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -18,46 +14,32 @@ package com.Application.robotlegs.model {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _test:String = "";
 		
-		private var _VOAppStorage:VOAppStorageData;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function Model()	{
+		public function ViewStart() {
 			super();
-			
-			_VOAppStorage = new VOAppStorageData();
-			
-			var pObject:Object = FileSerializer.readObjectFromFile(Constants.FILE_PATH);			
-			if(pObject){
-				_VOAppStorage.parser(pObject);				
-			}		
-			
-			//FileSerializer.writeObjectToFile(_VOUserStorage,Constants.FILE_PATH);
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-				
+		override protected function _initialize():void 	{			
+			super._initialize();
+			
+			
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get test():String { return _test;}
-		public function set test(value:String):void{
-			_test = value;	
-		}	
 		
-		public function get VOAppStorage():VOAppStorageData { return _VOAppStorage;}
-		public function set VOAppStorage(value:VOAppStorageData):void{
-			_VOAppStorage = value;	
-		}	
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -82,5 +64,6 @@ package com.Application.robotlegs.model {
 		//  END CLASS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
+		
 	}
 }

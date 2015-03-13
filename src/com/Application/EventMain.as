@@ -3,12 +3,18 @@ package com.Application {
 	
 	public class EventMain extends Event {
 		
-		public static const ERROR:String = "ERROR";	
+		public static const ERROR:String = "ERROR";		
+		public static const GET_APP_SETTINGS:String = "GET_APP_SETTINGS";	
+						
+		private var _functionCallback:Function;
 		
-		
-		
-		public function EventMain(type:String, bubbles:Boolean=false, data:Object=null) {
+		public function EventMain(type:String, data:Object=null, bubbles:Boolean=false, pFunctionCallback:Function = null) {
 			super(type, bubbles, data);
+			_functionCallback = pFunctionCallback;
+		}
+		
+		public function get functionCallback():Function{
+			return _functionCallback;
 		}
 		
 	}

@@ -1,8 +1,10 @@
 package com.Application {
 	import com.Application.components.screenLoader.ScreenLoader;
+	import com.Application.robotlegs.model.vo.VOAppStorageData;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.alert.AlertScreen;
-	import com.Application.robotlegs.views.mainmenu.ViewMain;
+	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.start.ViewStart;
 	import com.Application.themes.ApplicationTheme;
 	import com.common.Constants;
 	
@@ -39,13 +41,14 @@ package com.Application {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";
-		private static const VIEW_ALERT:String = "VIEW_ALERT";		
+		private static const VIEW_ALERT:String = "VIEW_ALERT";
+		private static const VIEW_START:String = "VIEW_START";		
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;
 		
 		private static const MAIN_MENU_EVENTS:Object = 	{
-			SHOW_ALERT: VIEW_ALERT			
+			//SHOW_ALERT: VIEW_ALERT			
 		};
 		
 		// Garbage collector calls handling
@@ -55,6 +58,7 @@ package com.Application {
 		private var _starlingContext:Context;
 		
 		private var _screenLoader:ScreenLoader;
+		private var _settings:VOAppStorageData;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -101,7 +105,9 @@ package com.Application {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public function set settings(value:VOAppStorageData):void{
+			_settings = value;
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -133,24 +139,33 @@ package com.Application {
 			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
 				//alertItem.setScreenIDForPushEvent(Event.COMPLETE, VIEW_MAIN_MENU);
 				alertItem.addPopToRootEvent(Event.COMPLETE);
-			//	alertItem.addPopEvent(Event.COMPLETE);
+			//	alertItem.addPopEvent(Event.COMPLETE);			
+			this._navigator.addScreen(VIEW_ALERT, alertItem);								
 			
-			this._navigator.addScreen(VIEW_ALERT, alertItem);
 			
-			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
-			
+			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);			
 			for(var eventType:String in MAIN_MENU_EVENTS){
 				mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);				
 			}
 			
 			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
-			this._navigator.rootScreenID = VIEW_MAIN_MENU;			
+			
 						
 			this._navigator.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.popTransition = Slide.createSlideRightTransition();					
 			
 			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);
 			_navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, _handlerTransition);
+			
+			
+			if(_settings.isStarScreenShow == "1"){
+				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewStart);			
+				this._navigator.addScreen(VIEW_START, viewStart);
+				this._navigator.pushScreen(VIEW_START);
+				this._navigator.rootScreenID = VIEW_START;		
+			} else {
+				this._navigator.rootScreenID = VIEW_MAIN_MENU;	
+			}
 			
 			_screenLoader = new ScreenLoader();
 			addChild(_screenLoader);	
