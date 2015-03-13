@@ -123,7 +123,7 @@ package com.Application.robotlegs.views.mainmenu {
 			if(isTablet)
 			{
 				this._list.addEventListener(Event.CHANGE, list_changeHandler);
-				this._list.selectedIndex = 0;
+				this._list.selectedIndex = -1;
 				this._list.revealScrollBars();
 			}
 			else
@@ -154,10 +154,7 @@ package com.Application.robotlegs.views.mainmenu {
 					savedVerticalScrollPosition: this._list.verticalScrollPosition,
 					savedSelectedIndex: this._list.selectedIndex
 				});
-			
-			if(this._list.selectedIndex == 1){
-				dispatchEvent(new EventViewMain(EventViewMain.CALL_TEST_SERVICE));
-			}
+								
 			
 			trace("this._list.selectedIndex "+this._list.selectedIndex);
 		}

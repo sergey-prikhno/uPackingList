@@ -1,4 +1,8 @@
 package com.Application.robotlegs.model {
+	import com.Application.robotlegs.model.vo.VOUserStorageData;
+	import com.common.Constants;
+	import com.common.FileSerializer;
+	
 	import org.robotlegs.starling.mvcs.Actor;
 	
 	public class Model extends Actor implements IModel {						
@@ -15,6 +19,8 @@ package com.Application.robotlegs.model {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		private var _test:String = "";
+		
+		private var _VOUserStorage:VOUserStorageData;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -22,6 +28,15 @@ package com.Application.robotlegs.model {
 		//---------------------------------------------------------------------------------------------------------
 		public function Model()	{
 			super();
+			
+			_VOUserStorage = new VOUserStorageData();
+			
+			var pObject:Object = FileSerializer.readObjectFromFile(Constants.FILE_PATH);			
+			if(pObject){
+				_VOUserStorage.parser(pObject);				
+			}		
+			
+			//FileSerializer.writeObjectToFile(_VOUserStorage,Constants.FILE_PATH);
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

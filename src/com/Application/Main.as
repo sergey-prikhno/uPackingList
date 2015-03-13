@@ -38,17 +38,14 @@ package com.Application {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private static const MAIN_MENU:String = "mainMenu";
-		private static const ALERT:String = "alert";		
+		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";
+		private static const VIEW_ALERT:String = "VIEW_ALERT";		
 		
-		private var _navigator:StackScreenNavigator;
-		private var _menu:ViewMain;		
-		
+		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;
 		
 		private static const MAIN_MENU_EVENTS:Object = 	{
-			SHOW_ALERT: ALERT
-			//SHOW_ALERT: ALERT
+			SHOW_ALERT: VIEW_ALERT			
 		};
 		
 		// Garbage collector calls handling
@@ -134,10 +131,11 @@ package com.Application {
 			
 			
 			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
-				//alertItem.setScreenIDForPushEvent(Event.COMPLETE, MAIN_MENU);
-				alertItem.addPopEvent(Event.COMPLETE);
+				//alertItem.setScreenIDForPushEvent(Event.COMPLETE, VIEW_MAIN_MENU);
+				alertItem.addPopToRootEvent(Event.COMPLETE);
+			//	alertItem.addPopEvent(Event.COMPLETE);
 			
-			this._navigator.addScreen(ALERT, alertItem);
+			this._navigator.addScreen(VIEW_ALERT, alertItem);
 			
 			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
 			
@@ -145,8 +143,8 @@ package com.Application {
 				mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);				
 			}
 			
-			this._navigator.addScreen(MAIN_MENU, mainMenuItem);
-			this._navigator.rootScreenID = MAIN_MENU;			
+			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
+			this._navigator.rootScreenID = VIEW_MAIN_MENU;			
 						
 			this._navigator.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.popTransition = Slide.createSlideRightTransition();					
