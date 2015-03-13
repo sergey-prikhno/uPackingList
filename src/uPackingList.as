@@ -18,7 +18,7 @@ package {
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
-	[SWF(width="800",height="1280",frameRate="35",backgroundColor="0x01b3a3")]
+	[SWF(width="1024",height="768",frameRate="35",backgroundColor="0x01b3a3")]
 	public class uPackingList extends Sprite {
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
