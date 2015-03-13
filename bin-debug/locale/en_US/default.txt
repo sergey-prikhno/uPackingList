@@ -1,0 +1,4 @@
+## default.properties file for locale en_US ##
+
+#buttons
+button.ok=ok
