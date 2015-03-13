@@ -1,15 +1,16 @@
-package com.Application.robotlegs.views.start {
-	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.Application.robotlegs.views.main.EventViewMain;
+package com.Application.robotlegs.views.welcome {
+	import com.Application.robotlegs.views.ViewAbstract;
 	
-	public class MediatorViewStart extends MediatorViewAbstract {		
+	import feathers.skins.IStyleProvider;
+	
+	public class ViewWelcome extends ViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		
+		public static var globalStyleProvider:IStyleProvider;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
@@ -21,7 +22,7 @@ package com.Application.robotlegs.views.start {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewStart() {
+		public function ViewWelcome() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -29,27 +30,19 @@ package com.Application.robotlegs.views.start {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
+		override protected function _initialize():void 	{			
+			super._initialize();
 			
-		//	addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
 			
-		}
-		
-		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			//removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
-		}
-		
-		
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override protected function get defaultStyleProvider():IStyleProvider {
+			return ViewWelcome.globalStyleProvider;
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -75,5 +68,6 @@ package com.Application.robotlegs.views.start {
 		//  END CLASS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
+		
 	}
 }

@@ -4,6 +4,8 @@ package com.Application.robotlegs.views {
 	import ch.ala.locale.LocaleManager;
 	
 	import feathers.controls.Screen;
+	import feathers.display.Scale9Image;
+	import feathers.textures.Scale9Textures;
 	
 	import starling.core.Starling;
 	
@@ -24,6 +26,8 @@ package com.Application.robotlegs.views {
 		
 		protected var _scaleWidth:Number = 1;
 		protected var _scaleHeight:Number = 1;
+		
+		protected var _baseBackground:Scale9Image;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -39,10 +43,16 @@ package com.Application.robotlegs.views {
 		//---------------------------------------------------------------------------------------------------------
 		public function activate():void{
 			trace("activate");
+						
 		}
 		
 		public function destroy():void{
 			trace("destroy");
+			
+			if(_baseBackground){				
+				removeChild(_baseBackground);
+				_baseBackground = null;
+			}
 		}				
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -56,6 +66,11 @@ package com.Application.robotlegs.views {
 		public function set scaleHeight(value:Number):void{
 			_scaleHeight = value;
 		}
+		
+		public function set baseBackground(value:Scale9Textures):void{
+			_baseBackground = new Scale9Image(value);	
+			invalidate(INVALIDATION_FLAG_STYLES);
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -63,6 +78,8 @@ package com.Application.robotlegs.views {
 		//---------------------------------------------------------------------------------------------------------
 		// must ovveride in sub class
 		protected function _initialize():void{
+			
+			
 			
 		}
 		
@@ -76,6 +93,20 @@ package com.Application.robotlegs.views {
 			_initialize();	
 		}		
 		
+		
+		override protected function draw():void{
+			super.draw();
+			
+			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
+			
+			if(stylesInvalid){			
+				if(_baseBackground && !contains(_baseBackground)){
+					_baseBackground.width = _nativeStage.fullScreenWidth;
+					_baseBackground.height = _nativeStage.fullScreenHeight;
+					addChild(_baseBackground);
+				}
+			}
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  

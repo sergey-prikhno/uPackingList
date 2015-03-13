@@ -1,6 +1,4 @@
 package com.Application.components.loadingIndicator{
-	import com.http.robotlegs.model.modelLoading.VOActorLoader;
-	
 	import feathers.core.FeathersControl;
 	import feathers.skins.IStyleProvider;
 	

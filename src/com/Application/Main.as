@@ -4,7 +4,7 @@ package com.Application {
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.alert.AlertScreen;
 	import com.Application.robotlegs.views.main.ViewMain;
-	import com.Application.robotlegs.views.start.ViewStart;
+	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.Application.themes.ApplicationTheme;
 	import com.common.Constants;
 	
@@ -42,7 +42,7 @@ package com.Application {
 		//---------------------------------------------------------------------------------------------------------
 		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";
 		private static const VIEW_ALERT:String = "VIEW_ALERT";
-		private static const VIEW_START:String = "VIEW_START";		
+		private static const VIEW_WELCOME:String = "VIEW_WELCOME";		
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;
@@ -159,10 +159,10 @@ package com.Application {
 			
 			
 			if(_settings.isStarScreenShow == "1"){
-				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewStart);			
-				this._navigator.addScreen(VIEW_START, viewStart);
-				this._navigator.pushScreen(VIEW_START);
-				this._navigator.rootScreenID = VIEW_START;		
+				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);			
+				this._navigator.addScreen(VIEW_WELCOME, viewStart);
+				this._navigator.pushScreen(VIEW_WELCOME);
+				this._navigator.rootScreenID = VIEW_WELCOME;		
 			} else {
 				this._navigator.rootScreenID = VIEW_MAIN_MENU;	
 			}

@@ -11,8 +11,8 @@ package com.Application {
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
-	import com.Application.robotlegs.views.start.MediatorViewStart;
-	import com.Application.robotlegs.views.start.ViewStart;
+	import com.Application.robotlegs.views.welcome.MediatorViewWelcome;
+	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.http.robotlegs.events.EventServiceAbstract;
 	
 	import org.robotlegs.starling.mvcs.Context;
@@ -51,7 +51,7 @@ package com.Application {
 			//Mediator MAP
 			mediatorMap.mapView(Main, MediatorMain);
 			mediatorMap.mapView(ViewMain, MediatorViewMain);
-			mediatorMap.mapView(ViewStart, MediatorViewStart);
+			mediatorMap.mapView(ViewWelcome, MediatorViewWelcome);
 		
 			
 			injector.mapSingletonOf(IModel, Model);

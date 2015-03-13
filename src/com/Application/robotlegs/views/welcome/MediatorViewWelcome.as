@@ -1,7 +1,8 @@
-package com.Application.robotlegs.views.start {
-	import com.Application.robotlegs.views.ViewAbstract;
+package com.Application.robotlegs.views.welcome {
+	import com.Application.robotlegs.views.MediatorViewAbstract;
+	import com.Application.robotlegs.views.main.EventViewMain;
 	
-	public class ViewStart extends ViewAbstract {		
+	public class MediatorViewWelcome extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -20,7 +21,7 @@ package com.Application.robotlegs.views.start {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function ViewStart() {
+		public function MediatorViewWelcome() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -28,11 +29,21 @@ package com.Application.robotlegs.views.start {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override protected function _initialize():void 	{			
-			super._initialize();
+		override public function onRegister():void{	
+			super.onRegister();
 			
+		//	addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
 			
-		}		
+		}
+		
+		
+		override public function onRemove():void {
+			super.onRemove();
+			
+			//removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+		}
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -64,6 +75,5 @@ package com.Application.robotlegs.views.start {
 		//  END CLASS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
-		
 	}
 }
