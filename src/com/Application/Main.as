@@ -20,6 +20,7 @@ package com.Application {
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
+	import feathers.motion.Fade;
 	import feathers.motion.Slide;
 	
 	import org.robotlegs.starling.mvcs.Context;
@@ -147,7 +148,8 @@ package com.Application {
 			
 			
 			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
-			mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
+				mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
+							
 			for(var eventType:String in MAIN_MENU_EVENTS){
 				mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);				
 			}
@@ -158,21 +160,26 @@ package com.Application {
 			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
 			
 			
-			this._navigator.pushTransition = Slide.createSlideLeftTransition();
-			this._navigator.popTransition = Slide.createSlideRightTransition();					
+							
 			
 			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);
 			_navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, _handlerTransition);
 			
 			
-			if(_settings.isStarScreenShow == "0"){
-				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);			
-				this._navigator.addScreen(VIEW_WELCOME, viewStart);
+			if(_settings.isStarScreenShow == "1"){
+				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);		
+					viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
+					viewStart.pushTransition = Fade.createFadeInTransition();					
+					
+				this._navigator.addScreen(VIEW_WELCOME, viewStart);				
 				this._navigator.pushScreen(VIEW_WELCOME);
 				this._navigator.rootScreenID = VIEW_WELCOME;		
 			} else {
 				this._navigator.rootScreenID = VIEW_MAIN_MENU;	
 			}
+			
+			this._navigator.pushTransition = Slide.createSlideLeftTransition();
+			this._navigator.popTransition = Slide.createSlideRightTransition();	
 			
 			_screenLoader = new ScreenLoader();
 			addChild(_screenLoader);	
