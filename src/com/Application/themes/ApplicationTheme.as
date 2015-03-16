@@ -59,8 +59,8 @@ package com.Application.themes {
 		}
 		
 		protected function setViewWelcomeStyles(view:ViewWelcome):void{
-			initializeViewAbstract(view);
-			
+			initializeViewAbstract(view);		
+			view.baseTextFormat = largeDarkElementFormat;
 		}
 		
 	}

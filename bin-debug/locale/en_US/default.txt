@@ -3,9 +3,25 @@
 #buttons
 button.ok=ok
 
+
 #header
 header.uPackingList=uPackingList
 
 title.newList=New List
 title.openList=Open
 title.packList=Pack!
+
+#WelcomScreen
+welcomScreen.title=Welcome to uPackingList
+welcomScreen.description=Import/export your lists or catalogs from the free version to the paid version of the application and vice versa
+welcomScreen.titleCreate=Create
+welcomScreen.descriptionCreate=Start with "New List" button.
+welcomScreen.titleEdit=Edit
+welcomScreen.descriptionEdit=Click on items to add them to your list. \nUse "Search" to find items in catalog. "Edit" - add, delete or edit items and catalogs.
+welcomScreen.titlePack=Pack
+welcomScreen.descriptionPack=Choose "Pack" to start packing your list.
+welcomScreen.descriptionBottom=Full version has more features and also a "Shopping list"! \n\nYou can purchase a full version containing no banners at the AppStore.
+welcomScreen.niceJourney=Have a nice journey!
+welcomScreen.labelShow=Always show:
+welcomScreen.continue=Continue
+

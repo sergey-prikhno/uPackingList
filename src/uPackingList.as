@@ -18,7 +18,7 @@ package {
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
-	[SWF(width="1024",height="768",frameRate="35",backgroundColor="0x01b3a3")]
+	[SWF(width="1024",height="768",frameRate="35",backgroundColor="0xa6d7f6")]
 	public class uPackingList extends Sprite {
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -95,9 +95,10 @@ package {
 			this._launchImage.contentLoaderInfo.removeEventListener(flash.events.Event.COMPLETE, _handlerSplashLoaded, false);
 			this._launchImage.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, _handlerSplashIOError, false);
 			
-			
-			_bitmapLaunchImage = new Bitmap(Utils.resizeAcpectRation(Bitmap(_launchImage.content),int(stage.fullScreenWidth/1.16),stage.fullScreenHeight/3.14));
-			_bitmapLaunchImage.smoothing = true;			
+									
+			_bitmapLaunchImage = Bitmap(_launchImage.content);
+			_bitmapLaunchImage.scaleY = _bitmapLaunchImage.scaleX = stage.fullScreenWidth/ uPackingList.APP_WIDTH; 
+			_bitmapLaunchImage.smoothing = true;						
 			_bitmapLaunchImage.x = int(stage.fullScreenWidth/2 - _bitmapLaunchImage.width/2);
 			_bitmapLaunchImage.y = int(stage.fullScreenHeight/2 - _bitmapLaunchImage.height/1.5)
 			addChild(_bitmapLaunchImage);

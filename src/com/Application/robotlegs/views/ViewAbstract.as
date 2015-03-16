@@ -82,11 +82,8 @@ package com.Application.robotlegs.views {
 		//---------------------------------------------------------------------------------------------------------
 		// must ovveride in sub class
 		protected function _initialize():void{
-			
-			
-			
-		}
-		
+									
+		}		
 		
 		override protected function initialize():void{	
 			super.initialize();
