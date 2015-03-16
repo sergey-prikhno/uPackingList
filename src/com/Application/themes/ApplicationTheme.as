@@ -6,7 +6,6 @@ package com.Application.themes {
 	
 	import flash.geom.Rectangle;
 	
-	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
 	import feathers.themes.MetalWorksMobileThemeWithAssetManager;
 	

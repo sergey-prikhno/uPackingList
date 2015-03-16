@@ -3,7 +3,9 @@ package com.Application {
 	import com.Application.robotlegs.model.vo.VOAppStorageData;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.alert.AlertScreen;
+	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.Application.themes.ApplicationTheme;
 	import com.common.Constants;
@@ -43,6 +45,7 @@ package com.Application {
 		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";
 		private static const VIEW_ALERT:String = "VIEW_ALERT";
 		private static const VIEW_WELCOME:String = "VIEW_WELCOME";		
+		private static const VIEW_SETTINGS:String = "VIEW_SETTINGS";		
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;
@@ -137,20 +140,24 @@ package com.Application {
 			
 			
 			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
-				//alertItem.setScreenIDForPushEvent(Event.COMPLETE, VIEW_MAIN_MENU);
-				alertItem.addPopToRootEvent(Event.COMPLETE);
+				alertItem.setScreenIDForPushEvent(Event.COMPLETE, VIEW_WELCOME);
+				//alertItem.addPopToRootEvent(Event.COMPLETE);
 			//	alertItem.addPopEvent(Event.COMPLETE);			
 			this._navigator.addScreen(VIEW_ALERT, alertItem);								
 			
 			
-			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);			
+			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
+			mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
 			for(var eventType:String in MAIN_MENU_EVENTS){
 				mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);				
 			}
 			
+			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);
+			this._navigator.addScreen(VIEW_SETTINGS, settingsItem);
+			
 			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
 			
-						
+			
 			this._navigator.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.popTransition = Slide.createSlideRightTransition();					
 			
@@ -158,7 +165,7 @@ package com.Application {
 			_navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, _handlerTransition);
 			
 			
-			if(_settings.isStarScreenShow == "1"){
+			if(_settings.isStarScreenShow == "0"){
 				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);			
 				this._navigator.addScreen(VIEW_WELCOME, viewStart);
 				this._navigator.pushScreen(VIEW_WELCOME);

@@ -1,18 +1,21 @@
 package com.Application.robotlegs.views.main {
+	import com.Application.EventMain;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.common.Constants;
 	
+	import feathers.controls.Button;
 	import feathers.controls.List;
 	import feathers.controls.renderers.DefaultListItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
-	import feathers.layout.AnchorLayout;
-	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	import feathers.skins.StandardIcons;
 	import feathers.system.DeviceCapabilities;
 	
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -28,6 +31,7 @@ package com.Application.robotlegs.views.main {
 		public var savedVerticalScrollPosition:Number = 0;
 		public var savedSelectedIndex:int = -1;
 		
+		private var _layout:VerticalLayout;
 		
 		public static const SHOW_ALERT:String = "SHOW_ALERT";
 		public static const TEST_SERVICE:String = "TEST_SERVICE";
@@ -38,8 +42,9 @@ package com.Application.robotlegs.views.main {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
 		private var _list:List;
-			
+		private var _buttonSettings:Button;	
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -76,39 +81,26 @@ package com.Application.robotlegs.views.main {
 		override protected function _initialize():void{
 			super._initialize();
 			
-			this.layout = new AnchorLayout();
-			
+			_layout = new VerticalLayout();
+
 			this._list = new List();
+			this._list.hasElasticEdges = false;
 			this._list.dataProvider = new ListCollection(
-				[
-					{ label: "Alert", event: SHOW_ALERT },
-					{ label: "Test Service" },
-					{ label: "Button Group"},
-					{ label: "Callout"},
-					{ label: "Grouped List"},
-					{ label: "Item Renderer" },
-					{ label: "Label"},
-					{ label: "List"},
-					{ label: "Numeric Stepper"},
-					{ label: "Page Indicator"},
-					{ label: "Picker List"},
-					{ label: "Progress Bar"},
-					{ label: "Scroll Text"},
-					{ label: "Slider"},					
+				[	{ label: _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList"), event: SHOW_ALERT },
+					{ label: _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList"), event: SHOW_ALERT },
+					{ label: _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packList"), event: SHOW_ALERT }
 				]);
-			this._list.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-			this._list.clipContent = false;
+
+			this._list.clipContent = true;
 			this._list.autoHideBackground = true;
 			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
 			
 			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
 			var itemRendererAccessorySourceFunction:Function = null;
-			if(!isTablet)
-			{
+			if(!isTablet){
 				itemRendererAccessorySourceFunction = this.accessorySourceFunction;
 			}
-			this._list.itemRendererFactory = function():IListItemRenderer
-			{
+			this._list.itemRendererFactory = function():IListItemRenderer{
 				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
 				
 				//enable the quick hit area to optimize hit tests when an item
@@ -120,18 +112,40 @@ package com.Application.robotlegs.views.main {
 				return renderer;
 			};
 			
-			if(isTablet)
-			{
+			if(isTablet){
 				this._list.addEventListener(Event.CHANGE, list_changeHandler);
 				this._list.selectedIndex = -1;
 				this._list.revealScrollBars();
-			}
-			else
-			{
+			}else{
 				this._list.selectedIndex = this.savedSelectedIndex;
 				this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
 			}
 			this.addChild(this._list);
+			
+			_buttonSettings = new Button();
+			_buttonSettings.label = "Settings";
+			_buttonSettings.addEventListener(Event.TRIGGERED, _handlerSettingsButton);
+			this._header.rightItems = new <DisplayObject>
+				[
+					this._buttonSettings
+				];
+		}
+		
+		override protected function draw():void{
+			super.draw();
+			
+			_layout.gap = int(88*_scaleHeight);
+			
+			if(_header){
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");
+				_header.width = _nativeStage.stageWidth;
+			}
+			if(_list){
+				_list.width = _nativeStage.stageWidth;
+				_list.y = _header.height + int(66*_scaleHeight);
+				_list.layout = _layout;
+				_list.validate();
+			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -166,6 +180,10 @@ package com.Application.robotlegs.views.main {
 				this._list.addEventListener(Event.CHANGE, list_changeHandler);
 			}
 			this._list.revealScrollBars();
+		}
+		
+		private function _handlerSettingsButton(event:Event):void{
+			dispatchEvent(new EventViewMain(EventViewMain.SHOW_SETTINGS_SCREEN));
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

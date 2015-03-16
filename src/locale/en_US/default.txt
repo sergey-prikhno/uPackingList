@@ -2,3 +2,10 @@
 
 #buttons
 button.ok=ok
+
+#header
+header.uPackingList=uPackingList
+
+title.newList=New List
+title.openList=Open
+title.packList=Pack!

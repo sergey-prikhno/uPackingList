@@ -1,16 +1,20 @@
-package com.Application.robotlegs.views.main {
-	import com.Application.robotlegs.views.MediatorViewAbstract;
+package com.Application.robotlegs.views.settings {
+	import com.Application.robotlegs.views.ViewAbstract;
 	
-	import starling.core.starling_internal;
+	import feathers.skins.IStyleProvider;
+	import feathers.skins.StandardIcons;
 	
-	public class MediatorViewMain extends MediatorViewAbstract {		
+	import starling.textures.Texture;
+
+	
+	public class ViewSettings extends ViewAbstract {									
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
-		//---------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------		
 		
-		
+		public static var globalStyleProvider:IStyleProvider;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
@@ -22,7 +26,7 @@ package com.Application.robotlegs.views.main {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMain() 	{
+		public function ViewSettings() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -30,40 +34,42 @@ package com.Application.robotlegs.views.main {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-			
-			addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
-		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-		
-			removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override protected function get defaultStyleProvider():IStyleProvider {
+			return ViewSettings.globalStyleProvider;
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
+		private function accessorySourceFunction(item:Object):Texture {
+			return StandardIcons.listDrillDownAccessoryTexture;
+		}
 		
+		override protected function _initialize():void{
+			super._initialize();
+			
+			
+		}
+		
+		override protected function draw():void{
+			super.draw();
+			
+			
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerCallTestService(event:EventViewMain):void{
-			dispatch(event);
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

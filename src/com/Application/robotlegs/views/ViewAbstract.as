@@ -3,6 +3,7 @@ package com.Application.robotlegs.views {
 	
 	import ch.ala.locale.LocaleManager;
 	
+	import feathers.controls.Header;
 	import feathers.controls.Screen;
 	import feathers.display.Scale9Image;
 	import feathers.textures.Scale9Textures;
@@ -28,6 +29,9 @@ package com.Application.robotlegs.views {
 		protected var _scaleHeight:Number = 1;
 		
 		protected var _baseBackground:Scale9Image;
+		
+		protected var _header:Header;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -90,6 +94,9 @@ package com.Application.robotlegs.views {
 			_resourceManager = LocaleManager.getInstance();
 			_nativeStage = Starling.current.nativeStage;
 						
+			_header = new Header();
+			addChild(_header);
+			
 			_initialize();	
 		}		
 		
@@ -103,9 +110,11 @@ package com.Application.robotlegs.views {
 				if(_baseBackground && !contains(_baseBackground)){
 					_baseBackground.width = _nativeStage.fullScreenWidth;
 					_baseBackground.height = _nativeStage.fullScreenHeight;
-					addChild(_baseBackground);
+					addChildAt(_baseBackground, 0);
 				}
 			}
+			
+			
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

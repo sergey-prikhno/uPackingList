@@ -1,9 +1,7 @@
-package com.Application.robotlegs.views.main {
+package com.Application.robotlegs.views.settings{
 	import com.Application.robotlegs.views.MediatorViewAbstract;
 	
-	import starling.core.starling_internal;
-	
-	public class MediatorViewMain extends MediatorViewAbstract {		
+	public class MediatorViewSettings extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -22,7 +20,7 @@ package com.Application.robotlegs.views.main {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMain() 	{
+		public function MediatorViewSettings() 	{
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -33,14 +31,14 @@ package com.Application.robotlegs.views.main {
 		override public function onRegister():void{	
 			super.onRegister();
 			
-			addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+			
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
 		
-			removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+			
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -61,9 +59,6 @@ package com.Application.robotlegs.views.main {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerCallTestService(event:EventViewMain):void{
-			dispatch(event);
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

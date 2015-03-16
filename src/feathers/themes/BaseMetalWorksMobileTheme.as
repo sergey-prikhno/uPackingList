@@ -1525,8 +1525,8 @@ package feathers.themes
 		protected function setListStyles(list:List):void
 		{
 			this.setScrollerStyles(list);
-			var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
-			list.backgroundSkin = backgroundSkin;
+			/*var backgroundSkin:Quad = new Quad(this.gridSize, this.gridSize, LIST_BACKGROUND_COLOR);
+			list.backgroundSkin = backgroundSkin;*/
 		}
 
 		protected function setItemRendererStyles(renderer:BaseDefaultItemRenderer):void
