@@ -605,17 +605,25 @@ package com.Application.robotlegs.views.packedList {
 							}
 							
 						} else if(_data.childrens && _data.childrens.length > 0){
-							_data.index = _index;
-							this.dispatchEventWith(EventViewPackedList.CLICK_ITEM,true,_data);
 							
-														
-							if(!_data.isOpen){					
-								_data.isOpen = true;								
-								_iconArrow.rotation = deg2rad(90);							
-							} else {					
-								_data.isOpen = false;								
-								_iconArrow.rotation = deg2rad(0);															
-							}																					
+							if(!_isEditTouch){
+								_data.index = _index;
+															
+								this.dispatchEventWith(EventViewPackedList.CLICK_ITEM,true,_data);
+								
+															
+								if(!_data.isOpen){					
+									_data.isOpen = true;								
+									_iconArrow.rotation = deg2rad(90);							
+								} else {					
+									_data.isOpen = false;								
+									_iconArrow.rotation = deg2rad(0);															
+								}	
+								
+								
+							} else {
+								_isEditTouch = false;
+							}
 						}
 												
 																								

@@ -4,10 +4,8 @@ package com.Application {
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
-	import com.Application.robotlegs.views.settings.EventViewSettings;
-
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
-
+	import com.Application.robotlegs.views.settings.EventViewSettings;
 	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.Application.themes.ApplicationTheme;
@@ -23,8 +21,7 @@ package com.Application {
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
-	import feathers.motion.Cover;
-	import feathers.motion.Reveal;
+	import feathers.motion.Fade;
 	import feathers.motion.Slide;
 	
 	import org.robotlegs.starling.mvcs.Context;
@@ -175,11 +172,11 @@ package com.Application {
 				
 				//settingsItem.addPopEvent(			
 				//custom push and pop transitions for this settings screen
-				viewStart.pushTransition = Cover.createCoverUpTransition();
-				viewStart.popTransition = Reveal.createRevealDownTransition();
+				//viewStart.pushTransition = Cover.createCoverUpTransition();
+				//viewStart.popTransition = Reveal.createRevealDownTransition();
 				
 				viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
-				//viewStart.pushTransition = Fade.createFadeInTransition();					
+				viewStart.pushTransition = Fade.createFadeInTransition();					
 					
 				this._navigator.addScreen(VIEW_WELCOME, viewStart);				
 				this._navigator.pushScreen(VIEW_WELCOME);
@@ -188,8 +185,11 @@ package com.Application {
 				this._navigator.rootScreenID = VIEW_MAIN_MENU;	
 			}
 			
-			this._navigator.pushTransition = Slide.createSlideLeftTransition();
-			this._navigator.popTransition = Slide.createSlideRightTransition();	
+			//this._navigator.pushTransition = Slide.createSlideLeftTransition();
+			//this._navigator.popTransition = Slide.createSlideRightTransition();	
+			
+			this._navigator.pushTransition = Fade.createFadeInTransition();
+			this._navigator.popTransition = Fade.createFadeInTransition();	
 			
 			
 		//	this._navigator.rootScreenID = VIEW_PACKED_LIST;
