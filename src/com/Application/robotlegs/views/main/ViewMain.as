@@ -14,7 +14,7 @@ package com.Application.robotlegs.views.main {
 	
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-
+	
 	[Event(name="complete",type="starling.events.Event")]
 	[Event(name="showAlert",type="starling.events.Event")]
 	
@@ -81,7 +81,7 @@ package com.Application.robotlegs.views.main {
 			
 			_layoutVertical = new VerticalLayout();
 			
-
+			
 			_collectionList = new ListCollection();
 			
 			var pVO:VOMainMenu = new VOMainMenu();

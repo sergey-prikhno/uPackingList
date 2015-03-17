@@ -5,6 +5,8 @@ button.ok=OK
 button.cancel=Cancel
 button.scratch=From scratch
 button.existing=From the existing list
+button.edit=Edit
+button.back=Back
 
 
 #header
@@ -34,4 +36,6 @@ welcomScreen.descriptionBottom=Full version has more features and also a "Shoppi
 welcomScreen.niceJourney=Have a nice journey!
 welcomScreen.labelShow=Always show:
 welcomScreen.continue=Continue
+
+
 

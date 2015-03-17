@@ -501,7 +501,7 @@ package feathers.themes
 		 */
 		protected var atlas:TextureAtlas;
 
-		protected var headerBackgroundSkinTexture:Texture;
+		protected var headerBackgroundSkinTexture:Scale9Textures;
 		protected var backgroundSkinTextures:Scale9Textures;
 		protected var backgroundInsetSkinTextures:Scale9Textures;
 		protected var backgroundDisabledSkinTextures:Scale9Textures;
@@ -634,7 +634,9 @@ package feathers.themes
 					this._originalDPI = ORIGINAL_DPI_IPHONE_RETINA;
 				}
 			}
-			this.scale = scaledDPI / this._originalDPI;
+			//this.scale = scaledDPI / this._originalDPI;
+			this.scale = scaleWidth;
+			
 		}
 
 		/**
@@ -770,7 +772,7 @@ package feathers.themes
 			this.insetItemRendererSingleUpSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-single-up-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
 			this.insetItemRendererSingleSelectedSkinTextures = new Scale9Textures(this.atlas.getTexture("list-inset-item-single-selected-skin"), INSET_ITEM_RENDERER_SINGLE_SCALE9_GRID);
 
-			this.headerBackgroundSkinTexture = this.atlas.getTexture("header-background-skin");
+			this.headerBackgroundSkinTexture = new Scale9Textures(this.atlas.getTexture("header-background-skin"),new Rectangle(20,20,20,20));
 
 			this.calloutTopArrowSkinTexture = this.atlas.getTexture("callout-arrow-top-skin");
 			this.calloutRightArrowSkinTexture = this.atlas.getTexture("callout-arrow-right-skin");
@@ -1468,7 +1470,7 @@ package feathers.themes
 			header.gap = this.smallGutterSize;
 			header.titleGap = this.smallGutterSize;
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundSkinTexture, this.scaleWidth);
 			backgroundSkin.width = this.gridSize;
 			backgroundSkin.height = this.gridSize;
 			header.backgroundSkin = backgroundSkin;
@@ -1513,7 +1515,7 @@ package feathers.themes
 			group.minWidth = this.gridSize;
 			group.minHeight = this.gridSize;
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundSkinTexture, this.scale);
 			backgroundSkin.width = backgroundSkin.height = this.gridSize;
 			group.backgroundSkin = backgroundSkin;
 		}
@@ -1893,7 +1895,7 @@ package feathers.themes
 			container.minWidth = this.gridSize;
 			container.minHeight = this.gridSize;
 
-			var backgroundSkin:TiledImage = new TiledImage(this.headerBackgroundSkinTexture, this.scale);
+			var backgroundSkin:Scale9Image = new Scale9Image(this.headerBackgroundSkinTexture, this.scale);
 			backgroundSkin.width = backgroundSkin.height = this.gridSize;
 			container.backgroundSkin = backgroundSkin;
 		}

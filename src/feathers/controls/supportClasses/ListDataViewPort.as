@@ -777,7 +777,7 @@ package feathers.controls.supportClasses
 			for(var i:int = 0; i < rendererCount; i++)
 			{
 				var renderer:IListItemRenderer = this._activeRenderers[i];
-				renderer.isSelected = this._selectedIndices.getItemIndex(renderer.index) >= 0;
+				renderer.isSelected = this._selectedIndices.getItemIndex(renderer.index) >= 0;				
 			}
 		}
 

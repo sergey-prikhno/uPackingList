@@ -2,10 +2,12 @@ package com.Application {
 	import com.Application.components.screenLoader.ScreenLoader;
 	import com.Application.robotlegs.model.vo.VOAppStorageData;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.alert.AlertScreen;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.settings.EventViewSettings;
+
+	import com.Application.robotlegs.views.packedList.ViewPackedList;
+
 	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.Application.themes.ApplicationTheme;
@@ -21,7 +23,8 @@ package com.Application {
 	import feathers.controls.StackScreenNavigator;
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
-	import feathers.motion.Fade;
+	import feathers.motion.Cover;
+	import feathers.motion.Reveal;
 	import feathers.motion.Slide;
 	
 	import org.robotlegs.starling.mvcs.Context;
@@ -44,17 +47,13 @@ package com.Application {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";
-		private static const VIEW_ALERT:String = "VIEW_ALERT";
+		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";		
 		private static const VIEW_WELCOME:String = "VIEW_WELCOME";		
-		private static const VIEW_SETTINGS:String = "VIEW_SETTINGS";		
+		private static const VIEW_SETTINGS:String = "VIEW_SETTINGS";
+		private static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
 		
 		private var _navigator:StackScreenNavigator;				
-		private var _screenCurrent:ViewAbstract;
-		
-		private static const MAIN_MENU_EVENTS:Object = 	{
-			//SHOW_ALERT: VIEW_ALERT			
-		};
+		private var _screenCurrent:ViewAbstract;		
 		
 		// Garbage collector calls handling
 		private var _garbageCollectorCallCount:int;
@@ -141,11 +140,11 @@ package com.Application {
 			_theme.removeEventListener(Event.CHANGE, _handlerChange);			
 			
 			
-			var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
+		/*	var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
 				alertItem.setScreenIDForPushEvent(Event.COMPLETE, VIEW_WELCOME);
 				//alertItem.addPopToRootEvent(Event.COMPLETE);
 			//	alertItem.addPopEvent(Event.COMPLETE);			
-			this._navigator.addScreen(VIEW_ALERT, alertItem);								
+			this._navigator.addScreen(VIEW_ALERT, alertItem);*/								
 			
 			
 			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
@@ -159,6 +158,10 @@ package com.Application {
 			
 			
 			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
+
+			
+			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);						
+			this._navigator.addScreen(VIEW_PACKED_LIST, packedListItem);
 			
 			
 							
@@ -168,9 +171,15 @@ package com.Application {
 			
 			
 			if(_settings.isStarScreenShow == "1"){
-				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);		
-					viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
-					viewStart.pushTransition = Fade.createFadeInTransition();					
+				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);											
+				
+				//settingsItem.addPopEvent(			
+				//custom push and pop transitions for this settings screen
+				viewStart.pushTransition = Cover.createCoverUpTransition();
+				viewStart.popTransition = Reveal.createRevealDownTransition();
+				
+				viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
+				//viewStart.pushTransition = Fade.createFadeInTransition();					
 					
 				this._navigator.addScreen(VIEW_WELCOME, viewStart);				
 				this._navigator.pushScreen(VIEW_WELCOME);
@@ -182,11 +191,16 @@ package com.Application {
 			this._navigator.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.popTransition = Slide.createSlideRightTransition();	
 			
+			
+		//	this._navigator.rootScreenID = VIEW_PACKED_LIST;
+			
 			_screenLoader = new ScreenLoader();
 			addChild(_screenLoader);	
 			_screenLoader.touchable = false;
 			_screenLoader.isEnabled = false;
 			_screenLoader.visible = false;
+			
+			
 		}
 		
 		private function _handlerChange(event:Event):void{

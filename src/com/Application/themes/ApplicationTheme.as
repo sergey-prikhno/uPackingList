@@ -6,6 +6,9 @@ package com.Application.themes {
 	import com.Application.robotlegs.views.popups.PopupAbstract;
 	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listScratch.PopupCreateListScratch;
+
+	import com.Application.robotlegs.views.packedList.ItemRendererPackedList;
+	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	
 	import flash.geom.Rectangle;
@@ -22,6 +25,14 @@ package com.Application.themes {
 		
 		protected var loadingIndicator:Texture;
 		protected var baseViewBackground:Scale9Textures;
+		protected var background1:Scale9Textures;
+		protected var background2:Scale9Textures;
+		protected var iconArrow:Texture;
+		protected var iconEdit:Texture;
+		protected var iconBag:Texture;
+		protected var iconMark:Texture;
+		protected var iconRemove:Texture;
+				
 		
 		public function ApplicationTheme(assetsBasePath:String = null, assetManager:AssetManager = null) {
 			super(assetsBasePath, assetManager);
@@ -32,7 +43,16 @@ package com.Application.themes {
 			super.initializeTextures();
 			
 			this.loadingIndicator = this.atlas.getTexture("loading-white-indicator");
-			this.baseViewBackground = new Scale9Textures(this.atlas.getTexture("background-base"),new Rectangle(10,10,20,20));
+			this.baseViewBackground = new Scale9Textures(this.atlas.getTexture("background-base"),new Rectangle(10,10,20,20));			
+			
+			this.background1 = new Scale9Textures(this.atlas.getTexture("background1"),new Rectangle(10,10,20,20));	
+			this.background2 = new Scale9Textures(this.atlas.getTexture("background2"),new Rectangle(10,10,20,20));	
+			
+			this.iconArrow = this.atlas.getTexture("arrow-right");
+			this.iconEdit = this.atlas.getTexture("edit-icon");
+			this.iconBag = this.atlas.getTexture("icon-bag");
+			this.iconMark = this.atlas.getTexture("icon-mark");
+			this.iconRemove = this.atlas.getTexture("icon-remove");
 		}
 		
 		override protected function initializeStyleProviders():void {
@@ -41,7 +61,8 @@ package com.Application.themes {
 			this.getStyleProviderForClass(ViewMain).defaultStyleFunction = this.setViewMainStyles;
 			this.getStyleProviderForClass(ViewWelcome).defaultStyleFunction = this.setViewWelcomeStyles;
 			this.getStyleProviderForClass(LoadingIndicator).defaultStyleFunction = this.setLoadingIndicatorStyles;
-		//	this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;		
+			this.getStyleProviderForClass(ViewPackedList).defaultStyleFunction = this.setViewPackedStyles;
+			this.getStyleProviderForClass(ItemRendererPackedList).defaultStyleFunction = this.setItemRendererPackedStyles;
 			
 			this.getStyleProviderForClass(PopupAbstract).defaultStyleFunction = this.setPopupAbstractStyles;
 			this.getStyleProviderForClass(PopupCreateListScratch).defaultStyleFunction = this.setPopupCreateListScratchStyles;
@@ -89,5 +110,23 @@ package com.Application.themes {
 			view.scale = scaleHeight;
 		}
 		
+		
+		protected function setViewPackedStyles(view:ViewPackedList):void{
+			initializeViewAbstract(view);
+			
+		}
+				
+		protected function setItemRendererPackedStyles(renderer:ItemRendererPackedList):void{			
+			renderer.scaleWidth = scaleWidth;
+			renderer.iconArrow = iconArrow;
+			renderer.iconEdit = iconEdit;
+			renderer.iconBag = iconBag;
+			renderer.iconMark = iconMark;
+			renderer.iconRemove = iconRemove;
+			renderer.atlas = atlas;									
+		}
+		
+		
+
 	}
 }
