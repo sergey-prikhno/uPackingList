@@ -1,0 +1,8 @@
+/.actionScriptProperties
+/.project
+.settings/.actionScriptProperties
+.settings/.project
+/bin-debug
+/bin-release
+/bin-release-temp
+/~$callsRoute.xlsx

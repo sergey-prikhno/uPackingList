@@ -1,5 +1,6 @@
 package com.Application {
 	import com.Application.robotlegs.controller.CommandCallTestService;
+	import com.Application.robotlegs.controller.CommandCreateNewList;
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
 	import com.Application.robotlegs.model.IModel;
@@ -11,6 +12,8 @@ package com.Application {
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.settings.MediatorViewSettings;
+	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.MediatorViewWelcome;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.http.robotlegs.events.EventServiceAbstract;
@@ -52,6 +55,7 @@ package com.Application {
 			mediatorMap.mapView(Main, MediatorMain);
 			mediatorMap.mapView(ViewMain, MediatorViewMain);
 			mediatorMap.mapView(ViewWelcome, MediatorViewWelcome);
+			mediatorMap.mapView(ViewSettings, MediatorViewSettings);
 		
 			
 			injector.mapSingletonOf(IModel, Model);
@@ -64,6 +68,7 @@ package com.Application {
 			commandMap.mapEvent(EventServiceAbstract.ERROR, CommandServiceError, EventServiceAbstract);
 			commandMap.mapEvent(EventViewMain.CALL_TEST_SERVICE, CommandCallTestService, EventViewMain);
 			commandMap.mapEvent(EventMain.GET_APP_SETTINGS, CommandMainFunctionCallback, EventMain);
+			commandMap.mapEvent(EventViewMain.CREATE_NEW_LIST, CommandCreateNewList, EventViewMain);
 			
 		
 			super.startup();

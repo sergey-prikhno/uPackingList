@@ -1,10 +1,12 @@
 package com.Application.robotlegs.views.settings {
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.common.Constants;
 	
+	import feathers.controls.Button;
 	import feathers.skins.IStyleProvider;
-	import feathers.skins.StandardIcons;
 	
-	import starling.textures.Texture;
+	import starling.display.DisplayObject;
+	import starling.events.Event;
 
 	
 	public class ViewSettings extends ViewAbstract {									
@@ -20,6 +22,8 @@ package com.Application.robotlegs.views.settings {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
+		private var _backButton:Button;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -50,19 +54,26 @@ package com.Application.robotlegs.views.settings {
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private function accessorySourceFunction(item:Object):Texture {
-			return StandardIcons.listDrillDownAccessoryTexture;
-		}
 		
 		override protected function _initialize():void{
 			super._initialize();
 			
-			
+			_backButton = new Button();
+			_backButton.label = "Back";
+			_backButton.addEventListener(Event.TRIGGERED, _handlerBackButton);
+			this._header.leftItems = new <DisplayObject>
+				[
+					this._backButton
+				];
 		}
 		
 		override protected function draw():void{
 			super.draw();
 			
+			if(_header){
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.settings");
+				_header.width = _nativeStage.stageWidth;
+			}
 			
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -70,6 +81,10 @@ package com.Application.robotlegs.views.settings {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		
+		private function _handlerBackButton(event:Event):void{
+			dispatchEvent(new EventViewSettings(EventViewSettings.SHOW_VIEW_MAIN_SCREEN));
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

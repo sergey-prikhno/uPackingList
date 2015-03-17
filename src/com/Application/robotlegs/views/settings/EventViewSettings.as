@@ -3,8 +3,7 @@ package com.Application.robotlegs.views.settings{
 	
 	public class EventViewSettings extends Event {
 				
-		public static const CALL_TEST_SERVICE:String = "CALL_TEST_SERVICE";	
-		public static const SHOW_SETTINGS_SCREEN:String = "SHOW_SETTINGS_SCREEN";	
+		public static const SHOW_VIEW_MAIN_SCREEN:String = "SHOW_VIEW_MAIN_SCREEN";	
 		
 		public function EventViewSettings(type:String, bubbles:Boolean=false, data:Object=null) {
 			super(type, bubbles, data);

@@ -5,6 +5,7 @@ package com.Application {
 	import com.Application.robotlegs.views.alert.AlertScreen;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.settings.EventViewSettings;
 	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	import com.Application.themes.ApplicationTheme;
@@ -149,13 +150,13 @@ package com.Application {
 			
 			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
 				mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
-							
-			for(var eventType:String in MAIN_MENU_EVENTS){
-				mainMenuItem.setScreenIDForPushEvent(eventType, MAIN_MENU_EVENTS[eventType] as String);				
-			}
 			
 			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);
+				settingsItem.pushTransition = Slide.createSlideRightTransition();
+				settingsItem.setScreenIDForPushEvent(EventViewSettings.SHOW_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
 			this._navigator.addScreen(VIEW_SETTINGS, settingsItem);
+			
+			
 			
 			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
 			

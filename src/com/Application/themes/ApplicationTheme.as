@@ -1,7 +1,11 @@
 package com.Application.themes {
 	import com.Application.components.loadingIndicator.LoadingIndicator;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.popups.PopupAbstract;
+	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
+	import com.Application.robotlegs.views.popups.listScratch.PopupCreateListScratch;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	
 	import flash.geom.Rectangle;
@@ -39,6 +43,11 @@ package com.Application.themes {
 			this.getStyleProviderForClass(LoadingIndicator).defaultStyleFunction = this.setLoadingIndicatorStyles;
 		//	this.getStyleProviderForClass(LabelScreen).defaultStyleFunction = this.setLabelScreenStyles;		
 			
+			this.getStyleProviderForClass(PopupAbstract).defaultStyleFunction = this.setPopupAbstractStyles;
+			this.getStyleProviderForClass(PopupCreateListScratch).defaultStyleFunction = this.setPopupCreateListScratchStyles;
+			this.getStyleProviderForClass(PopupCreateListExisting).defaultStyleFunction = this.setPopupCreateListExistingStyles;
+			this.getStyleProviderForClass(ItemrendererMainMenu).defaultStyleFunction = this.setItemrendererMainMenuStyles;
+			
 		}	
 	
 		protected function setLoadingIndicatorStyles(component:LoadingIndicator):void{
@@ -61,6 +70,23 @@ package com.Application.themes {
 		protected function setViewWelcomeStyles(view:ViewWelcome):void{
 			initializeViewAbstract(view);		
 			view.baseTextFormat = largeDarkElementFormat;
+		}
+		
+		protected function setPopupAbstractStyles(view:PopupAbstract):void{
+			view.scaleHeight = scaleHeight;
+			view.scaleWidth = scaleWidth;	
+		}
+		
+		protected function setPopupCreateListScratchStyles(view:PopupCreateListScratch):void{
+			setPopupAbstractStyles(view);	
+		}
+		
+		protected function setPopupCreateListExistingStyles(view:PopupCreateListExisting):void{
+			setPopupAbstractStyles(view);	
+		}
+		
+		protected function setItemrendererMainMenuStyles(view:ItemrendererMainMenu):void{
+			view.scale = scaleHeight;
 		}
 		
 	}

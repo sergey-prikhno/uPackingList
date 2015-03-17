@@ -1,15 +1,25 @@
 ## default.properties file for locale en_US ##
 
 #buttons
-button.ok=ok
+button.ok=OK
+button.cancel=Cancel
+button.scratch=From scratch
+button.existing=From the existing list
 
 
 #header
 header.uPackingList=uPackingList
+header.settings=Settings
 
 title.newList=New List
+title.newListDesc=create new packing list
 title.openList=Open
+title.openListDesc=open saved lists
 title.packList=Pack!
+title.packListDesc=pack the list - Business trip female (0%)
+
+title.create.list=Enter List name
+
 
 #WelcomScreen
 welcomScreen.title=Welcome to uPackingList

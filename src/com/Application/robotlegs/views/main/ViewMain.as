@@ -1,23 +1,19 @@
 package com.Application.robotlegs.views.main {
-	import com.Application.EventMain;
+	import com.Application.robotlegs.model.vo.VOMainMenu;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
 	import com.common.Constants;
+	
+	import ch.ala.locale.LocaleManager;
 	
 	import feathers.controls.Button;
 	import feathers.controls.List;
-	import feathers.controls.renderers.DefaultListItemRenderer;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
-	import feathers.events.FeathersEventType;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
-	import feathers.skins.StandardIcons;
-	import feathers.system.DeviceCapabilities;
 	
-	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
-	import starling.textures.Texture;
 
 	[Event(name="complete",type="starling.events.Event")]
 	[Event(name="showAlert",type="starling.events.Event")]
@@ -31,7 +27,7 @@ package com.Application.robotlegs.views.main {
 		public var savedVerticalScrollPosition:Number = 0;
 		public var savedSelectedIndex:int = -1;
 		
-		private var _layout:VerticalLayout;
+		private var _layoutVertical:VerticalLayout;
 		
 		public static const SHOW_ALERT:String = "SHOW_ALERT";
 		public static const TEST_SERVICE:String = "TEST_SERVICE";
@@ -45,6 +41,7 @@ package com.Application.robotlegs.views.main {
 		
 		private var _list:List;
 		private var _buttonSettings:Button;	
+		private var _collectionList:ListCollection;	
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -69,58 +66,45 @@ package com.Application.robotlegs.views.main {
 			return ViewMain.globalStyleProvider;
 		}
 		
+		public function get resourceManager():LocaleManager{
+			return _resourceManager;
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private function accessorySourceFunction(item:Object):Texture {
-			return StandardIcons.listDrillDownAccessoryTexture;
-		}
 		
 		override protected function _initialize():void{
 			super._initialize();
 			
-			_layout = new VerticalLayout();
-
-			this._list = new List();
-			this._list.hasElasticEdges = false;
-			this._list.dataProvider = new ListCollection(
-				[	{ label: _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList"), event: SHOW_ALERT },
-					{ label: _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList"), event: SHOW_ALERT },
-					{ label: _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packList"), event: SHOW_ALERT }
-				]);
-
-			this._list.clipContent = true;
-			this._list.autoHideBackground = true;
-			this._list.verticalScrollPosition = this.savedVerticalScrollPosition;
+			_layoutVertical = new VerticalLayout();
 			
-			var isTablet:Boolean = DeviceCapabilities.isTablet(Starling.current.nativeStage);
-			var itemRendererAccessorySourceFunction:Function = null;
-			if(!isTablet){
-				itemRendererAccessorySourceFunction = this.accessorySourceFunction;
-			}
-			this._list.itemRendererFactory = function():IListItemRenderer{
-				var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
-				
-				//enable the quick hit area to optimize hit tests when an item
-				//is only selectable and doesn't have interactive children.
-				renderer.isQuickHitAreaEnabled = true;
-				
-				renderer.labelField = "label";
-				renderer.accessorySourceFunction = itemRendererAccessorySourceFunction;
-				return renderer;
-			};
+
+			_collectionList = new ListCollection();
 			
-			if(isTablet){
-				this._list.addEventListener(Event.CHANGE, list_changeHandler);
-				this._list.selectedIndex = -1;
-				this._list.revealScrollBars();
-			}else{
-				this._list.selectedIndex = this.savedSelectedIndex;
-				this.addEventListener(FeathersEventType.TRANSITION_IN_COMPLETE, transitionInCompleteHandler);
+			var pVO:VOMainMenu = new VOMainMenu();
+			pVO.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList");
+			pVO.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newListDesc");
+			_collectionList.push(pVO);
+			
+			var pVO2:VOMainMenu = new VOMainMenu();
+			pVO2.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList");
+			pVO2.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openListDesc");
+			_collectionList.push(pVO2);
+			
+			var pVO3:VOMainMenu = new VOMainMenu();
+			pVO3.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packList");
+			pVO3.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packListDesc");
+			_collectionList.push(pVO3);
+			
+			if(!_list){
+				_list = new List();
+				_list.hasElasticEdges = false;
+				_list.itemRendererType = ItemrendererMainMenu;
+				addChild(_list);
 			}
-			this.addChild(this._list);
 			
 			_buttonSettings = new Button();
 			_buttonSettings.label = "Settings";
@@ -134,17 +118,19 @@ package com.Application.robotlegs.views.main {
 		override protected function draw():void{
 			super.draw();
 			
-			_layout.gap = int(88*_scaleHeight);
-			
 			if(_header){
 				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");
 				_header.width = _nativeStage.stageWidth;
 			}
 			if(_list){
-				_list.width = _nativeStage.stageWidth;
-				_list.y = _header.height + int(66*_scaleHeight);
-				_list.layout = _layout;
+				_layoutVertical.gap = int(88*_scaleHeight);
+				_list.layout = _layoutVertical;	
+				_list.dataProvider = _collectionList;
+				_list.width = _nativeStage.stageWidth - int(32*_scaleWidth);
+				_list.height = _nativeStage.stageHeight - _header.height;
 				_list.validate();
+				_list.x = _nativeStage.stageWidth/2 - _list.width/2;
+				_list.y = _header.height + int(44*_scaleHeight);
 			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -152,35 +138,7 @@ package com.Application.robotlegs.views.main {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function list_changeHandler(event:Event):void {
-			var eventType:String = this._list.selectedItem.event as String;
-			if(DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				this.dispatchEventWith(eventType);
-				return;
-			}
-			
-			//save the list's scroll position and selected index so that we
-			//can restore some context when this screen when we return to it
-			//again later.
-			this.dispatchEventWith(eventType, false,
-				{
-					savedVerticalScrollPosition: this._list.verticalScrollPosition,
-					savedSelectedIndex: this._list.selectedIndex
-				});
-								
-			
-			trace("this._list.selectedIndex "+this._list.selectedIndex);
-		}
 		
-		private function transitionInCompleteHandler(event:Event):void 	{
-			if(!DeviceCapabilities.isTablet(Starling.current.nativeStage))
-			{
-				this._list.selectedIndex = -1;
-				this._list.addEventListener(Event.CHANGE, list_changeHandler);
-			}
-			this._list.revealScrollBars();
-		}
 		
 		private function _handlerSettingsButton(event:Event):void{
 			dispatchEvent(new EventViewMain(EventViewMain.SHOW_SETTINGS_SCREEN));

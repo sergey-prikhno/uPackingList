@@ -1,58 +1,64 @@
-package com.Application.robotlegs.views.main {
-	import com.Application.robotlegs.model.vo.VOMainMenu;
-	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.EventRenderer;
-	import com.common.Constants;
+package com.Application.robotlegs.views.popups{
+	import com.Application.robotlegs.views.main.ViewMain;
 	
-	public class MediatorViewMain extends MediatorViewAbstract {		
+	import flash.display.Stage;
+	
+	import ch.ala.locale.LocaleManager;
+	
+	import feathers.core.FeathersControl;
+	import feathers.skins.IStyleProvider;
+	
+	import starling.core.Starling;
+	
+	public class PopupAbstract extends FeathersControl{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		
+		public static var globalStyleProvider:IStyleProvider;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		protected var _resourcesManager:LocaleManager;
+		protected var _nativeStage:Stage;
+		
+		protected var _scaleWidth:Number;
+		protected var _scaleHeight:Number;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMain() 	{
+		
+		public function PopupAbstract(){
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-			
-			addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
-			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
-		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-		
-			removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
-			removeViewListener(EventViewMain.CREATE_NEW_LIST, _handlerRendererClick, EventViewMain);
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewMain{
-			return ViewMain(viewComponent);
+		
+		public function set scaleHeight(value:Number):void{_scaleHeight = value;}
+		public function set scaleWidth(value:Number):void{	_scaleWidth = value;}
+
+		override protected function get defaultStyleProvider():IStyleProvider {
+			return PopupAbstract.globalStyleProvider;
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -61,21 +67,30 @@ package com.Application.robotlegs.views.main {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		override protected function initialize():void{	
+			_resourcesManager = LocaleManager.getInstance();			
+			_nativeStage = Starling.current.nativeStage;									
+			_initialize();
+		}
+		
+		override protected function draw():void{
+			_draw();
+		}	
+		
+		protected function _initialize():void{
+			
+		}
+		
+		protected function _draw():void{
+						
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerCallTestService(event:EventViewMain):void{
-			dispatch(event);
-		}
 		
-		private function _handlerRendererClick(event:EventRenderer):void{
-			var pVO:VOMainMenu = VOMainMenu(event.payload);
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
-				dispatch(new EventViewMain(EventViewMain.CREATE_NEW_LIST));
-			}
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -88,6 +103,7 @@ package com.Application.robotlegs.views.main {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }
