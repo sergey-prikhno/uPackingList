@@ -42,8 +42,11 @@ package com.Application.robotlegs.controller{
 		//---------------------------------------------------------------------------------------------------------
 		
 		override public function execute():void{
-		//	popupManager.popupCreateListScratch();
-			popupManager.popupCreateListExisting();
+			if(model.appLists.length > 0){
+				popupManager.popupCreateListExisting();
+			}else{
+				popupManager.popupCreateListScratch();
+			}
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 

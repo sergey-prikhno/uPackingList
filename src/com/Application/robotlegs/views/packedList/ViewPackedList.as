@@ -4,7 +4,6 @@ package com.Application.robotlegs.views.packedList {
 	import com.common.Constants;
 	
 	import feathers.controls.Button;
-	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
@@ -195,6 +194,7 @@ package com.Application.robotlegs.views.packedList {
 			
 			
 			_backButton = new Button();
+			_backButton.addEventListener(Event.TRIGGERED, _handlerBackbutton);
 			_backButton.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.back");			
 			
 			_editButton = new Button();
@@ -260,6 +260,10 @@ package com.Application.robotlegs.views.packedList {
 		
 		private function _handlerEditListItems(event:Event):void{
 			_list.isEditing = !_list.isEditing; 
+		}
+		
+		private function _handlerBackbutton(event:Event):void{
+			dispatchEvent(new EventViewPackedList(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN));
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

@@ -1,93 +1,71 @@
-package com.Application {
-	import com.Application.robotlegs.model.EventModel;
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
-	import com.Application.robotlegs.model.vo.VOScreenID;
-	import com.http.robotlegs.model.modelLoading.EventActorLoader;
+package com.Application.robotlegs.controller{
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.model.managerPopup.EventManagerPopup;
+	import com.Application.robotlegs.model.vo.VOListCreate;
 	
-	import org.robotlegs.starling.mvcs.Mediator;
+	import org.robotlegs.starling.mvcs.Command;
 	
-	public class MediatorMain extends Mediator 	{		
+	public class CommandSetNewListName extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		[Inject]
+		public var model:IModel;
 		
+		[Inject]
+		public var event:EventManagerPopup;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorMain() {
+		
+		public function CommandSetNewListName(){
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void {
-			super.onRegister();
-			
-			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
-			
-			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);	
-			
-			dispatch(new EventMain(EventMain.GET_APP_SETTINGS, null, false, _setSettings));
-		}			
 		
+		override public function execute():void{
+			model.newList = VOListCreate(event.data);
+		}
 		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			
-			removeContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);
-		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():Main{
-			return Main(viewComponent);
-		}	
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private function _setSettings(value:VOAppStorageData):void{
-			view.settings = value;
-		}
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerLoadingEventService(event:EventActorLoader):void{			
-			
-			if(event.type == EventActorLoader.LOADING_STARTED){
-				view.addLoader();
-			}
-			
-			if(event.type == EventActorLoader.LOADING_FINISHED){
-				view.removeLoader();
-			}			
-		}		
 		
-		private function _handlerChangeAppScrenn(event:EventModel):void{
-			view.changeScreen(VOScreenID(event.data));
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
@@ -99,6 +77,7 @@ package com.Application {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }

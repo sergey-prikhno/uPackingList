@@ -1,9 +1,11 @@
 package com.Application {
 	import com.Application.components.screenLoader.ScreenLoader;
 	import com.Application.robotlegs.model.vo.VOAppStorageData;
+	import com.Application.robotlegs.model.vo.VOScreenID;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.packedList.EventViewPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.settings.EventViewSettings;
 	import com.Application.robotlegs.views.settings.ViewSettings;
@@ -44,10 +46,10 @@ package com.Application {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";		
-		private static const VIEW_WELCOME:String = "VIEW_WELCOME";		
-		private static const VIEW_SETTINGS:String = "VIEW_SETTINGS";
-		private static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
+		public static const VIEW_MAIN_MENU:String = "VIEW_MAIN_MENU";		
+		public static const VIEW_WELCOME:String = "VIEW_WELCOME";		
+		public static const VIEW_SETTINGS:String = "VIEW_SETTINGS";
+		public static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;		
@@ -101,6 +103,11 @@ package com.Application {
 				_navigator.touchable = true;
 			}			
 		}			
+		
+		public function changeScreen(pVO:VOScreenID):void{
+			_navigator.pushScreen(pVO.screenID);
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -145,6 +152,7 @@ package com.Application {
 			
 			
 			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
+				mainMenuItem.pushTransition = Slide.createSlideLeftTransition();
 				mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
 			
 			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);
@@ -157,7 +165,9 @@ package com.Application {
 			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
 
 			
-			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);						
+			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);
+				packedListItem.pushTransition = Slide.createSlideLeftTransition();
+				packedListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN_MENU);
 			this._navigator.addScreen(VIEW_PACKED_LIST, packedListItem);
 			
 			

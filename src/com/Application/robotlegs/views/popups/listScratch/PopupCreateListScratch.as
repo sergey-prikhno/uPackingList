@@ -1,4 +1,5 @@
 package com.Application.robotlegs.views.popups.listScratch{
+	import com.Application.robotlegs.model.vo.VOListCreate;
 	import com.Application.robotlegs.views.popups.PopupAbstract;
 	import com.common.Constants;
 	
@@ -154,7 +155,12 @@ package com.Application.robotlegs.views.popups.listScratch{
 		}
 		
 		private function _handlerButtonOk(event:Event):void{
-			dispatchEvent(new EventPopupCreateListScratch(EventPopupCreateListScratch.POPUP_CREATE_SET_NAME));
+			if(_inputText.text.length > 0 && _inputText.text.split(" ").join("").length > 0){
+				var pVO:VOListCreate = new VOListCreate();
+				pVO.nameList = _inputText.text;
+				pVO.isScratch = true;
+				dispatchEvent(new EventPopupCreateListScratch(EventPopupCreateListScratch.POPUP_CREATE_SET_NAME, pVO));
+			}
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 

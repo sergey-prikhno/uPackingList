@@ -2,9 +2,11 @@ package com.Application {
 	import com.Application.robotlegs.controller.CommandCallTestService;
 	import com.Application.robotlegs.controller.CommandCreateNewList;
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
+	import com.Application.robotlegs.controller.CommandSetNewListName;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
 	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.Model;
+	import com.Application.robotlegs.model.managerPopup.EventManagerPopup;
 	import com.Application.robotlegs.model.managerPopup.IManagerPopup;
 	import com.Application.robotlegs.model.managerPopup.ManagerPopup;
 	import com.Application.robotlegs.services.test.IServiceTest;
@@ -69,6 +71,7 @@ package com.Application {
 			commandMap.mapEvent(EventViewMain.CALL_TEST_SERVICE, CommandCallTestService, EventViewMain);
 			commandMap.mapEvent(EventMain.GET_APP_SETTINGS, CommandMainFunctionCallback, EventMain);
 			commandMap.mapEvent(EventViewMain.CREATE_NEW_LIST, CommandCreateNewList, EventViewMain);
+			commandMap.mapEvent(EventManagerPopup.SET_NEW_LIST_NAME, CommandSetNewListName, EventManagerPopup);
 			
 		
 			super.startup();
