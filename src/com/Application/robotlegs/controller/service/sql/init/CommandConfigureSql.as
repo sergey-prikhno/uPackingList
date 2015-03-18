@@ -1,38 +1,60 @@
-package com.common{
+package com.Application.robotlegs.controller.service.sql.init {
+	import com.Application.EventMain;
+	import com.common.Constants;
+	import com.probertson.data.SQLRunner;
 	
-
-	public class Constants{
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandConfigureSql extends Command {
+				
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
-		//---------------------------------------------------------------------------------------------------------				
-		public static const APP_SPLASH:String = "assets/system/splash.png"; 			
-		public static const RESOURCES_BUNDLE:String = "default";
-	
-		public static const FILE_PATH:String = "appinfo";
+		//---------------------------------------------------------------------------------------------------------
 		
-		public static const DB_FILE_NAME:String = "data/info.db";
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
-		//---------------------------------------------------------------------------------------------------------														
+		//---------------------------------------------------------------------------------------------------------
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
-		//---------------------------------------------------------------------------------------------------------		
-		public function Constants()	{
-			
-		}		
+		//---------------------------------------------------------------------------------------------------------
+		public function CommandConfigureSql() {
+			super();
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override public function execute():void {			
+						
+			var dbFile:File = File.applicationStorageDirectory.resolvePath(Constants.DB_FILE_NAME);									
+			
+			var sqlRunner:SQLRunner = new SQLRunner(dbFile);				
+				injector.mapValue(SQLRunner, sqlRunner);				
+				
+			if (dbFile.exists){
+				dispatch(new EventMain(EventMain.CONFIGURE_MODEL));
+			} else {			
+				var fileStream:FileStream = new FileStream();
+					fileStream.open(dbFile, FileMode.WRITE);				
+					fileStream.close();
+					fileStream = null;
+					
+				dispatch(new EventMain(EventMain.CONFIGURE_DATABASE));
+			}			
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -46,13 +68,11 @@ package com.common{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,7 +85,6 @@ package com.common{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }

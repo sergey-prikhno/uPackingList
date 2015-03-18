@@ -1,5 +1,5 @@
 package com.Application.robotlegs.model.vo{
-	public class VOAppStorageData {
+	public class VOAppSettings {
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -12,13 +12,16 @@ package com.Application.robotlegs.model.vo{
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _isStarScreenShow:String = "1";		
+		private var _id:int = 1;
+		private var _language_app:String = "1";
+		private var _welcome:String = "1";
+		private var _theme:String = "1";		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function VOAppStorageData() {
+		public function VOAppSettings() {
 			
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -27,17 +30,32 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		public function parser(value:Object):void{						
-			_isStarScreenShow = value.isStarScreenShow;			
+			//_isStarScreenShow = value.isStarScreenShow;			
 		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get isStarScreenShow():String { return _isStarScreenShow; }
-		public function set isStarScreenShow(value:String):void{
-			_isStarScreenShow = value;
-		}				
+		public function get language_app():String { return _language_app; }
+		public function set language_app(value:String):void{
+			_language_app = value;
+		}
+		
+		public function get welcome():String { return _welcome; }
+		public function set welcome(value:String):void{
+			_welcome = value;
+		}
+		
+		public function get theme():String { return _theme; }
+		public function set theme(value:String):void{
+			_theme = value;
+		}
+		
+		public function get id():int { return _id; }
+		public function set id(value:int):void{
+			_id = value;
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

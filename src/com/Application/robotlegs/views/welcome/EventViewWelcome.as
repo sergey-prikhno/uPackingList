@@ -3,7 +3,7 @@ package com.Application.robotlegs.views.welcome {
 	
 	public class EventViewWelcome extends Event {
 	
-		public static const CALL_TEST_SERVICE:String = "CALL_TEST_SERVICE";	
+	//	public static const GET_SETTINGS_WELCOME:String = "GET_SETTINGS_WELCOME";	
 		
 		public function EventViewWelcome(type:String, bubbles:Boolean=false, data:Object=null) {
 			super(type, bubbles, data);

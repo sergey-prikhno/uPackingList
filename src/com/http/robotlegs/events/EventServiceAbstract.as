@@ -7,7 +7,7 @@ package com.http.robotlegs.events {
 		
 		public var argument:Object;
 		
-		public static var SUCCESS:String = "SUCCESS";
+		public static var SUCCESS:String = "SUCCESS";		
 		public static var STATUS:String = "STATUS";
 		public static var ERROR:String = "ERROR";
 		

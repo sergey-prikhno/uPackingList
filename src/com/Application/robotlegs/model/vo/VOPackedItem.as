@@ -1,4 +1,6 @@
 package com.Application.robotlegs.model.vo {
+	
+
 	public class VOPackedItem {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -16,7 +18,7 @@ package com.Application.robotlegs.model.vo {
 		private var _parentId:Number = 0;
 		private var _isChild:Boolean = false;
 		private var _label:String = "";
-		private var _childrens:Vector.<VOPackedItem>;
+		private var _childrens:Vector.<VOPackedItem> = new Vector.<VOPackedItem>;
 		private var _index:Number = 0;
 		private var _isOpen:Boolean = false;
 		private var _isPacked:Boolean = false;
@@ -26,8 +28,11 @@ package com.Application.robotlegs.model.vo {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function VOPackedItem() {
-			
+		public function VOPackedItem(pLabel:String="",pId:Number = 0,pParentId:Number = 0,pIsChild:Boolean = false) {
+			_id = pId;
+			_parentId = pParentId;
+			_isChild = pIsChild;
+			_label = pLabel;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -52,8 +57,20 @@ package com.Application.robotlegs.model.vo {
 		}
 		
 		public function get isChild():Boolean { return _isChild;}
-		public function set isChild(value:Boolean):void{
-			_isChild = value;
+		public function set isChild(value:*):void{
+			
+			if(value is String){
+				if(value == "false"){					
+					_isChild = false;
+				} else {
+					_isChild = true;
+				}
+			}else {
+				_isChild = value;
+			}
+				
+			
+			
 		}
 		
 		public function get label():String { return _label;}

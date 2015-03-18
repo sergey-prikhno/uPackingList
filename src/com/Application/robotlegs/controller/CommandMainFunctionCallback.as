@@ -1,6 +1,6 @@
 package com.Application.robotlegs.controller {
-	import com.Application.EventMain;
 	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
@@ -14,7 +14,7 @@ package com.Application.robotlegs.controller {
 		public var model:IModel;
 		
 		[Inject]
-		public var event:EventMain
+		public var event:EventViewAbstract;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
@@ -36,7 +36,7 @@ package com.Application.robotlegs.controller {
 		//---------------------------------------------------------------------------------------------------------
 		override public function execute():void{
 			var pFunction:Function = event.functionCallback;
-			pFunction(model.VOAppStorage);						
+			pFunction(model.appSettings);						
 		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

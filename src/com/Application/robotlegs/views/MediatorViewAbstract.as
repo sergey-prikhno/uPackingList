@@ -31,12 +31,14 @@ package com.Application.robotlegs.views {
 		override public function onRegister():void{	
 			super.onRegister();
 			
+			addViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
 			
+			removeViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -56,7 +58,9 @@ package com.Application.robotlegs.views {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		private function _handlerUpdateSettings(event:EventViewAbstract):void{
+			dispatch(event);
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

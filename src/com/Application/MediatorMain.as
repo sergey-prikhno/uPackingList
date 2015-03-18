@@ -1,7 +1,9 @@
 package com.Application {
+
 	import com.Application.robotlegs.model.EventModel;
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
+	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOScreenID;
+	import com.Application.robotlegs.services.categories.EventServiceCategories;
 	import com.http.robotlegs.model.modelLoading.EventActorLoader;
 	
 	import org.robotlegs.starling.mvcs.Mediator;
@@ -39,9 +41,10 @@ package com.Application {
 			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
 			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
 			
-			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);	
-			
-			dispatch(new EventMain(EventMain.GET_APP_SETTINGS, null, false, _setSettings));
+
+			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);							
+			addContextListener(EventServiceCategories.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategories);				
+
 		}			
 		
 		
@@ -51,6 +54,8 @@ package com.Application {
 			
 			removeContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
 			removeContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);
+			removeContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);	
+			removeContextListener(EventServiceCategories.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategories);
 		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -66,9 +71,7 @@ package com.Application {
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private function _setSettings(value:VOAppStorageData):void{
-			view.settings = value;
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
@@ -85,8 +88,16 @@ package com.Application {
 			}			
 		}		
 		
+
 		private function _handlerChangeAppScrenn(event:EventModel):void{
 			view.changeScreen(VOScreenID(event.data));
+		}
+		
+		
+		private function _handlerIinitDBComplete(event:EventServiceCategories):void{
+			var pData:VOAppSettings = VOAppSettings(event.data);
+			
+			view.settings = pData;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

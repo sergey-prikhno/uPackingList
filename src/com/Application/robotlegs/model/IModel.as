@@ -1,17 +1,19 @@
 package com.Application.robotlegs.model {
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
+
+	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOListCreate;
+	import com.Application.robotlegs.model.vo.VOPackedItem;
+
 	
-	public interface IModel {
-		
-		function get test():String
-		function set test(value:String):void
-		
-		function get VOAppStorage():VOAppStorageData
-		function set VOAppStorage(value:VOAppStorageData):void
-		
+	public interface IModel {				
+		function get appSettings():VOAppSettings
+		function set appSettings(value:VOAppSettings):void
+				
 		function set newList(value:VOListCreate):void
 		function get appLists():Array
+
+		function get defaultCategories():Vector.<VOPackedItem>
+		function set defaultCategories(value:Vector.<VOPackedItem>):void			
 	}
 	
 }

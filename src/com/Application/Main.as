@@ -1,6 +1,6 @@
 package com.Application {
 	import com.Application.components.screenLoader.ScreenLoader;
-	import com.Application.robotlegs.model.vo.VOAppStorageData;
+	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOScreenID;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.main.EventViewMain;
@@ -61,7 +61,7 @@ package com.Application {
 		private var _starlingContext:Context;
 		
 		private var _screenLoader:ScreenLoader;
-		private var _settings:VOAppStorageData;
+		private var _settings:VOAppSettings;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -113,8 +113,9 @@ package com.Application {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function set settings(value:VOAppStorageData):void{
+		public function set settings(value:VOAppSettings):void{
 			_settings = value;
+			_continueAppInit();
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -122,7 +123,61 @@ package com.Application {
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
+		private function _continueAppInit():void{
+			
+			Starling.current.dispatchEvent(new Event(Event.ADDED_TO_STAGE,true));							
+			
+			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
+
+				mainMenuItem.pushTransition = Slide.createSlideLeftTransition();
+				mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
+
+			
+			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);
+			settingsItem.pushTransition = Slide.createSlideRightTransition();
+			settingsItem.setScreenIDForPushEvent(EventViewSettings.SHOW_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
+			this._navigator.addScreen(VIEW_SETTINGS, settingsItem);
+			
+			
+			
+			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
+			
+			
+			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);
+				packedListItem.pushTransition = Slide.createSlideLeftTransition();
+				packedListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN_MENU);
+			this._navigator.addScreen(VIEW_PACKED_LIST, packedListItem);
+									
+			
+			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);
+			_navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, _handlerTransition);
+			
+			
+			if(_settings.welcome == "1"){
+				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);														
+			
+				viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
+				viewStart.pushTransition = Fade.createFadeInTransition();					
+			
+				this._navigator.addScreen(VIEW_WELCOME, viewStart);				
+				this._navigator.pushScreen(VIEW_WELCOME);
+				this._navigator.rootScreenID = VIEW_WELCOME;		
+			} else {
+				this._navigator.rootScreenID = VIEW_MAIN_MENU;	
+			}
+						
+			this._navigator.pushTransition = Fade.createFadeInTransition();
+			this._navigator.popTransition = Fade.createFadeInTransition();	
+			
+			
+			//	this._navigator.rootScreenID = VIEW_PACKED_LIST;
+			
+			_screenLoader = new ScreenLoader();
+			addChild(_screenLoader);	
+			_screenLoader.touchable = false;
+			_screenLoader.isEnabled = false;
+			_screenLoader.visible = false;						
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
@@ -137,80 +192,11 @@ package com.Application {
 		}
 		
 		
-		private function _handlerThemeCreated(event:Event):void{									
-			Starling.current.dispatchEvent(new Event(Event.ADDED_TO_STAGE,true));							
-			
+		private function _handlerThemeCreated(event:Event):void{		
 			_theme.removeEventListener(Event.COMPLETE, _handlerThemeCreated);		
 			_theme.removeEventListener(Event.CHANGE, _handlerChange);			
 			
-			
-		/*	var alertItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(AlertScreen);
-				alertItem.setScreenIDForPushEvent(Event.COMPLETE, VIEW_WELCOME);
-				//alertItem.addPopToRootEvent(Event.COMPLETE);
-			//	alertItem.addPopEvent(Event.COMPLETE);			
-			this._navigator.addScreen(VIEW_ALERT, alertItem);*/								
-			
-			
-			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
-				mainMenuItem.pushTransition = Slide.createSlideLeftTransition();
-				mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
-			
-			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);
-				settingsItem.pushTransition = Slide.createSlideRightTransition();
-				settingsItem.setScreenIDForPushEvent(EventViewSettings.SHOW_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
-			this._navigator.addScreen(VIEW_SETTINGS, settingsItem);
-			
-			
-			
-			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
-
-			
-			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);
-				packedListItem.pushTransition = Slide.createSlideLeftTransition();
-				packedListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN_MENU);
-			this._navigator.addScreen(VIEW_PACKED_LIST, packedListItem);
-			
-			
-							
-			
-			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);
-			_navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, _handlerTransition);
-			
-			
-			if(_settings.isStarScreenShow == "1"){
-				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);											
-				
-				//settingsItem.addPopEvent(			
-				//custom push and pop transitions for this settings screen
-				//viewStart.pushTransition = Cover.createCoverUpTransition();
-				//viewStart.popTransition = Reveal.createRevealDownTransition();
-				
-				viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
-				viewStart.pushTransition = Fade.createFadeInTransition();					
-					
-				this._navigator.addScreen(VIEW_WELCOME, viewStart);				
-				this._navigator.pushScreen(VIEW_WELCOME);
-				this._navigator.rootScreenID = VIEW_WELCOME;		
-			} else {
-				this._navigator.rootScreenID = VIEW_MAIN_MENU;	
-			}
-			
-			//this._navigator.pushTransition = Slide.createSlideLeftTransition();
-			//this._navigator.popTransition = Slide.createSlideRightTransition();	
-			
-			this._navigator.pushTransition = Fade.createFadeInTransition();
-			this._navigator.popTransition = Fade.createFadeInTransition();	
-			
-			
-		//	this._navigator.rootScreenID = VIEW_PACKED_LIST;
-			
-			_screenLoader = new ScreenLoader();
-			addChild(_screenLoader);	
-			_screenLoader.touchable = false;
-			_screenLoader.isEnabled = false;
-			_screenLoader.visible = false;
-			
-			
+			_starlingContext.dispatchEvent(new EventMain(EventMain.INITIALIZE_DATABASE));			
 		}
 		
 		private function _handlerChange(event:Event):void{

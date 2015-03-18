@@ -1,7 +1,8 @@
 package com.Application.robotlegs.views.welcome {
 	import com.Application.EventMain;
+	import com.Application.robotlegs.model.vo.VOAppSettings;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.common.Constants;
 	
 	import flash.text.engine.ElementFormat;
@@ -51,6 +52,8 @@ package com.Application.robotlegs.views.welcome {
 		private var _toggleButton:ToggleSwitch;
 		
 		private var _buttonContinue:Button;
+		
+		private var _settings:VOAppSettings;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -123,7 +126,7 @@ package com.Application.robotlegs.views.welcome {
 				_labelAlwaysShow = null;
 			}					
 				
-			if(_toggleButton){				
+			if(_toggleButton){						
 				_scrollContainer.removeChild(_toggleButton);
 				_toggleButton = null;
 			}			
@@ -158,6 +161,10 @@ package com.Application.robotlegs.views.welcome {
 		public function set baseTextFormat(value:ElementFormat):void{
 			_baseTextFormat = value;
 			_updateTextFormats();						
+		}
+		
+		public function set settings(value:VOAppSettings):void{
+			_settings = value;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -248,7 +255,8 @@ package com.Application.robotlegs.views.welcome {
 			
 			
 			_toggleButton = new ToggleSwitch();			
-			_scrollContainer.addChild(_toggleButton);
+			_toggleButton.isSelected = true;			
+			_scrollContainer.addChild(_toggleButton);			
 			
 			_buttonContinue = new Button();
 			_buttonContinue.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "welcomScreen.continue");
@@ -360,8 +368,17 @@ package com.Application.robotlegs.views.welcome {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		private function _handlerContinue(event:Event):void{
+			if(_toggleButton.isSelected){
+				_settings.welcome = "1";
+			} else {
+				_settings.welcome = "0";
+			}
+			
+			dispatchEvent(new EventViewAbstract(EventViewAbstract.UPDATE_SETTINGS, false, _settings));
+			
 			dispatchEvent(new EventMain(EventMain.SHOW_VIEW_MAIN));
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

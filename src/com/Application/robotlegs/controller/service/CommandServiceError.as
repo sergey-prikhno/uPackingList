@@ -1,6 +1,5 @@
 package com.Application.robotlegs.controller.service {
 	import com.Application.robotlegs.model.vo.VOError;
-	import com.Application.robotlegs.services.test.VORequestTest;
 	import com.http.robotlegs.events.EventServiceAbstract;
 	
 	import org.robotlegs.starling.mvcs.Command;

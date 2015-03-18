@@ -1,38 +1,46 @@
-package com.common{
+package com.Application.robotlegs.controller.service.settings {
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.model.vo.VOAppSettings;
+	import com.Application.robotlegs.services.settings.IServiceSettings;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	
-
-	public class Constants{
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandUpdateSettings extends Command {	
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
-		//---------------------------------------------------------------------------------------------------------				
-		public static const APP_SPLASH:String = "assets/system/splash.png"; 			
-		public static const RESOURCES_BUNDLE:String = "default";
-	
-		public static const FILE_PATH:String = "appinfo";
+		//---------------------------------------------------------------------------------------------------------		
+		[Inject]
+		public var service:IServiceSettings;		
 		
-		public static const DB_FILE_NAME:String = "data/info.db";
+		[Inject]
+		public var event:EventViewAbstract;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
-		//---------------------------------------------------------------------------------------------------------														
+		//---------------------------------------------------------------------------------------------------------
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
-		//---------------------------------------------------------------------------------------------------------		
-		public function Constants()	{
-			
-		}		
+		//---------------------------------------------------------------------------------------------------------
+		public function CommandUpdateSettings() {
+			super();
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override public function execute():void {		
+			var pData:VOAppSettings = VOAppSettings(event.data);
+			
+			service.update(pData);
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -46,13 +54,11 @@ package com.common{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,7 +71,6 @@ package com.common{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }
