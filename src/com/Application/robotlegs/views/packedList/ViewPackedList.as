@@ -66,8 +66,8 @@ package com.Application.robotlegs.views.packedList {
 		}
 		
 		public function update(pData:VOPackedItem):void{
-			if(_owner){
-				_owner.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, pData));
+			if(_list){
+				_list.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, pData));
 			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
