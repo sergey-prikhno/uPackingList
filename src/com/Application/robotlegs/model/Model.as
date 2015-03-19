@@ -2,9 +2,9 @@ package com.Application.robotlegs.model {
 
 	import com.Application.Main;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
-	import com.Application.robotlegs.model.vo.VOListCreate;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.model.vo.VOScreenID;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	
 	import org.robotlegs.starling.mvcs.Actor;
 	
@@ -21,10 +21,13 @@ package com.Application.robotlegs.model {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------				
-		private var _appLists:Array = [];
+		private var _appLists:Vector.<VOTableName>;
 		private var _VOAppSettings:VOAppSettings;
 		
 		private var _defaultCategories:Vector.<VOPackedItem>;
+		private var _currentCategories:Vector.<VOPackedItem>;
+		
+		private var _currentTableName:VOTableName;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -33,6 +36,8 @@ package com.Application.robotlegs.model {
 		public function Model()	{
 			super();
 			
+			_appLists = new Vector.<VOTableName>();
+			_currentTableName = new VOTableName();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -45,14 +50,15 @@ package com.Application.robotlegs.model {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get appLists():Array{return _appLists;}
+		public function get appLists():Vector.<VOTableName> {return _appLists;}
+		public function set appLists(value:Vector.<VOTableName>):void {
+			_appLists = value;		
+		}
 
-		public function set newList(value:VOListCreate):void{
+		public function set newList(value:VOTableName):void{
 			if(value.isScratch){
-				_appLists.push(value);
-				var pVO:VOScreenID = new VOScreenID();
-				pVO.screenID = Main.VIEW_PACKED_LIST;
-				dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
+				//_appLists.push(value);
+				dispatch(new EventModel(EventModel.INSERT_TABLE_NAMES, false, value)); 																
 			}
 		}
 						
@@ -66,6 +72,20 @@ package com.Application.robotlegs.model {
 		public function set defaultCategories(value:Vector.<VOPackedItem>):void{
 			_defaultCategories = value;	
 		}	
+		
+		public function get currentCategories():Vector.<VOPackedItem> { return _currentCategories;}
+		public function set currentCategories(value:Vector.<VOPackedItem>):void{
+			_currentCategories = value;	
+			
+			var pVO:VOScreenID = new VOScreenID();
+			pVO.screenID = Main.VIEW_PACKED_LIST;
+			dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
+		}
+		
+		public function get currentTableName():VOTableName { return _currentTableName;}
+		public function set currentTableName(value:VOTableName):void{
+			_currentTableName = value;							
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//

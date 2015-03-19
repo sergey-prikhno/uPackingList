@@ -1,5 +1,7 @@
-package com.Application.robotlegs.views.packedList {	
+package com.Application.robotlegs.views.packedList.listPacked {	
 	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.views.EventViewAbstract;
+	import com.Application.robotlegs.views.packedList.EventViewPackedList;
 	
 	import flash.geom.Point;
 	import flash.utils.getTimer;
@@ -601,7 +603,9 @@ package com.Application.robotlegs.views.packedList {
 									}
 								}
 									
-								_owner.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, _data)); 								
+								dispatchEvent(new EventViewAbstract(EventViewAbstract.UPDATE_DB_PACKED_ITEM, true, _data));
+								
+							//	_owner.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, _data)); 								
 							}
 							
 						} else if(_data.childrens && _data.childrens.length > 0){

@@ -1,5 +1,4 @@
 package com.Application.robotlegs.controller.service.settings {
-	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.services.settings.IServiceSettings;
 	import com.Application.robotlegs.views.EventViewAbstract;

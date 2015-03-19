@@ -1,14 +1,10 @@
-package com.Application {
-
-	import com.Application.robotlegs.model.EventModel;
-	import com.Application.robotlegs.model.vo.VOAppSettings;
-	import com.Application.robotlegs.model.vo.VOScreenID;
-	import com.Application.robotlegs.services.categoriesDefault.EventServiceCategoriesDefault;
-	import com.http.robotlegs.model.modelLoading.EventActorLoader;
+package com.Application.robotlegs.views.packedList {
+	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.services.categories.EventServiceCategories;
+	import com.Application.robotlegs.views.EventViewAbstract;
+	import com.Application.robotlegs.views.MediatorViewAbstract;
 	
-	import org.robotlegs.starling.mvcs.Mediator;
-	
-	public class MediatorMain extends Mediator 	{		
+	public class MediatorViewPackedList extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -27,7 +23,7 @@ package com.Application {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorMain() {
+		public function MediatorViewPackedList() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -35,69 +31,57 @@ package com.Application {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void {
+		override public function onRegister():void{	
 			super.onRegister();
 			
-			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
+			addContextListener(EventServiceCategories.UPDATED, _handlerUpdated, EventServiceCategories);
 			
-
-			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);							
-			addContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);				
-
-		}			
+		
+			
+			addViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract); 
+			
+			dispatch(new EventViewAbstract(EventViewAbstract.GET_PACKED_ITEMS, false, null, _setPackedItems));
+		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
 			
+			removeContextListener(EventServiceCategories.UPDATED, _handlerUpdated, EventServiceCategories);
 			
-			removeContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);	
-			removeContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);
-		}		
+			removeViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract);
+		}
+		
+	
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():Main{
-			return Main(viewComponent);
-		}	
+		public function get view():ViewPackedList{
+			return ViewPackedList(viewComponent);
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
+		private function _setPackedItems(value:Vector.<VOPackedItem>):void {
+			view.items = value;
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerLoadingEventService(event:EventActorLoader):void{			
-			
-			if(event.type == EventActorLoader.LOADING_STARTED){
-				view.addLoader();
-			}
-			
-			if(event.type == EventActorLoader.LOADING_FINISHED){
-				view.removeLoader();
-			}			
-		}		
-		
-
-		private function _handlerChangeAppScrenn(event:EventModel):void{
-			view.changeScreen(VOScreenID(event.data));
+		private function _handlerUpdateItemDB(event:EventViewAbstract):void{
+			event.stopPropagation();						
+			dispatch(new EventViewAbstract(EventViewAbstract.UPDATE_DB_PACKED_ITEM, false, event.data));
 		}
 		
-		
-		private function _handlerIinitDBComplete(event:EventServiceCategoriesDefault):void{
-			var pData:VOAppSettings = VOAppSettings(event.data);
-			
-			view.settings = pData;
+		private function _handlerUpdated(event:EventServiceCategories):void{
+			view.update(VOPackedItem(event.data));			
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

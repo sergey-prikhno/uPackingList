@@ -99,15 +99,15 @@ package com.Application.robotlegs.services.settings {
 		//  HELPERS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 			
-		[Embed(source="../sql/InsertSettings.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/settings/InsertSettings.sql", mimeType="application/octet-stream")]
 		private static const InsertSettingsStatementText:Class;
 		private static const INSERT_SETTINGS_SQL:String = new InsertSettingsStatementText();
 		
-		[Embed(source="../sql/LoadSettings.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/settings/LoadSettings.sql", mimeType="application/octet-stream")]
 		private static const LoadSettingsStatementText:Class;
 		private static const LOAD_SETTINGS_SQL:String = new LoadSettingsStatementText();
 		
-		[Embed(source="../sql/UpdateSettings.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/settings/UpdateSettings.sql", mimeType="application/octet-stream")]
 		private static const UpdateSettingsStatementText:Class;
 		private static const UPDATE_SETTINGS_SQL:String = new UpdateSettingsStatementText();
 		//--------------------------------------------------------------------------------------------------------- 

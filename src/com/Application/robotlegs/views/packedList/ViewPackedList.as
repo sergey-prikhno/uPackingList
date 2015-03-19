@@ -1,6 +1,8 @@
 package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
+	import com.Application.robotlegs.views.packedList.listPacked.ListPacked;
 	import com.common.Constants;
 	
 	import feathers.controls.Button;
@@ -30,6 +32,8 @@ package com.Application.robotlegs.views.packedList {
 		
 		private var _backButton:Button;
 		private var _editButton:Button;
+		
+		private var _items:Vector.<VOPackedItem>;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -44,10 +48,8 @@ package com.Application.robotlegs.views.packedList {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override public function destroy():void{
-			
-			
-			if(_list){
-				_list.layout = null;
+						
+			if(_list){			
 				_list.dataProvider= null;
 				removeChild(_list);
 				_list = null;
@@ -63,12 +65,23 @@ package com.Application.robotlegs.views.packedList {
 			super.destroy();			
 		}
 		
+		public function update(pData:VOPackedItem):void{
+			if(_owner){
+				_owner.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, pData));
+			}
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public function set items(value:Vector.<VOPackedItem>):void{
+			_items = value;
+			
+			if(_list && _items && _items.length > 0){
+				_list.dataProvider = new ListCollection(_items);
+			}
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -188,9 +201,13 @@ package com.Application.robotlegs.views.packedList {
 				p16.id = 16;
 				p16.label = "Before leaving";
 				
-			_list.dataProvider = new ListCollection([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16]);
+			//_list.dataProvider = new ListCollection([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16]);
+			if(_items && _items.length > 0){
+				_list.dataProvider = new ListCollection(_items);
+			}
+				
 			_list.addEventListener(EventViewPackedList.CLICK_ITEM, _handlerItemClick);
-			_list.validate();
+			
 			
 			
 			_backButton = new Button();

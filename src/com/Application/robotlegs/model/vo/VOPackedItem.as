@@ -94,8 +94,17 @@ package com.Application.robotlegs.model.vo {
 		}
 						
 		public function get isPacked():Boolean { return _isPacked;}
-		public function set isPacked(value:Boolean):void{
-			_isPacked = value;
+		public function set isPacked(value:*):void{
+			
+			if(value is String){
+				if(value == "false"){					
+					_isPacked = false;
+				} else {
+					_isPacked = true;
+				}
+			}else {
+				_isPacked = value;
+			}			
 		}		
 		
 		public function get packedCount():Number{

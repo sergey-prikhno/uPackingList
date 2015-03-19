@@ -1,6 +1,7 @@
 SELECT id,
 	parentId,
 	isChild,
-	label
+	label,
+	isPacked
 FROM main.categories
 ORDER BY id

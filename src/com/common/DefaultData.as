@@ -9,6 +9,30 @@ package com.common {
 		public static const WELCOME:String = "1";
 		public static const THEME:String = "1";		
 		
+		//SQL Statement
+		//create Table
+		public static const TABLE_SEPARATOR:String = "TABLE_SEPARATOR";
+		
+		public static const CREATE_CATEGORY_TABLE_1:String = " CREATE TABLE main.";		
+		public static const CREATE_CATEGORY_TABLE_2:String = " (id int PRIMARY KEY AUTOINCREMENT, parentId int,isChild String,label String,isPacked String)";
+		
+		//insert row
+		public static const INSERT_CATEGORY_TABLE_1:String = " INSERT INTO main.";		
+		public static const INSERT_CATEGORY_TABLE_2:String = " (parentId,isChild,label,isPacked) VALUES (:parentId,:isChild,:label,:isPacked) ";
+		
+		//update row
+		public static const UPDATE_CATEGORY_TABLE_1:String = " UPDATE main.";		
+		public static const UPDATE_CATEGORY_TABLE_2:String = " SET parentId = :parentId, isChild = :isChild, label = :label, isPacked = :isPacked  WHERE  id = :id";
+		
+		//Select 		
+		public static const SELECT_CATEGORY_TABLE_1:String = " SELECT id,parentId,isChild,label,isPacked FROM main.";		
+		public static const SELECT_CATEGORY_TABLE_2:String = " ORDER BY id";
+		
+		//Delete 		
+		public static const DELETE_CATEGORY_TABLE_1:String = " DELETE FROM main.";		
+		public static const DELETE_CATEGORY_TABLE_2:String = " WHERE id = :id";
+		
+		
 		
 		public static const CATEGORIES:Vector.<VOPackedItem> = new Vector.<VOPackedItem>;
 		

@@ -1,8 +1,7 @@
 package com.http.robotlegs.events {
 	import starling.events.Event;
 	
-	
-	
+		
 	public class EventServiceAbstract extends Event {
 		
 		public var argument:Object;

@@ -1,5 +1,5 @@
 package com.Application.robotlegs.model.managerPopup {
-	import com.Application.robotlegs.model.vo.VOListCreate;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.popups.listExisting.EventPopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listScratch.EventPopupCreateListScratch;
@@ -125,7 +125,7 @@ package com.Application.robotlegs.model.managerPopup {
 		
 		private function _handlerPopupCreateSetName(event:EventPopupCreateListScratch):void{
 			_removePopupCreateListScratch();
-			dispatch(new EventManagerPopup(EventManagerPopup.SET_NEW_LIST_NAME, false, VOListCreate(event.payload)));
+			dispatch(new EventManagerPopup(EventManagerPopup.SET_NEW_LIST_NAME, false, VOTableName(event.payload)));
 		}
 		
 		private function _handlerClosePopupCreateListExisting(event:EventPopupCreateListExisting):void{

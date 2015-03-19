@@ -1,14 +1,8 @@
-package com.Application {
-
-	import com.Application.robotlegs.model.EventModel;
-	import com.Application.robotlegs.model.vo.VOAppSettings;
-	import com.Application.robotlegs.model.vo.VOScreenID;
-	import com.Application.robotlegs.services.categoriesDefault.EventServiceCategoriesDefault;
-	import com.http.robotlegs.model.modelLoading.EventActorLoader;
+package com.Application.robotlegs.views.packedList.listPacked {
+	import feathers.controls.List;
+	import com.Application.robotlegs.views.packedList.EventViewPackedList;
 	
-	import org.robotlegs.starling.mvcs.Mediator;
-	
-	public class MediatorMain extends Mediator 	{		
+	public class ListPacked extends List {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -21,13 +15,13 @@ package com.Application {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
+		private var _isEditing:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorMain() {
+		public function ListPacked() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -35,37 +29,19 @@ package com.Application {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void {
-			super.onRegister();
-			
-			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
-			
-
-			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);							
-			addContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);				
-
-		}			
 		
 		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			
-			removeContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);	
-			removeContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);
-		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():Main{
-			return Main(viewComponent);
-		}	
-		
+		public function get isEditing():Boolean { return _isEditing;}
+		public function set isEditing(value:Boolean):void{
+			_isEditing = value;
+			
+			dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_STATE));
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -77,28 +53,7 @@ package com.Application {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerLoadingEventService(event:EventActorLoader):void{			
-			
-			if(event.type == EventActorLoader.LOADING_STARTED){
-				view.addLoader();
-			}
-			
-			if(event.type == EventActorLoader.LOADING_FINISHED){
-				view.removeLoader();
-			}			
-		}		
 		
-
-		private function _handlerChangeAppScrenn(event:EventModel):void{
-			view.changeScreen(VOScreenID(event.data));
-		}
-		
-		
-		private function _handlerIinitDBComplete(event:EventServiceCategoriesDefault):void{
-			var pData:VOAppSettings = VOAppSettings(event.data);
-			
-			view.settings = pData;
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

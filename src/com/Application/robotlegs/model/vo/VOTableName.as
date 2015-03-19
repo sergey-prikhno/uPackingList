@@ -1,14 +1,7 @@
-package com.Application {
-
-	import com.Application.robotlegs.model.EventModel;
-	import com.Application.robotlegs.model.vo.VOAppSettings;
-	import com.Application.robotlegs.model.vo.VOScreenID;
-	import com.Application.robotlegs.services.categoriesDefault.EventServiceCategoriesDefault;
-	import com.http.robotlegs.model.modelLoading.EventActorLoader;
+package com.Application.robotlegs.model.vo {
 	
-	import org.robotlegs.starling.mvcs.Mediator;
-	
-	public class MediatorMain extends Mediator 	{		
+	public class VOTableName {
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -21,51 +14,48 @@ package com.Application {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
+		private var _id:Number = 0;
+		private var _title:String = "";
+		private var _table_name:String = "";
+		private var _isScratch:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorMain() {
-			super();
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void {
-			super.onRegister();
-			
-			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
-			
-
-			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);							
-			addContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);				
-
-		}			
 		
 		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			
-			removeContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);
-			removeContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);	
-			removeContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);
-		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():Main{
-			return Main(viewComponent);
+		public function get id():Number { return _id;}
+		public function set id(value:Number):void{
+			_id = value;
 		}	
 		
+		public function get title():String { return _title;}
+		public function set title(value:String):void{
+			_title = value;
+		}
+		
+		public function get table_name():String { return _table_name;}
+		public function set table_name(value:String):void{
+			_table_name = value;
+		}	
+		
+		
+		public function get isScratch():Boolean { return _isScratch;}
+		public function set isScratch(value:Boolean):void{
+			_isScratch = value;
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -77,28 +67,7 @@ package com.Application {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerLoadingEventService(event:EventActorLoader):void{			
-			
-			if(event.type == EventActorLoader.LOADING_STARTED){
-				view.addLoader();
-			}
-			
-			if(event.type == EventActorLoader.LOADING_FINISHED){
-				view.removeLoader();
-			}			
-		}		
 		
-
-		private function _handlerChangeAppScrenn(event:EventModel):void{
-			view.changeScreen(VOScreenID(event.data));
-		}
-		
-		
-		private function _handlerIinitDBComplete(event:EventServiceCategoriesDefault):void{
-			var pData:VOAppSettings = VOAppSettings(event.data);
-			
-			view.settings = pData;
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

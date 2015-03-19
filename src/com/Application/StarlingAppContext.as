@@ -1,13 +1,20 @@
 package com.Application {
 	import com.Application.robotlegs.controller.CommandCreateNewList;
+	import com.Application.robotlegs.controller.CommandGetPackedItemsFunctionCallback;
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
 	import com.Application.robotlegs.controller.CommandSetNewListName;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
+	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryTable;
+	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryTable;
+	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryTable;
 	import com.Application.robotlegs.controller.service.settings.CommandUpdateSettings;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureSql;
 	import com.Application.robotlegs.controller.service.sql.init.CommandCreateDB;
+	import com.Application.robotlegs.controller.service.sql.init.CommandNamesTableConfigured;
 	import com.Application.robotlegs.controller.service.sql.init.CommandSettingConfigured;
+	import com.Application.robotlegs.controller.service.tableNames.CommandInsertTableNames;
+	import com.Application.robotlegs.model.EventModel;
 	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.Model;
 	import com.Application.robotlegs.model.managerPopup.EventManagerPopup;
@@ -15,17 +22,24 @@ package com.Application {
 	import com.Application.robotlegs.model.managerPopup.ManagerPopup;
 	import com.Application.robotlegs.services.categories.IServiceCategories;
 	import com.Application.robotlegs.services.categories.ServiceCategories;
+	import com.Application.robotlegs.services.categoriesDefault.IServiceCategoriesDefault;
+	import com.Application.robotlegs.services.categoriesDefault.ServiceCategoriesDefault;
 	import com.Application.robotlegs.services.dbCreator.IServiceDBCreator;
 	import com.Application.robotlegs.services.dbCreator.ServiceDBCreator;
 	import com.Application.robotlegs.services.settings.EventServiceSettings;
 	import com.Application.robotlegs.services.settings.IServiceSettings;
 	import com.Application.robotlegs.services.settings.ServiceSettings;
+	import com.Application.robotlegs.services.tableNames.EventServiceTableNames;
+	import com.Application.robotlegs.services.tableNames.IServiceTableNames;
+	import com.Application.robotlegs.services.tableNames.ServiceTableNames;
 	import com.Application.robotlegs.services.test.IServiceTest;
 	import com.Application.robotlegs.services.test.ServiceTest;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.packedList.MediatorViewPackedList;
+	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.settings.MediatorViewSettings;
 	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.MediatorViewWelcome;
@@ -70,6 +84,7 @@ package com.Application {
 			mediatorMap.mapView(ViewMain, MediatorViewMain);
 			mediatorMap.mapView(ViewWelcome, MediatorViewWelcome);
 			mediatorMap.mapView(ViewSettings, MediatorViewSettings);
+			mediatorMap.mapView(ViewPackedList, MediatorViewPackedList);
 		
 			
 			injector.mapSingletonOf(IModel, Model);
@@ -79,7 +94,9 @@ package com.Application {
 			injector.mapSingletonOf(IServiceTest, ServiceTest);
 			injector.mapSingletonOf(IServiceDBCreator, ServiceDBCreator);
 			injector.mapSingletonOf(IServiceSettings, ServiceSettings);
+			injector.mapSingletonOf(IServiceCategoriesDefault, ServiceCategoriesDefault);
 			injector.mapSingletonOf(IServiceCategories, ServiceCategories);
+			injector.mapSingletonOf(IServiceTableNames, ServiceTableNames);
 						
 			//Command MAP									
 			commandMap.mapEvent(EventServiceAbstract.ERROR, CommandServiceError, EventServiceAbstract);			
@@ -92,7 +109,18 @@ package com.Application {
 			commandMap.mapEvent(EventMain.CONFIGURE_DATABASE, CommandCreateDB, EventMain);
 			commandMap.mapEvent(EventMain.CONFIGURE_MODEL, CommandConfigureModel, EventMain);
 			commandMap.mapEvent(EventServiceSettings.FIRST_SETTINGS_LOADED, CommandSettingConfigured, EventServiceSettings);
-		
+			commandMap.mapEvent(EventServiceTableNames.FIRST_TABLE_NAMES_LOADED, CommandNamesTableConfigured, EventServiceTableNames);
+			
+			commandMap.mapEvent(EventServiceTableNames.INSERTED, CommandCreateCategoryTable, EventServiceTableNames);
+			commandMap.mapEvent(EventViewAbstract.GET_CATEGORY_DATA, CommandSelectCategoryTable, EventViewAbstract);
+			
+			commandMap.mapEvent(EventViewAbstract.GET_PACKED_ITEMS, CommandGetPackedItemsFunctionCallback, EventViewAbstract);
+			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_PACKED_ITEM, CommandUpdateCategoryTable, EventViewAbstract);
+			
+			//EentModel
+			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);
+			
+			
 			super.startup();
 		}
 		

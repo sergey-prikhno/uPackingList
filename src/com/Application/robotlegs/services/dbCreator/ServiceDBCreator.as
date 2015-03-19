@@ -1,8 +1,6 @@
 package com.Application.robotlegs.services.dbCreator  {
 	import com.Application.EventMain;
-	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
-	import com.common.Constants;
 	import com.common.DefaultData;
 	import com.probertson.data.QueuedStatement;
 	import com.probertson.data.SQLRunner;
@@ -44,15 +42,17 @@ package com.Application.robotlegs.services.dbCreator  {
 			var stmts:Vector.<QueuedStatement> = new Vector.<QueuedStatement>();
 			stmts[stmts.length] = new QueuedStatement(CREATE_ITEMS_SQL);						
 			stmts[stmts.length] = new QueuedStatement(CREATE_SETTINGS_SQL);								
-									
+			stmts[stmts.length] = new QueuedStatement(CREATE_NAMES_TABLE_SQL);						
+						
 					
 			for(var i:int=0; i<DefaultData.CATEGORIES.length;i++){
 				var pItem:VOPackedItem = VOPackedItem(DefaultData.CATEGORIES[i]);
 				
 				var paramsItem:Object = new Object();
 					paramsItem["parentId"] = pItem.parentId;
-					paramsItem["isChild"] = ""+pItem.isChild+"";
-					paramsItem["label"] = pItem.label;				
+					paramsItem["isChild"] = pItem.isChild.toString();
+					paramsItem["label"] = pItem.label;
+					paramsItem["isPacked"] = pItem.isPacked.toString();	
 		
 				stmts[stmts.length] = new QueuedStatement(INSERT_ITEMS_SQL, paramsItem);
 			}
@@ -109,21 +109,25 @@ package com.Application.robotlegs.services.dbCreator  {
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
 		// ------- SQL statements -------
-		[Embed(source="../sql/create/CreateTableItems.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/tableItems/CreateTableItems.sql", mimeType="application/octet-stream")]
 		private static const CreateItemsStatementText:Class;
 		private static const CREATE_ITEMS_SQL:String = new CreateItemsStatementText();
 		
-		[Embed(source="../sql/create/CreateTableSettings.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/settings/CreateTableSettings.sql", mimeType="application/octet-stream")]
 		private static const CreateSettingsStatementText:Class;
 		private static const CREATE_SETTINGS_SQL:String = new CreateSettingsStatementText();		
 						
-		[Embed(source="../sql/InsertTableItems.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/tableItems/InsertTableItems.sql", mimeType="application/octet-stream")]
 		private static const InsertItemsStatementText:Class;
 		private static const INSERT_ITEMS_SQL:String = new InsertItemsStatementText();
 		
-		[Embed(source="../sql/InsertSettings.sql", mimeType="application/octet-stream")]
+		[Embed(source="../sql/settings/InsertSettings.sql", mimeType="application/octet-stream")]
 		private static const InsertSettingsStatementText:Class;
-		private static const INSERT_SETTINGS_SQL:String = new InsertSettingsStatementText();		
+		private static const INSERT_SETTINGS_SQL:String = new InsertSettingsStatementText();
+		
+		[Embed(source="../sql/tableNames/CreateNamesTable.sql", mimeType="application/octet-stream")]
+		private static const CreateNamesTableStatementText:Class;
+		private static const CREATE_NAMES_TABLE_SQL:String = new CreateNamesTableStatementText();
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  END CLASS  

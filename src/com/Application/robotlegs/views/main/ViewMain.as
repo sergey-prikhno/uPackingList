@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.main {
 	import com.Application.robotlegs.model.vo.VOMainMenu;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
 	import com.common.Constants;
@@ -83,8 +84,7 @@ package com.Application.robotlegs.views.main {
 			super._initialize();
 			
 			_layoutVertical = new VerticalLayout();
-			
-			
+						
 			_collectionList = new ListCollection();
 			
 			var pVO:VOMainMenu = new VOMainMenu();
@@ -145,6 +145,8 @@ package com.Application.robotlegs.views.main {
 		
 		private function _handlerSettingsButton(event:Event):void{
 			dispatchEvent(new EventViewMain(EventViewMain.SHOW_SETTINGS_SCREEN));
+			
+			//dispatchEvent(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA));			
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

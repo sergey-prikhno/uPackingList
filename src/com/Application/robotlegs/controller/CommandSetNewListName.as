@@ -1,7 +1,7 @@
 package com.Application.robotlegs.controller{
 	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.managerPopup.EventManagerPopup;
-	import com.Application.robotlegs.model.vo.VOListCreate;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
@@ -39,10 +39,9 @@ package com.Application.robotlegs.controller{
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
+		//---------------------------------------------------------------------------------------------------------		
 		override public function execute():void{
-			model.newList = VOListCreate(event.data);
+			model.newList = VOTableName(event.data);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 

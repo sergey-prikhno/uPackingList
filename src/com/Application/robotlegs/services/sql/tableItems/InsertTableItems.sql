@@ -2,11 +2,13 @@ INSERT INTO main.categories
 (
 	parentId,
 	isChild,
-	label	
+	label,
+	isPacked	
 )
 VALUES
 (
 	:parentId,
 	:isChild,
-	:label	
+	:label,
+	:isPacked	
 )

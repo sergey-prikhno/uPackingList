@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.main {
 	import com.Application.robotlegs.model.vo.VOMainMenu;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
 	import com.Application.robotlegs.views.components.renderers.EventRenderer;
 	import com.common.Constants;
@@ -33,17 +34,20 @@ package com.Application.robotlegs.views.main {
 		//---------------------------------------------------------------------------------------------------------
 		override public function onRegister():void{	
 			super.onRegister();
-			
-			addViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+						
 			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
+			
+			addViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
-		
-			removeViewListener(EventViewMain.CALL_TEST_SERVICE, _handlerCallTestService, EventViewMain);
+					
 			removeViewListener(EventViewMain.CREATE_NEW_LIST, _handlerRendererClick, EventViewMain);
+			
+			
+			removeViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -77,6 +81,9 @@ package com.Application.robotlegs.views.main {
 			}
 		}
 		
+		private function _handlerGetPachedItems(event:EventViewAbstract):void{
+			dispatch(event);
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

@@ -1,5 +1,5 @@
 package com.Application.robotlegs.controller.service.sql.init {
-	import com.Application.robotlegs.services.categories.IServiceCategories;
+	import com.Application.robotlegs.services.tableNames.IServiceTableNames;
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
@@ -11,7 +11,7 @@ package com.Application.robotlegs.controller.service.sql.init {
 		//---------------------------------------------------------------------------------------------------------
 		
 		[Inject]
-		public var service:IServiceCategories;
+		public var service:IServiceTableNames;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
@@ -32,7 +32,7 @@ package com.Application.robotlegs.controller.service.sql.init {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override public function execute():void {			
-			service.getCategoriesFirst();	
+			service.getTableNamesFirst();	
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 

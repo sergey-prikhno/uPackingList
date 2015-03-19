@@ -7,7 +7,7 @@ package com.Application.themes {
 	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listScratch.PopupCreateListScratch;
 
-	import com.Application.robotlegs.views.packedList.ItemRendererPackedList;
+	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	
