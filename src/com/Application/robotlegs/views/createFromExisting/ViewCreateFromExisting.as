@@ -1,9 +1,6 @@
-package com.Application.robotlegs.views.main {
-	import com.Application.robotlegs.model.vo.VOMainMenu;
-	import com.Application.robotlegs.views.EventViewAbstract;
+package com.Application.robotlegs.views.createFromExisting{
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
-	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
+	import com.Application.robotlegs.views.components.renderers.ItemrendererSelectExistingList;
 	import com.common.Constants;
 	
 	import ch.ala.locale.LocaleManager;
@@ -17,15 +14,12 @@ package com.Application.robotlegs.views.main {
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	
-	
-	public class ViewMain extends ViewAbstract {									
+	public class ViewCreateFromExisting extends ViewAbstract {									
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------		
-		public var savedVerticalScrollPosition:Number = 0;
-		public var savedSelectedIndex:int = -1;
 		
 		private var _layoutVertical:VerticalLayout;
 		
@@ -37,17 +31,14 @@ package com.Application.robotlegs.views.main {
 		//---------------------------------------------------------------------------------------------------------
 		
 		private var _list:List;
-		private var _buttonSettings:Button;	
+		private var _buttonBack:Button;	
 		private var _collectionList:ListCollection;	
-		
-		private var _bottomMenu:BottomMenu;
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function ViewMain() {
+		public function ViewCreateFromExisting() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -66,7 +57,7 @@ package com.Application.robotlegs.views.main {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override protected function get defaultStyleProvider():IStyleProvider {
-			return ViewMain.globalStyleProvider;
+			return ViewCreateFromExisting.globalStyleProvider;
 		}
 		
 		public function get resourceManager():LocaleManager{
@@ -83,10 +74,11 @@ package com.Application.robotlegs.views.main {
 			super._initialize();
 			
 			_layoutVertical = new VerticalLayout();
-						
+			
+			
 			_collectionList = new ListCollection();
 			
-			var pVO:VOMainMenu = new VOMainMenu();
+			/*var pVO:VOMainMenu = new VOMainMenu();
 			pVO.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList");
 			pVO.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newListDesc");
 			_collectionList.push(pVO);
@@ -100,29 +92,22 @@ package com.Application.robotlegs.views.main {
 			pVO3.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packList");
 			pVO3.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packListDesc");
 			_collectionList.push(pVO3);
+			*/
 			
 			if(!_list){
 				_list = new List();
 				_list.hasElasticEdges = false;
-				_list.itemRendererType = ItemrendererMainMenu;
+				_list.itemRendererType = ItemrendererSelectExistingList;
 				addChild(_list);
 			}
 			
-			_buttonSettings = new Button();
-			_buttonSettings.label = "Settings";
-			_buttonSettings.addEventListener(Event.TRIGGERED, _handlerSettingsButton);
+			_buttonBack = new Button();
+			_buttonBack.label = "Back";
+			_buttonBack.addEventListener(Event.TRIGGERED, _handlerBackButton);
 			this._header.rightItems = new <DisplayObject>
 				[
-					this._buttonSettings
+					this._buttonBack
 				];
-			
-			_bottomMenu = new BottomMenu();
-			_bottomMenu.isHome = true;
-			_bottomMenu.isSearch = true;
-			_bottomMenu.isUndo = true;
-			_bottomMenu.isCheckAll = true;
-			_bottomMenu.isMail = true;
-			addChild(_bottomMenu);
 		}
 		
 		override protected function draw():void{
@@ -142,11 +127,6 @@ package com.Application.robotlegs.views.main {
 				_list.x = _nativeStage.stageWidth/2 - _list.width/2;
 				_list.y = _header.height + int(44*_scaleHeight);
 			}
-			if(_bottomMenu){
-				_bottomMenu.width = _nativeStage.stageWidth;
-				_bottomMenu.height = int(88*_scaleHeight);
-				_bottomMenu.y = _nativeStage.stageHeight - _bottomMenu.height; 
-			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -155,10 +135,8 @@ package com.Application.robotlegs.views.main {
 		//---------------------------------------------------------------------------------------------------------
 		
 		
-		private function _handlerSettingsButton(event:Event):void{
-			dispatchEvent(new EventViewMain(EventViewMain.SHOW_SETTINGS_SCREEN));
-			
-			//dispatchEvent(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA));			
+		private function _handlerBackButton(event:Event):void{
+			//dispatchEvent(new EventViewCreateFromExisting(EventViewCreateFromExisting.SHOW_SETTINGS_SCREEN));
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

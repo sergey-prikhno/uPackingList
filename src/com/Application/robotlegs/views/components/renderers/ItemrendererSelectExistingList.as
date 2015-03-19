@@ -1,5 +1,5 @@
 package com.Application.robotlegs.views.components.renderers{
-	import com.Application.robotlegs.model.vo.VOMainMenu;
+	import com.Application.robotlegs.model.vo.VOListCreate;
 	
 	import feathers.controls.Label;
 	import feathers.controls.List;
@@ -13,40 +13,42 @@ package com.Application.robotlegs.views.components.renderers{
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
-	public class ItemrendererMainMenu extends FeathersControl implements IListItemRenderer{
+	public class ItemrendererSelectExistingList extends FeathersControl implements IListItemRenderer{
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		public static var globalStyleProvider:IStyleProvider;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
 		private var _isTouch:Boolean = false;
 		protected var touchPointID:int = -1;
 		private var _index:int = -1;
 		protected var _owner:List;
 		private var _isSelected:Boolean;
-		private var _data:VOMainMenu;
+		private var _data:VOListCreate;
 		private var _scale:Number;
 		
-		private var _label:Label;
-		private var _labelDesc:Label;
+		private var _labelTitle:Label;
+		private var _labelCreate:Label;
+		private var _labelPersent:Label;
+		private var _labelModified:Label;
+		
 		private var _quadBg:Quad;
-		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		public function ItemrendererMainMenu(){
+		public function ItemrendererSelectExistingList(){
 			this.addEventListener(TouchEvent.TOUCH, _touchHandler);
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
@@ -56,22 +58,12 @@ package com.Application.robotlegs.views.components.renderers{
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-
 		override public function dispose():void{
 			_data = null;
 			this.removeEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			if(_label){
-				removeChild(_label, true);
-				_label = null;
-			}
-			if(_quadBg){
-				removeChild(_quadBg, true);
-				_quadBg = null;
-			}
-			if(_labelDesc){
-				removeChild(_labelDesc, true);
-				_labelDesc = null;
+			if(_labelCreate){
+				removeChild(_labelCreate, true);
+				_labelCreate = null;
 			}
 			
 		}
@@ -81,7 +73,6 @@ package com.Application.robotlegs.views.components.renderers{
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		override protected function get defaultStyleProvider():IStyleProvider {
 			return ItemrendererMainMenu.globalStyleProvider;
 		}
@@ -109,7 +100,7 @@ package com.Application.robotlegs.views.components.renderers{
 				this._data = null;
 				
 				this.touchPointID = -1;
-				this._data = VOMainMenu(value);				
+				this._data = VOListCreate(value);				
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
 		}
@@ -133,44 +124,44 @@ package com.Application.robotlegs.views.components.renderers{
 				_quadBg = new Quad(10,10,0x666666);
 				addChild(_quadBg);
 			}
-			if(!_label){
-				_label = new Label();
-				addChild(_label);
+			if(!_labelTitle){
+				_labelTitle = new Label();
+				addChild(_labelTitle);
 			}
-			if(!_labelDesc){
-				_labelDesc = new Label();
-				addChild(_labelDesc);
+			if(!_labelCreate){
+				_labelCreate = new Label();
+				addChild(_labelCreate);
 			}
-				
+			
 		}
 		
 		override protected function draw():void{
 			if(_data){
 				width = _owner.width;
-
+				
 				if(_quadBg){
 					_quadBg.width = actualWidth;
 				}
 				
-				if(_label){	
-					_label.width = _owner.width - int(8*_scale);
-					_label.text = _data.title;
-					_label.x = int(8*_scale);
-					_label.y = int(8*_scale);
-					_label.validate();
+				if(_labelTitle){	
+					_labelTitle.width = _owner.width - int(8*_scale);
+					_labelTitle.text = _data.nameList;
+					_labelTitle.x = int(8*_scale);
+					_labelTitle.y = int(8*_scale);
+					_labelTitle.validate();
 				}
-				if(_labelDesc){	
-					_labelDesc.width = _quadBg.width - int(8*_scale);
-					_labelDesc.text = _data.titleDesc;
-					_labelDesc.x = int(8*_scale);
-					_labelDesc.y = _label.y + _label.height + int(8*_scale);
-					_labelDesc.validate();
+				if(_labelCreate){	
+					_labelCreate.width = _quadBg.width - int(8*_scale);
+					//_labelCreate.text = _data.titleDesc;
+					_labelCreate.x = int(8*_scale);
+					_labelCreate.y = _labelTitle.y + _labelTitle.height + int(8*_scale);
+					_labelCreate.validate();
 				}
 				
 				if(_quadBg){
-					_quadBg.height = _labelDesc.y + _labelDesc.height+ int(8*_scale);
+					_quadBg.height = _labelCreate.y + _labelCreate.height+ int(8*_scale);
 				}
-					
+				
 				height = _quadBg.height;
 			}
 		}
@@ -189,19 +180,20 @@ package com.Application.robotlegs.views.components.renderers{
 			if(touch){
 				
 				/*if(touch.phase == TouchPhase.BEGAN) {
-					_isTouch = true;
+				_isTouch = true;
 				}else if(touch.phase == TouchPhase.ENDED) {
-					if(_isTouch){
-						dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
-					}
+				if(_isTouch){
+				dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
+				}
 				}else if(touch.phase == TouchPhase.MOVED) {
-					_isTouch = false;
+				_isTouch = false;
 				}*/
 				if(touch.phase == TouchPhase.ENDED) {
 					dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
 				}
 			}		
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

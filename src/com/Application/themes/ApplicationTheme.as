@@ -1,14 +1,14 @@
 package com.Application.themes {
 	import com.Application.components.loadingIndicator.LoadingIndicator;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.packedList.ViewPackedList;
+	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
 	import com.Application.robotlegs.views.popups.PopupAbstract;
 	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listScratch.PopupCreateListScratch;
-
-	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
-	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	
 	import flash.geom.Rectangle;
@@ -68,6 +68,7 @@ package com.Application.themes {
 			this.getStyleProviderForClass(PopupCreateListScratch).defaultStyleFunction = this.setPopupCreateListScratchStyles;
 			this.getStyleProviderForClass(PopupCreateListExisting).defaultStyleFunction = this.setPopupCreateListExistingStyles;
 			this.getStyleProviderForClass(ItemrendererMainMenu).defaultStyleFunction = this.setItemrendererMainMenuStyles;
+			this.getStyleProviderForClass(BottomMenu).defaultStyleFunction = this.setBottomMenuStyles;
 			
 		}	
 	
@@ -126,6 +127,10 @@ package com.Application.themes {
 			renderer.atlas = atlas;									
 		}
 		
+		protected function setBottomMenuStyles(view:BottomMenu):void{
+			view.scaleWidth = scaleWidth;
+			view.scaleHeight = scaleHeight;
+		}
 		
 
 	}
