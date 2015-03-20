@@ -14,7 +14,6 @@ package com.Application.robotlegs.views.packedList.listPacked {
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	
-	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -554,8 +553,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		// 
 		//---------------------------------------------------------------------------------------------------------			
 		private function completeAnimation():void{
-			Starling.juggler.removeTweens(this);
-			_owner.dataProvider.removeItem(_data);
+		//	Starling.juggler.removeTweens(this);
+		//	_owner.dataProvider.removeItem(_data);
 		}
 		
 		protected function button_touchHandler(event:TouchEvent):void
@@ -586,26 +585,27 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					//won't be able to happen until the next touch begins
 					if(!this._hasLongPressed && isInBounds)
 					{
-						//this.dispatchEventWith(Event.TRIGGERED,true,_data);	
+						//this.dispatchEventWith(Event.TRIGGERED,true,_data);													
 						
 						if(_data.isChild){
-							
-							if(_isEditTouch){
-								_isEditTouch = false;
-							} else {
-								_data.isPacked = !_data.isPacked;
-								
-								if(_data.isChild){								
-									if(_data.isPacked){
-										_iconMark.visible = true;
-									} else {
-										_iconMark.visible = false;
-									}
-								}
+							if(!_iconRemove.visible){
+								if(_isEditTouch){
+									_isEditTouch = false;
+								} else {
+									_data.isPacked = !_data.isPacked;
 									
-								dispatchEvent(new EventViewAbstract(EventViewAbstract.UPDATE_DB_PACKED_ITEM, true, _data));
-								
-							//	_owner.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, _data)); 								
+									if(_data.isChild){								
+										if(_data.isPacked){
+											_iconMark.visible = true;
+										} else {
+											_iconMark.visible = false;
+										}
+									}
+										
+									dispatchEvent(new EventViewAbstract(EventViewAbstract.UPDATE_DB_PACKED_ITEM, true, _data));
+									
+								//	_owner.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, _data)); 								
+								}
 							}
 							
 						} else if(_data.childrens && _data.childrens.length > 0){
@@ -718,6 +718,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			if(touch){
 				if(touch.phase == TouchPhase.ENDED) {
 					_isEditTouch = true;
+					dispatchEvent(new EventViewAbstract(EventViewAbstract.REMOVE_PACKED_ITEM, true, _data));
 					trace("Delete");
 				}
 			}

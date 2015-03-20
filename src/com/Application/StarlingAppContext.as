@@ -6,10 +6,12 @@ package com.Application {
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
 	import com.Application.robotlegs.controller.CommandSetNewListName;
 	import com.Application.robotlegs.controller.CommandUpdateVOOpenList;
+	import com.Application.robotlegs.controller.popup.CommandPopupRemove;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
-	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryTable;
-	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryTable;
-	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryTable;
+	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryItem;
+	import com.Application.robotlegs.controller.service.categories.CommandRemoveCategoryItem;
+	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
+	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryItem;
 	import com.Application.robotlegs.controller.service.settings.CommandUpdateSettings;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureSql;
@@ -116,11 +118,14 @@ package com.Application {
 			commandMap.mapEvent(EventServiceSettings.FIRST_SETTINGS_LOADED, CommandSettingConfigured, EventServiceSettings);
 			commandMap.mapEvent(EventServiceTableNames.FIRST_TABLE_NAMES_LOADED, CommandNamesTableConfigured, EventServiceTableNames);
 			
-			commandMap.mapEvent(EventServiceTableNames.INSERTED, CommandCreateCategoryTable, EventServiceTableNames);
-			commandMap.mapEvent(EventViewAbstract.GET_CATEGORY_DATA, CommandSelectCategoryTable, EventViewAbstract);
+			commandMap.mapEvent(EventServiceTableNames.INSERTED, CommandCreateCategoryItem, EventServiceTableNames);
+			commandMap.mapEvent(EventViewAbstract.GET_CATEGORY_DATA, CommandSelectCategoryItem, EventViewAbstract);
 			
 			commandMap.mapEvent(EventViewAbstract.GET_PACKED_ITEMS, CommandGetPackedItemsFunctionCallback, EventViewAbstract);
-			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_PACKED_ITEM, CommandUpdateCategoryTable, EventViewAbstract);
+			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_PACKED_ITEM, CommandUpdateCategoryItem, EventViewAbstract);
+			
+			commandMap.mapEvent(EventViewAbstract.REMOVE_PACKED_ITEM, CommandPopupRemove, EventViewAbstract);
+			commandMap.mapEvent(EventViewAbstract.REMOVE_DB_PACKED_ITEM, CommandRemoveCategoryItem, EventViewAbstract);
 			
 			commandMap.mapEvent(EventViewAbstract.OPEN_LIST, CommandUpdateVOOpenList, EventViewAbstract);
 			commandMap.mapEvent(EventViewAbstract.GET_CREATED_LISTS, CommandGetCreatedLists, EventViewAbstract);

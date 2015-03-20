@@ -26,7 +26,7 @@ package com.Application.robotlegs.services.categories {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _currentItem:VOPackedItem;
+		private var _currentItem:VOPackedItem;				
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -45,7 +45,7 @@ package com.Application.robotlegs.services.categories {
 		 * Create Table
 		 * 
 		 */
-		public function createTable(pTableName:String, pDataToInsert:Vector.<VOPackedItem>):void {
+		public function createTable(pTableName:String, pDataToInsert:Vector.<VOPackedItem>):void {			
 			
 			if(pTableName.length > 0){
 				pTableName = _updateName(pTableName);
@@ -90,8 +90,7 @@ package com.Application.robotlegs.services.categories {
 							stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsChild);
 						}
 						
-					}
-					
+					}					
 											
 				}	
 				
@@ -179,9 +178,27 @@ package com.Application.robotlegs.services.categories {
 			if(pTableName.length > 0){
 				pTableName = _updateName(pTableName);
 				
+				_currentItem = value;
+					
 				var pSql:String = DefaultData.DELETE_CATEGORY_TABLE_1+pTableName+DefaultData.DELETE_CATEGORY_TABLE_2;
+				
+				
+				var stmts:Vector.<QueuedStatement> = new Vector.<QueuedStatement>();
+				
+								
+					stmts[stmts.length] = new QueuedStatement(pSql,{id:value.id});
+				
+					if(!value.isChild && value.childrens && value.childrens.length > 0){
+						var pLength:Number = value.childrens.length;
+						
+						for(var i:int = 0; i<pLength;i++){
+							stmts[stmts.length] = new QueuedStatement(pSql,{id:VOPackedItem(value.childrens[i]).id});									
+						}						
+					}
+				
+				
 			
-				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(pSql, {id:value.id})]), remove_result, database_error);			
+				sqlRunner.executeModify(stmts, remove_result, database_error);			
 			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -215,6 +232,9 @@ package com.Application.robotlegs.services.categories {
 		
 		private function remove_result(results:Vector.<SQLResult>):void {
 			trace("removed ");
+			dispatch(new EventServiceCategories(EventServiceCategories.REMOVED,false,_currentItem));
+			//model.currentCategoriesRemoveItem(_currentItem);
+			/// Remove it from Model;
 		}
 		
 		
@@ -267,8 +287,9 @@ package com.Application.robotlegs.services.categories {
 		
 		private function executeBatchCreate_complete(results:Vector.<SQLResult>):void	{
 			trace("create table with default Complete");
-			
+			load(model.currentTableName.table_name);
 			//dispatch(new EventMain(EventMain.CONFIGURE_MODEL));
+			//dispatch(new EventServiceCategories(EventServiceCategories.NEW_TABLE_CREATED));
 		}
 		
 		

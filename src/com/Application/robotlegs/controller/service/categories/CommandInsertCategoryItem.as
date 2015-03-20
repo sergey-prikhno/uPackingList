@@ -6,7 +6,7 @@ package com.Application.robotlegs.controller.service.categories {
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
-	public class CommandInsertCategoryTable extends Command {		
+	public class CommandInsertCategoryItem extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -31,7 +31,7 @@ package com.Application.robotlegs.controller.service.categories {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function CommandInsertCategoryTable() {
+		public function CommandInsertCategoryItem() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 

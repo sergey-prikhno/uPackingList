@@ -1,26 +1,25 @@
 package com.Application.robotlegs.controller.service.categories {
 	import com.Application.robotlegs.model.IModel;
-	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.services.categories.IServiceCategories;
-	import com.Application.robotlegs.services.tableNames.EventServiceTableNames;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
-	public class CommandCreateCategoryTable extends Command {
-				
+	public class CommandRemoveCategoryItem extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		[Inject]
-		public var event:EventServiceTableNames;
+		public var event:EventViewAbstract;
 		
 		[Inject]
 		public var service:IServiceCategories;
 		
 		[Inject]
-		public var model:IModel;
+		public var model:IModel;		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
@@ -32,7 +31,7 @@ package com.Application.robotlegs.controller.service.categories {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function CommandCreateCategoryTable() {
+		public function CommandRemoveCategoryItem() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -41,14 +40,11 @@ package com.Application.robotlegs.controller.service.categories {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override public function execute():void{
-			var pData:VOTableName = VOTableName(event.data);
+			trace("remove item ");
 			
-			trace("create table");
-			
-			model.currentTableName = pData;			
-			service.createTable(model.currentTableName.table_name, model.defaultCategories);			
-		}
-		
+			var pData:VOPackedItem = VOPackedItem(event.data);	
+			service.remove(pData,model.currentTableName.table_name);			
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   

@@ -25,6 +25,7 @@ package com.Application.robotlegs.model {
 		
 		function get voOpenList():VOOpenList
 		function set voOpenList(value:VOOpenList):void
+
 	}
 	
 	

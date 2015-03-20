@@ -11,6 +11,7 @@ package com.Application.themes {
 	import com.Application.robotlegs.views.popups.PopupAbstract;
 	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listScratch.PopupCreateListScratch;
+	import com.Application.robotlegs.views.popups.removeItem.PopupRemoveItem;
 	import com.Application.robotlegs.views.welcome.ViewWelcome;
 	
 	import flash.geom.Rectangle;
@@ -72,8 +73,8 @@ package com.Application.themes {
 			this.getStyleProviderForClass(PopupCreateListExisting).defaultStyleFunction = this.setPopupCreateListExistingStyles;
 			this.getStyleProviderForClass(ItemrendererMainMenu).defaultStyleFunction = this.setItemrendererMainMenuStyles;
 			this.getStyleProviderForClass(BottomMenu).defaultStyleFunction = this.setBottomMenuStyles;
-			this.getStyleProviderForClass(ViewOpen).defaultStyleFunction = this.setViewOpenStyles;
-			
+			this.getStyleProviderForClass(ViewOpen).defaultStyleFunction = this.setViewOpenStyles;		
+			this.getStyleProviderForClass(PopupRemoveItem).defaultStyleFunction = this.setPopupRemoveItemStyles;
 		}	
 	
 		protected function setLoadingIndicatorStyles(component:LoadingIndicator):void{
@@ -141,6 +142,10 @@ package com.Application.themes {
 		protected function setBottomMenuStyles(view:BottomMenu):void{
 			view.scaleWidth = scaleWidth;
 			view.scaleHeight = scaleHeight;
+		}
+		
+		protected function setPopupRemoveItemStyles(view:PopupRemoveItem):void{
+			setPopupAbstractStyles(view);	
 		}
 		
 

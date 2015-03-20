@@ -1,25 +1,22 @@
-package com.Application.robotlegs.controller.service.categories {
-	import com.Application.robotlegs.model.IModel;
+package com.Application.robotlegs.controller.popup {
+	import com.Application.robotlegs.model.managerPopup.IManagerPopup;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
-	import com.Application.robotlegs.services.categories.IServiceCategories;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
-	public class CommandRemoveCategoryTable extends Command {		
+	public class CommandPopupRemove extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
-		//---------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------Щ		
 		[Inject]
 		public var event:EventViewAbstract;
 		
 		[Inject]
-		public var service:IServiceCategories;
+		public var popupManager:IManagerPopup;
 		
-		[Inject]
-		public var model:IModel;		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
@@ -31,7 +28,7 @@ package com.Application.robotlegs.controller.service.categories {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function CommandRemoveCategoryTable() {
+		public function CommandPopupRemove() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -40,11 +37,11 @@ package com.Application.robotlegs.controller.service.categories {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override public function execute():void{
-			trace("remove table");
-			
 			var pData:VOPackedItem = VOPackedItem(event.data);	
-			service.remove(pData,model.currentTableName.table_name);			
-		}		
+				popupManager.popupRemoveItem(pData);
+		
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   

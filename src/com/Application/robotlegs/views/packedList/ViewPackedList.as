@@ -70,6 +70,52 @@ package com.Application.robotlegs.views.packedList {
 				_list.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, pData));
 			}
 		}
+		
+		public function removed(pData:VOPackedItem):void{
+			if(_list){		
+				
+				if(!pData.isChild && pData.isOpen && pData.childrens && pData.childrens.length > 0){
+					
+					var pLengthChildren:int = pData.childrens.length;
+					
+					for(var i:int=0; i < pLengthChildren;i++){						
+						_list.dataProvider.removeItem(pData.childrens[i]);						
+					}					
+				}
+				
+								
+				if(pData.isChild){
+					
+					var pLengthParent:int = _list.dataProvider.length;
+					
+					for(var j:int=0; j < pLengthParent;j++){	
+						var pGetParentItem:VOPackedItem = VOPackedItem(_list.dataProvider.data[j]);
+						
+						if(pGetParentItem.id == pData.parentId){
+							var pParentLen:int = pGetParentItem.childrens.length;
+							
+							for(var k:int=0;k<pParentLen; k++){
+								var pFindChild:VOPackedItem = VOPackedItem(pGetParentItem.childrens[k]);
+									
+								if(pData.id == pFindChild.id){									
+									pGetParentItem.childrens.splice(k,1);
+									_list.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, pData));	
+									break;
+								}
+								
+							}							
+							
+							break;
+						}											
+					}
+																				
+				}
+				
+				_list.dataProvider.removeItem(pData);
+				
+			}
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   

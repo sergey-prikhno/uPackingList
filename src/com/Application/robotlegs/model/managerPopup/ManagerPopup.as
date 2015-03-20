@@ -1,11 +1,14 @@
 package com.Application.robotlegs.model.managerPopup {
 	import com.Application.robotlegs.model.vo.VOOpenList;
+	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.popups.listExisting.EventPopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listExisting.PopupCreateListExisting;
 	import com.Application.robotlegs.views.popups.listScratch.EventPopupCreateListScratch;
 	import com.Application.robotlegs.views.popups.listScratch.PopupCreateListScratch;
+	import com.Application.robotlegs.views.popups.removeItem.EventPopupRemoveItem;
+	import com.Application.robotlegs.views.popups.removeItem.PopupRemoveItem;
 	
 	import flash.display.Stage;
 	
@@ -36,6 +39,9 @@ package com.Application.robotlegs.model.managerPopup {
 		
 		private var _popupCreateListScratch:PopupCreateListScratch;
 		private var _popupCreateListExisting:PopupCreateListExisting;
+		
+		private var _popupRemoveItem:PopupRemoveItem;
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -81,6 +87,20 @@ package com.Application.robotlegs.model.managerPopup {
 			PopUpManager.addPopUp(_popupCreateListExisting,true);
 		}
 		
+		
+		public function popupRemoveItem(value:VOPackedItem):void{
+			
+			if(!_popupRemoveItem){
+				_popupRemoveItem = new PopupRemoveItem();
+				_popupRemoveItem.addEventListener(EventPopupRemoveItem.YES, _handlerRemoveItem);
+				_popupRemoveItem.addEventListener(EventPopupRemoveItem.NO, _handlerRemoveItem);				
+			}
+			
+			_popupRemoveItem.data = value;
+			_popupRemoveItem.width = _nativeStage.fullScreenWidth;
+			_popupRemoveItem.height = _nativeStage.fullScreenHeight;
+			PopUpManager.addPopUp(_popupRemoveItem,true);
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -119,8 +139,7 @@ package com.Application.robotlegs.model.managerPopup {
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
+		//---------------------------------------------------------------------------------------------------------		
 		private function _handlerClosePopupCreateList(event:EventPopupCreateListScratch):void{
 			_removePopupCreateListScratch();
 		}
@@ -145,6 +164,21 @@ package com.Application.robotlegs.model.managerPopup {
 			dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, pVOOpen));
 		}
 		
+		
+		private function _handlerRemoveItem(event:EventPopupRemoveItem):void{
+			_popupRemoveItem.removeEventListener(EventPopupRemoveItem.YES, _handlerRemoveItem);
+			_popupRemoveItem.removeEventListener(EventPopupRemoveItem.NO, _handlerRemoveItem);	
+			
+			
+			if(event.type == EventPopupRemoveItem.YES){
+				dispatch(new EventViewAbstract(EventViewAbstract.REMOVE_DB_PACKED_ITEM, false, _popupRemoveItem.data));
+			}
+			
+			PopUpManager.removePopUp(_popupRemoveItem);
+			_popupRemoveItem.destroy();
+			_popupRemoveItem = null;
+			
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

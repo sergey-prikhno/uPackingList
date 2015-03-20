@@ -5,7 +5,7 @@ package com.Application.robotlegs.controller.service.categories {
 	
 	import org.robotlegs.starling.mvcs.Command;
 	
-	public class CommandSelectCategoryTable extends Command {		
+	public class CommandSelectCategoryItem extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -31,7 +31,7 @@ package com.Application.robotlegs.controller.service.categories {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function CommandSelectCategoryTable() {
+		public function CommandSelectCategoryItem() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -45,7 +45,7 @@ package com.Application.robotlegs.controller.service.categories {
 			//var pData:VOPackedItem = VOPackedItem(event.data);
 			
 		//	var pData:VOPackedItem = VOPackedItem(model.appLists[0]);
-			model.currentTableName = model.appLists[0];
+			model.currentTableName = model.appLists[2];
 			
 			service.load(model.currentTableName.table_name);			
 		}	

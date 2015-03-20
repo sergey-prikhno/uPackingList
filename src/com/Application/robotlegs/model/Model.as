@@ -46,8 +46,9 @@ package com.Application.robotlegs.model {
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
-		//---------------------------------------------------------------------------------------------------------
-				
+		//---------------------------------------------------------------------------------------------------------		
+
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -85,7 +86,7 @@ package com.Application.robotlegs.model {
 			_currentCategories = value;	
 			
 			var pVO:VOScreenID = new VOScreenID();
-			pVO.screenID = Main.VIEW_PACKED_LIST;
+				pVO.screenID = Main.VIEW_PACKED_LIST;
 			dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
 		}
 		

@@ -41,7 +41,7 @@ package com.Application {
 			
 			addContextListener(EventActorLoader.LOADING_STARTED, _handlerLoadingEventService, EventActorLoader);
 			addContextListener(EventActorLoader.LOADING_FINISHED, _handlerLoadingEventService, EventActorLoader);	
-			
+			  
 
 			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);							
 			addContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);				

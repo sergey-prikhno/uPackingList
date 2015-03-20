@@ -7,7 +7,8 @@ button.scratch=From scratch
 button.existing=From the existing list
 button.edit=Edit
 button.back=Back
-
+button.no=No
+button.yes=Yes
 
 #header
 header.uPackingList=uPackingList
@@ -37,5 +38,7 @@ welcomScreen.niceJourney=Have a nice journey!
 welcomScreen.labelShow=Always show:
 welcomScreen.continue=Continue
 
-
+#popupRemove
+title.removeItem=Are you sure to delete the item from list
+title.removeCategory=Are you sure to delete the category from list
 

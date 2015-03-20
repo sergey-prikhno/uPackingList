@@ -10,6 +10,10 @@ package com.Application.robotlegs.views {
 		public static const GET_PACKED_ITEMS:String = "GET_PACKED_ITEMS";
 		
 		public static const UPDATE_DB_PACKED_ITEM:String = "UPDATE_DB_PACKED_ITEM";
+
+		public static const REMOVE_DB_PACKED_ITEM:String = "REMOVE_DB_PACKED_ITEM";
+		public static const REMOVE_PACKED_ITEM:String = "REMOVE_PACKED_ITEM";
+		
 		
 		public static const OPEN_LIST:String = "OPEN_LIST";
 		public static const GET_CREATED_LISTS:String = "GET_CREATED_LISTS";
