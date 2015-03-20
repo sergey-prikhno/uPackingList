@@ -3,7 +3,9 @@ package com.Application.themes {
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
+	import com.Application.robotlegs.views.components.renderers.ItemrendererOpenList;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.open.ViewOpen;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
 	import com.Application.robotlegs.views.popups.PopupAbstract;
@@ -63,12 +65,14 @@ package com.Application.themes {
 			this.getStyleProviderForClass(LoadingIndicator).defaultStyleFunction = this.setLoadingIndicatorStyles;
 			this.getStyleProviderForClass(ViewPackedList).defaultStyleFunction = this.setViewPackedStyles;
 			this.getStyleProviderForClass(ItemRendererPackedList).defaultStyleFunction = this.setItemRendererPackedStyles;
+			this.getStyleProviderForClass(ItemrendererOpenList).defaultStyleFunction = this.setItemRendererOpenListStyles;
 			
 			this.getStyleProviderForClass(PopupAbstract).defaultStyleFunction = this.setPopupAbstractStyles;
 			this.getStyleProviderForClass(PopupCreateListScratch).defaultStyleFunction = this.setPopupCreateListScratchStyles;
 			this.getStyleProviderForClass(PopupCreateListExisting).defaultStyleFunction = this.setPopupCreateListExistingStyles;
 			this.getStyleProviderForClass(ItemrendererMainMenu).defaultStyleFunction = this.setItemrendererMainMenuStyles;
 			this.getStyleProviderForClass(BottomMenu).defaultStyleFunction = this.setBottomMenuStyles;
+			this.getStyleProviderForClass(ViewOpen).defaultStyleFunction = this.setViewOpenStyles;
 			
 		}	
 	
@@ -114,7 +118,10 @@ package com.Application.themes {
 		
 		protected function setViewPackedStyles(view:ViewPackedList):void{
 			initializeViewAbstract(view);
-			
+		}
+				
+		protected function setViewOpenStyles(view:ViewOpen):void{
+			initializeViewAbstract(view);
 		}
 				
 		protected function setItemRendererPackedStyles(renderer:ItemRendererPackedList):void{			
@@ -125,6 +132,10 @@ package com.Application.themes {
 			renderer.iconMark = iconMark;
 			renderer.iconRemove = iconRemove;
 			renderer.atlas = atlas;									
+		}
+		
+		protected function setItemRendererOpenListStyles(view:ItemrendererOpenList):void{
+			view.scale = scaleWidth;
 		}
 		
 		protected function setBottomMenuStyles(view:BottomMenu):void{

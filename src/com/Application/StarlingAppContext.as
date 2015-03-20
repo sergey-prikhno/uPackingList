@@ -1,8 +1,11 @@
 package com.Application {
+	import com.Application.robotlegs.controller.CommandAddNewList;
 	import com.Application.robotlegs.controller.CommandCreateNewList;
+	import com.Application.robotlegs.controller.CommandGetCreatedLists;
 	import com.Application.robotlegs.controller.CommandGetPackedItemsFunctionCallback;
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
 	import com.Application.robotlegs.controller.CommandSetNewListName;
+	import com.Application.robotlegs.controller.CommandUpdateVOOpenList;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
 	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryTable;
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryTable;
@@ -35,9 +38,10 @@ package com.Application {
 	import com.Application.robotlegs.services.test.IServiceTest;
 	import com.Application.robotlegs.services.test.ServiceTest;
 	import com.Application.robotlegs.views.EventViewAbstract;
-	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.open.MediatorViewOpen;
+	import com.Application.robotlegs.views.open.ViewOpen;
 	import com.Application.robotlegs.views.packedList.MediatorViewPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.settings.MediatorViewSettings;
@@ -85,6 +89,7 @@ package com.Application {
 			mediatorMap.mapView(ViewWelcome, MediatorViewWelcome);
 			mediatorMap.mapView(ViewSettings, MediatorViewSettings);
 			mediatorMap.mapView(ViewPackedList, MediatorViewPackedList);
+			mediatorMap.mapView(ViewOpen, MediatorViewOpen);
 		
 			
 			injector.mapSingletonOf(IModel, Model);
@@ -102,7 +107,7 @@ package com.Application {
 			commandMap.mapEvent(EventServiceAbstract.ERROR, CommandServiceError, EventServiceAbstract);			
 			commandMap.mapEvent(EventViewAbstract.GET_APP_SETTINGS, CommandMainFunctionCallback, EventViewAbstract);
 			commandMap.mapEvent(EventViewAbstract.UPDATE_SETTINGS, CommandUpdateSettings, EventViewAbstract);
-			commandMap.mapEvent(EventViewMain.CREATE_NEW_LIST, CommandCreateNewList, EventViewMain);
+			commandMap.mapEvent(EventViewAbstract.CREATE_NEW_LIST, CommandCreateNewList, EventViewAbstract);
 			commandMap.mapEvent(EventManagerPopup.SET_NEW_LIST_NAME, CommandSetNewListName, EventManagerPopup);
 			
 			commandMap.mapEvent(EventMain.INITIALIZE_DATABASE, CommandConfigureSql, EventMain);
@@ -116,6 +121,10 @@ package com.Application {
 			
 			commandMap.mapEvent(EventViewAbstract.GET_PACKED_ITEMS, CommandGetPackedItemsFunctionCallback, EventViewAbstract);
 			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_PACKED_ITEM, CommandUpdateCategoryTable, EventViewAbstract);
+			
+			commandMap.mapEvent(EventViewAbstract.OPEN_LIST, CommandUpdateVOOpenList, EventViewAbstract);
+			commandMap.mapEvent(EventViewAbstract.GET_CREATED_LISTS, CommandGetCreatedLists, EventViewAbstract);
+			commandMap.mapEvent(EventViewAbstract.ADD_NEW_LIST, CommandAddNewList, EventViewAbstract);
 			
 			//EentModel
 			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);

@@ -1,6 +1,10 @@
-package com.Application.robotlegs.views.createFromExisting{
+package com.Application.robotlegs.views.open{
+	import com.Application.robotlegs.model.vo.VOOpenList;
+	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.ItemrendererSelectExistingList;
+	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
+	import com.Application.robotlegs.views.components.renderers.ItemrendererOpenList;
 	import com.common.Constants;
 	
 	import ch.ala.locale.LocaleManager;
@@ -14,7 +18,8 @@ package com.Application.robotlegs.views.createFromExisting{
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	
-	public class ViewCreateFromExisting extends ViewAbstract {									
+	
+	public class ViewOpen extends ViewAbstract {									
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -31,14 +36,23 @@ package com.Application.robotlegs.views.createFromExisting{
 		//---------------------------------------------------------------------------------------------------------
 		
 		private var _list:List;
-		private var _buttonBack:Button;	
 		private var _collectionList:ListCollection;	
+		
+		private var _buttonEdit:Button;	
+		private var _buttonBack:Button;	
+		private var _buttonAddNewList:Button;	
+		
+		private var _bottomMenu:BottomMenu;
+		
+		private var _voOpenList:VOOpenList;
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function ViewCreateFromExisting() {
+		public function ViewOpen() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -47,6 +61,8 @@ package com.Application.robotlegs.views.createFromExisting{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+
+
 		override public function destroy():void{
 			super.destroy();
 		}
@@ -56,8 +72,20 @@ package com.Application.robotlegs.views.createFromExisting{
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		public function set vectorLists(value:Vector.<VOTableName>):void{
+			if(!_collectionList){
+				_collectionList = new ListCollection();
+			}
+			
+			for (var i:int = 0; i < value.length; i++){
+				_collectionList.push(value[i]);
+			}
+		}
+		
+		public function set voOpenList(value:VOOpenList):void{_voOpenList = value;}
+		
 		override protected function get defaultStyleProvider():IStyleProvider {
-			return ViewCreateFromExisting.globalStyleProvider;
+			return ViewOpen.globalStyleProvider;
 		}
 		
 		public function get resourceManager():LocaleManager{
@@ -74,40 +102,46 @@ package com.Application.robotlegs.views.createFromExisting{
 			super._initialize();
 			
 			_layoutVertical = new VerticalLayout();
+					
+			if(!_collectionList){
+				_collectionList = new ListCollection();
+			}
 			
-			
-			_collectionList = new ListCollection();
-			
-			/*var pVO:VOMainMenu = new VOMainMenu();
-			pVO.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList");
-			pVO.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newListDesc");
-			_collectionList.push(pVO);
-			
-			var pVO2:VOMainMenu = new VOMainMenu();
-			pVO2.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList");
-			pVO2.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openListDesc");
-			_collectionList.push(pVO2);
-			
-			var pVO3:VOMainMenu = new VOMainMenu();
-			pVO3.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packList");
-			pVO3.titleDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packListDesc");
-			_collectionList.push(pVO3);
-			*/
+			_buttonAddNewList = new Button();
+			_buttonAddNewList.addEventListener(Event.TRIGGERED, _handlerAddNewlist);
+			_buttonAddNewList.visible = false;
+			_buttonAddNewList.label = "Add new list";
+			addChild(_buttonAddNewList);
 			
 			if(!_list){
 				_list = new List();
-				_list.hasElasticEdges = false;
-				_list.itemRendererType = ItemrendererSelectExistingList;
+				_list.hasElasticEdges = true;
+				_list.itemRendererType = ItemrendererOpenList;
 				addChild(_list);
 			}
+			
+			_buttonEdit = new Button();
+			_buttonEdit.label = "Edit";
+			_buttonEdit.addEventListener(Event.TRIGGERED, _handlerEditButton);
 			
 			_buttonBack = new Button();
 			_buttonBack.label = "Back";
 			_buttonBack.addEventListener(Event.TRIGGERED, _handlerBackButton);
+			
 			this._header.rightItems = new <DisplayObject>
+				[
+					this._buttonEdit
+				];
+			this._header.leftItems = new <DisplayObject>
 				[
 					this._buttonBack
 				];
+			
+			_bottomMenu = new BottomMenu();
+			_bottomMenu.isHome = true;
+			_bottomMenu.isSearch = true;
+			_bottomMenu.isPack = true;
+			addChild(_bottomMenu);
 		}
 		
 		override protected function draw():void{
@@ -117,15 +151,30 @@ package com.Application.robotlegs.views.createFromExisting{
 				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");
 				_header.width = _nativeStage.stageWidth;
 			}
+			
+			if(_buttonAddNewList){
+				_buttonAddNewList.width = _nativeStage.stageWidth;
+				_buttonAddNewList.y = _header.height + int(44*_scaleHeight);
+			}
+			
 			if(_list){
-				_layoutVertical.gap = int(88*_scaleHeight);
+				_layoutVertical.gap = int(16*_scaleHeight);
 				_list.layout = _layoutVertical;	
 				_list.dataProvider = _collectionList;
 				_list.width = _nativeStage.stageWidth - int(32*_scaleWidth);
 				_list.height = _nativeStage.stageHeight - _header.height;
 				_list.validate();
 				_list.x = _nativeStage.stageWidth/2 - _list.width/2;
-				_list.y = _header.height + int(44*_scaleHeight);
+				if(!_buttonAddNewList.visible){
+					_list.y = _header.height + int(44*_scaleHeight);
+				}else{
+					_list.y = _buttonAddNewList.y + _buttonAddNewList.height + int(16*_scaleHeight);
+				}
+			}
+			if(_bottomMenu){
+				_bottomMenu.width = _nativeStage.stageWidth;
+				_bottomMenu.height = int(88*_scaleHeight);
+				_bottomMenu.y = _nativeStage.stageHeight - _bottomMenu.height; 
 			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -134,9 +183,25 @@ package com.Application.robotlegs.views.createFromExisting{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		private function _handlerAddNewlist(event:Event):void{
+			dispatchEvent(new EventViewAbstract(EventViewAbstract.CREATE_NEW_LIST));
+		}
+		
+		private function _handlerEditButton(event:Event):void{
+			if(_buttonEdit.label == "Edit"){
+				_buttonEdit.label = "Done";	
+				_buttonAddNewList.visible = true;
+				
+			}else{
+				_buttonEdit.label = "Edit";	
+				_buttonAddNewList.visible = false;
+			}
+			
+			invalidate(INVALIDATION_FLAG_STYLES);
+		}
 		
 		private function _handlerBackButton(event:Event):void{
-			//dispatchEvent(new EventViewCreateFromExisting(EventViewCreateFromExisting.SHOW_SETTINGS_SCREEN));
+			dispatchEvent(new EventViewAbstract(EventViewAbstract.BACK_TO_VIEW_MAIN_SCREEN));	
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

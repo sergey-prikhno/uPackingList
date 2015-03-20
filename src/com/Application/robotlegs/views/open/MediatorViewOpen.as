@@ -1,10 +1,10 @@
-package com.Application.robotlegs.views.createFromExisting{
-	import com.Application.robotlegs.model.vo.VOMainMenu;
+package com.Application.robotlegs.views.open {
+	import com.Application.robotlegs.model.vo.VOOpenList;
+	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.EventRenderer;
-	import com.common.Constants;
 	
-	public class MediatorViewCreateFromExisting extends MediatorViewAbstract {		
+	public class MediatorViewOpen extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -23,7 +23,7 @@ package com.Application.robotlegs.views.createFromExisting{
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewCreateFromExisting() 	{
+		public function MediatorViewOpen() 	{
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -33,17 +33,18 @@ package com.Application.robotlegs.views.createFromExisting{
 		//---------------------------------------------------------------------------------------------------------
 		override public function onRegister():void{	
 			super.onRegister();
+						
 			
-			addViewListener(EventViewCreateFromExisting.CALL_TEST_SERVICE, _handlerCallTestService, EventViewCreateFromExisting);
-			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
+			dispatch(new EventViewOpen(EventViewOpen.GET_VOOPEN_LIST_DATA, false, null, _setVOOpenListData));
+			dispatch(new EventViewAbstract(EventViewAbstract.GET_CREATED_LISTS, false, null, _setLists));
+			
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
-		
-			removeViewListener(EventViewCreateFromExisting.CALL_TEST_SERVICE, _handlerCallTestService, EventViewCreateFromExisting);
-			removeViewListener(EventViewCreateFromExisting.CREATE_NEW_LIST, _handlerRendererClick, EventViewCreateFromExisting);
+					
+
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -51,8 +52,8 @@ package com.Application.robotlegs.views.createFromExisting{
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewMain{
-			return ViewMain(viewComponent);
+		public function get view():ViewOpen{
+			return ViewOpen(viewComponent);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -61,21 +62,20 @@ package com.Application.robotlegs.views.createFromExisting{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		private function _setVOOpenListData(value:VOOpenList):void {
+			view.voOpenList = value;
+		}
+		
+		private function _setLists(value:Vector.<VOTableName>):void {
+			view.vectorLists = value;
+		}
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerCallTestService(event:EventViewCreateFromExisting):void{
-			dispatch(event);
-		}
-		
-		private function _handlerRendererClick(event:EventRenderer):void{
-			var pVO:VOMainMenu = VOMainMenu(event.payload);
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
-				dispatch(new EventViewCreateFromExisting(EventViewCreateFromExisting.CREATE_NEW_LIST));
-			}
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

@@ -1,8 +1,6 @@
 package com.Application.robotlegs.views.main {
 	import com.Application.robotlegs.model.vo.VOMainMenu;
-	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
 	import com.common.Constants;
 	
@@ -39,8 +37,6 @@ package com.Application.robotlegs.views.main {
 		private var _list:List;
 		private var _buttonSettings:Button;	
 		private var _collectionList:ListCollection;	
-		
-		private var _bottomMenu:BottomMenu;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -116,13 +112,7 @@ package com.Application.robotlegs.views.main {
 					this._buttonSettings
 				];
 			
-			_bottomMenu = new BottomMenu();
-			_bottomMenu.isHome = true;
-			_bottomMenu.isSearch = true;
-			_bottomMenu.isUndo = true;
-			_bottomMenu.isCheckAll = true;
-			_bottomMenu.isMail = true;
-			addChild(_bottomMenu);
+			
 		}
 		
 		override protected function draw():void{
@@ -142,11 +132,7 @@ package com.Application.robotlegs.views.main {
 				_list.x = _nativeStage.stageWidth/2 - _list.width/2;
 				_list.y = _header.height + int(44*_scaleHeight);
 			}
-			if(_bottomMenu){
-				_bottomMenu.width = _nativeStage.stageWidth;
-				_bottomMenu.height = int(88*_scaleHeight);
-				_bottomMenu.y = _nativeStage.stageHeight - _bottomMenu.height; 
-			}
+			
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

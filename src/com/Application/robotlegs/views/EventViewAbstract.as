@@ -11,6 +11,12 @@ package com.Application.robotlegs.views {
 		
 		public static const UPDATE_DB_PACKED_ITEM:String = "UPDATE_DB_PACKED_ITEM";
 		
+		public static const OPEN_LIST:String = "OPEN_LIST";
+		public static const GET_CREATED_LISTS:String = "GET_CREATED_LISTS";
+		
+		public static const BACK_TO_VIEW_MAIN_SCREEN:String = "BACK_TO_VIEW_MAIN_SCREEN";
+		public static const CREATE_NEW_LIST:String = "CREATE_NEW_LIST";	
+		public static const ADD_NEW_LIST:String = "ADD_NEW_LIST";	
 		
 		public static const ERROR:String = "ERROR";
 		

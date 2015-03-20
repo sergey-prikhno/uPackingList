@@ -1,47 +1,46 @@
-package com.Application.robotlegs.views {
-	import org.robotlegs.starling.mvcs.Mediator;
+package com.Application.robotlegs.controller{
+	import com.Application.robotlegs.model.managerPopup.IManagerPopup;
 	
-	public class MediatorViewAbstract extends Mediator {		
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandAddNewList extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		
+		[Inject]
+		public var popupManager:IManagerPopup;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewAbstract() 	{
+		
+		public function CommandAddNewList()
+		{
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-			
-			addViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
-			addViewListener(EventViewAbstract.CREATE_NEW_LIST, _handlerCreateNewList, EventViewAbstract);
+		
+		override public function execute():void{
+			popupManager.popupCreateListScratch();
 		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			removeViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
-			removeViewListener(EventViewAbstract.CREATE_NEW_LIST, _handlerCreateNewList, EventViewAbstract);
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -55,18 +54,14 @@ package com.Application.robotlegs.views {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerUpdateSettings(event:EventViewAbstract):void{
-			dispatch(event);
-		}
 		
-		private function _handlerCreateNewList(event:EventViewAbstract):void{
-			dispatch(new EventViewAbstract(EventViewAbstract.ADD_NEW_LIST));
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
@@ -78,6 +73,7 @@ package com.Application.robotlegs.views {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }

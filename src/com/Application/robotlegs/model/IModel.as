@@ -1,6 +1,7 @@
 package com.Application.robotlegs.model {
 
 	import com.Application.robotlegs.model.vo.VOAppSettings;
+	import com.Application.robotlegs.model.vo.VOOpenList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.model.vo.VOTableName;
 
@@ -21,6 +22,9 @@ package com.Application.robotlegs.model {
 			
 		function get currentTableName():VOTableName
 		function set currentTableName(value:VOTableName):void
+		
+		function get voOpenList():VOOpenList
+		function set voOpenList(value:VOOpenList):void
 	}
 	
 	

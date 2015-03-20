@@ -4,6 +4,7 @@ package com.Application {
 	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOScreenID;
 	import com.Application.robotlegs.services.categoriesDefault.EventServiceCategoriesDefault;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.http.robotlegs.model.modelLoading.EventActorLoader;
 	
 	import org.robotlegs.starling.mvcs.Mediator;
@@ -44,6 +45,7 @@ package com.Application {
 
 			addContextListener(EventModel.CHANGE_APP_SCREEN, _handlerChangeAppScrenn, EventModel);							
 			addContextListener(EventServiceCategoriesDefault.FIRST_CATEGORIES_LOADED, _handlerIinitDBComplete, EventServiceCategoriesDefault);				
+			addContextListener(EventViewAbstract.OPEN_LIST, _handlerOpenViewlist, EventViewAbstract);				
 
 		}			
 		
@@ -99,6 +101,13 @@ package com.Application {
 			
 			view.settings = pData;
 		}
+		
+		private function _handlerOpenViewlist(event:EventViewAbstract):void{
+			var pVO:VOScreenID = new VOScreenID();
+				pVO.screenID = Main.VIEW_OPEN;
+			view.changeScreen(pVO);
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

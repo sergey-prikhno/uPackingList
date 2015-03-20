@@ -1,5 +1,5 @@
 package com.Application.robotlegs.views.components.renderers{
-	import com.Application.robotlegs.model.vo.VOListCreate;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	
 	import feathers.controls.Label;
 	import feathers.controls.List;
@@ -13,7 +13,7 @@ package com.Application.robotlegs.views.components.renderers{
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 
-	public class ItemrendererSelectExistingList extends FeathersControl implements IListItemRenderer{
+	public class ItemrendererOpenList extends FeathersControl implements IListItemRenderer{
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -33,13 +33,10 @@ package com.Application.robotlegs.views.components.renderers{
 		private var _index:int = -1;
 		protected var _owner:List;
 		private var _isSelected:Boolean;
-		private var _data:VOListCreate;
+		private var _data:VOTableName;
 		private var _scale:Number;
 		
 		private var _labelTitle:Label;
-		private var _labelCreate:Label;
-		private var _labelPersent:Label;
-		private var _labelModified:Label;
 		
 		private var _quadBg:Quad;
 		//--------------------------------------------------------------------------------------------------------- 
@@ -48,7 +45,7 @@ package com.Application.robotlegs.views.components.renderers{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		public function ItemrendererSelectExistingList(){
+		public function ItemrendererOpenList(){
 			this.addEventListener(TouchEvent.TOUCH, _touchHandler);
 			this.addEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 		}
@@ -60,10 +57,11 @@ package com.Application.robotlegs.views.components.renderers{
 		//---------------------------------------------------------------------------------------------------------
 		override public function dispose():void{
 			_data = null;
+			this.removeEventListener(TouchEvent.TOUCH, _touchHandler);
 			this.removeEventListener(starling.events.Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			if(_labelCreate){
-				removeChild(_labelCreate, true);
-				_labelCreate = null;
+			if(_labelTitle){
+				removeChild(_labelTitle, true);
+				_labelTitle = null;
 			}
 			
 		}
@@ -74,7 +72,7 @@ package com.Application.robotlegs.views.components.renderers{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override protected function get defaultStyleProvider():IStyleProvider {
-			return ItemrendererMainMenu.globalStyleProvider;
+			return ItemrendererOpenList.globalStyleProvider;
 		}
 		
 		public function set scale(value:Number):void{_scale = value;}
@@ -100,7 +98,7 @@ package com.Application.robotlegs.views.components.renderers{
 				this._data = null;
 				
 				this.touchPointID = -1;
-				this._data = VOListCreate(value);				
+				this._data = VOTableName(value);				
 				this.invalidate(INVALIDATION_FLAG_DATA);
 			}
 		}
@@ -128,10 +126,6 @@ package com.Application.robotlegs.views.components.renderers{
 				_labelTitle = new Label();
 				addChild(_labelTitle);
 			}
-			if(!_labelCreate){
-				_labelCreate = new Label();
-				addChild(_labelCreate);
-			}
 			
 		}
 		
@@ -145,21 +139,14 @@ package com.Application.robotlegs.views.components.renderers{
 				
 				if(_labelTitle){	
 					_labelTitle.width = _owner.width - int(8*_scale);
-					_labelTitle.text = _data.nameList;
+					_labelTitle.text = _data.title;
 					_labelTitle.x = int(8*_scale);
-					_labelTitle.y = int(8*_scale);
+					_labelTitle.y = int(24*_scale);
 					_labelTitle.validate();
-				}
-				if(_labelCreate){	
-					_labelCreate.width = _quadBg.width - int(8*_scale);
-					//_labelCreate.text = _data.titleDesc;
-					_labelCreate.x = int(8*_scale);
-					_labelCreate.y = _labelTitle.y + _labelTitle.height + int(8*_scale);
-					_labelCreate.validate();
 				}
 				
 				if(_quadBg){
-					_quadBg.height = _labelCreate.y + _labelCreate.height+ int(8*_scale);
+					_quadBg.height = _labelTitle.y + _labelTitle.height+ int(24*_scale);
 				}
 				
 				height = _quadBg.height;

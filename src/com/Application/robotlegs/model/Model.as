@@ -2,6 +2,7 @@ package com.Application.robotlegs.model {
 
 	import com.Application.Main;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
+	import com.Application.robotlegs.model.vo.VOOpenList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.model.vo.VOScreenID;
 	import com.Application.robotlegs.model.vo.VOTableName;
@@ -28,6 +29,8 @@ package com.Application.robotlegs.model {
 		private var _currentCategories:Vector.<VOPackedItem>;
 		
 		private var _currentTableName:VOTableName;
+		
+		private var _voOpenList:VOOpenList;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -50,6 +53,10 @@ package com.Application.robotlegs.model {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
+
+		public function get voOpenList():VOOpenList{return _voOpenList;}
+		public function set voOpenList(value:VOOpenList):void{_voOpenList = value;}
+
 		public function get appLists():Vector.<VOTableName> {return _appLists;}
 		public function set appLists(value:Vector.<VOTableName>):void {
 			_appLists = value;		

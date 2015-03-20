@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.main {
 	import com.Application.robotlegs.model.vo.VOMainMenu;
+	import com.Application.robotlegs.model.vo.VOOpenList;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
 	import com.Application.robotlegs.views.components.renderers.EventRenderer;
@@ -44,9 +45,6 @@ package com.Application.robotlegs.views.main {
 		override public function onRemove():void {
 			super.onRemove();
 					
-			removeViewListener(EventViewMain.CREATE_NEW_LIST, _handlerRendererClick, EventViewMain);
-			
-			
 			removeViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
 		}
 		
@@ -77,7 +75,12 @@ package com.Application.robotlegs.views.main {
 		private function _handlerRendererClick(event:EventRenderer):void{
 			var pVO:VOMainMenu = VOMainMenu(event.payload);
 			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
-				dispatch(new EventViewMain(EventViewMain.CREATE_NEW_LIST));
+				dispatch(new EventViewAbstract(EventViewAbstract.CREATE_NEW_LIST));
+			}
+			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList") == pVO.title){
+				var pVOOpen:VOOpenList = new VOOpenList();
+				pVOOpen.isOpen = true;
+				dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, pVOOpen));
 			}
 		}
 		

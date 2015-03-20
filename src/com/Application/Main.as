@@ -2,9 +2,11 @@ package com.Application {
 	import com.Application.components.screenLoader.ScreenLoader;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOScreenID;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.open.ViewOpen;
 	import com.Application.robotlegs.views.packedList.EventViewPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.settings.EventViewSettings;
@@ -50,6 +52,7 @@ package com.Application {
 		public static const VIEW_WELCOME:String = "VIEW_WELCOME";		
 		public static const VIEW_SETTINGS:String = "VIEW_SETTINGS";
 		public static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
+		public static const VIEW_OPEN:String = "VIEW_OPEN";		
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;		
@@ -147,6 +150,11 @@ package com.Application {
 				packedListItem.pushTransition = Slide.createSlideLeftTransition();
 				packedListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN_MENU);
 			this._navigator.addScreen(VIEW_PACKED_LIST, packedListItem);
+									
+			var openItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewOpen);
+				openItem.pushTransition = Slide.createSlideLeftTransition();
+				openItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
+			this._navigator.addScreen(VIEW_OPEN, openItem);
 									
 			
 			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);
