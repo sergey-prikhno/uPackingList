@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.components.renderers{
 	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	
 	import feathers.controls.Label;
 	import feathers.controls.List;
@@ -176,7 +177,8 @@ package com.Application.robotlegs.views.components.renderers{
 				_isTouch = false;
 				}*/
 				if(touch.phase == TouchPhase.ENDED) {
-					dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
+					//dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
+					dispatchEvent(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, true, _data));
 				}
 			}		
 		}

@@ -37,15 +37,14 @@ package com.Application.robotlegs.views.main {
 			super.onRegister();
 						
 			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
-			
-			addViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
+						
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
 					
-			removeViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
+			removeViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);		
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -67,11 +66,7 @@ package com.Application.robotlegs.views.main {
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		private function _handlerCallTestService(event:EventViewMain):void{
-			dispatch(event);
-		}
-		
+		//---------------------------------------------------------------------------------------------------------				
 		private function _handlerRendererClick(event:EventRenderer):void{
 			var pVO:VOMainMenu = VOMainMenu(event.payload);
 			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
@@ -84,9 +79,7 @@ package com.Application.robotlegs.views.main {
 			}
 		}
 		
-		private function _handlerGetPachedItems(event:EventViewAbstract):void{
-			dispatch(event);
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

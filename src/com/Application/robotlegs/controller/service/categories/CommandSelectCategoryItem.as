@@ -1,5 +1,6 @@
 package com.Application.robotlegs.controller.service.categories {
 	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.services.categories.IServiceCategories;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	
@@ -41,11 +42,9 @@ package com.Application.robotlegs.controller.service.categories {
 		//---------------------------------------------------------------------------------------------------------
 		override public function execute():void{
 			trace("Select table Wait for Event with DATA Here");
-			
-			//var pData:VOPackedItem = VOPackedItem(event.data);
-			
-		//	var pData:VOPackedItem = VOPackedItem(model.appLists[0]);
-			model.currentTableName = model.appLists[2];
+								
+			var pData:VOTableName = VOTableName(event.data);
+			model.currentTableName = pData;
 			
 			service.load(model.currentTableName.table_name);			
 		}	

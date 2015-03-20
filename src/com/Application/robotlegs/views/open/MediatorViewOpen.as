@@ -3,6 +3,7 @@ package com.Application.robotlegs.views.open {
 	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
+	import com.http.robotlegs.model.modelLoading.EventActorLoader;
 	
 	public class MediatorViewOpen extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -35,6 +36,8 @@ package com.Application.robotlegs.views.open {
 			super.onRegister();
 						
 			
+			addViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
+			
 			dispatch(new EventViewOpen(EventViewOpen.GET_VOOPEN_LIST_DATA, false, null, _setVOOpenListData));
 			dispatch(new EventViewAbstract(EventViewAbstract.GET_CREATED_LISTS, false, null, _setLists));
 			
@@ -44,7 +47,7 @@ package com.Application.robotlegs.views.open {
 		override public function onRemove():void {
 			super.onRemove();
 					
-
+			removeViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -76,7 +79,10 @@ package com.Application.robotlegs.views.open {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		private function _handlerGetPachedItems(event:EventViewAbstract):void{
+			event.stopPropagation();
+			dispatch(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, false, event.data));
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

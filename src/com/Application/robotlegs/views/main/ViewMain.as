@@ -138,13 +138,9 @@ package com.Application.robotlegs.views.main {
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		
+		//---------------------------------------------------------------------------------------------------------				
 		private function _handlerSettingsButton(event:Event):void{
-		//	dispatchEvent(new EventViewMain(EventViewMain.SHOW_SETTINGS_SCREEN));
-			
-			dispatchEvent(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA));			
+			dispatchEvent(new EventViewMain(EventViewMain.SHOW_SETTINGS_SCREEN));							
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
