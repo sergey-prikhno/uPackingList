@@ -173,7 +173,7 @@ package com.Application.robotlegs.services.copyList {
 					paramsItem["parentId"] = pItem.parentId;
 					paramsItem["isChild"] = pItem.isChild.toString();
 					paramsItem["label"] = pItem.label;
-					paramsItem["isPacked"] = pItem.isPacked.toString();
+					paramsItem["isPacked"] = "false";
 					paramsItem["orderIndex"] = pItem.orderIndex;
 					paramsItem["item_id"] = pItem.item_id;
 					
@@ -194,7 +194,7 @@ package com.Application.robotlegs.services.copyList {
 							paramsChild["parentId"] = pChild.parentId;
 							paramsChild["isChild"] = pChild.isChild.toString();
 							paramsChild["label"] = pChild.label;
-							paramsChild["isPacked"] = pChild.isPacked.toString();
+							paramsChild["isPacked"] = "false";
 							paramsChild["orderIndex"] = pChild.orderIndex;
 							paramsChild["item_id"] = pChild.item_id;
 							
