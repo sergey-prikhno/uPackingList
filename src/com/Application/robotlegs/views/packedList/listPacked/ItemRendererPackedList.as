@@ -685,7 +685,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
 				if(isInBounds){
 					
-					if(!DragDropListPackedManager.isDragging){
+					if(!DragDropListPackedManager.isDragging && _owner.isDragable){
 						
 						if(_data.isOpen && !_data.isChild){
 							this.dispatchEventWith(EventViewPackedList.CLICK_ITEM,true,_data);

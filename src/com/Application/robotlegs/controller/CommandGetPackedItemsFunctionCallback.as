@@ -14,8 +14,7 @@ package com.Application.robotlegs.controller {
 		public var model:IModel;
 		
 		[Inject]
-		public var event:EventViewAbstract;
-		
+		public var event:EventViewAbstract;		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES

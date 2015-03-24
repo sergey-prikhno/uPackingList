@@ -147,8 +147,7 @@ package com.Application.robotlegs.views.open{
 			super.draw();
 			
 			if(_header){
-				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");
-				_header.width = _nativeStage.stageWidth;
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");				
 			}
 			
 			if(_buttonAddNewList){

@@ -119,8 +119,7 @@ package com.Application.robotlegs.views.main {
 			super.draw();
 			
 			if(_header){
-				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");
-				_header.width = _nativeStage.stageWidth;
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");				
 			}
 			if(_list){
 				_layoutVertical.gap = int(88*_scaleHeight);
