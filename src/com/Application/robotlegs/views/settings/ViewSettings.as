@@ -71,8 +71,7 @@ package com.Application.robotlegs.views.settings {
 			super.draw();
 			
 			if(_header){
-				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.settings");
-				_header.width = _nativeStage.stageWidth;
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.settings");				
 			}
 			
 		}

@@ -26,7 +26,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _isEditing:Boolean = false;						
+		private var _isEditing:Boolean = false;		
+		private var _isDragable:Boolean = true;
 		public static const DRAG_FORMAT:String = "itemDrag";
 				
 		//--------------------------------------------------------------------------------------------------------- 
@@ -59,8 +60,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		public function get viewPordData():ListDataViewPort{
-			return dataViewPort;
-			
+			return dataViewPort;			
 		}
 		
 		public function get isEditing():Boolean { return _isEditing;}
@@ -69,6 +69,11 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			
 			dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_STATE));
 		}		
+		
+		public function get isDragable():Boolean { return _isDragable;}
+		public function set isDragable(value:Boolean):void{
+			_isDragable = value;
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -150,12 +155,15 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					try{								
 						pUnderItemData = VOPackedItem(dataProvider.getItemAt(pIndex));							
 						
-						pItemDroppedData.orderIndex = pUnderItemData.orderIndex;				
-						pVectorItems.push(pItemDroppedData);									
+						if(!pUnderItemData.isChild){
+							pItemDroppedData.orderIndex = pUnderItemData.orderIndex;				
+							pVectorItems.push(pItemDroppedData);
+						}
+						
 					} catch(error:Error) { }
 										
 					
-					if(pUnderItemData) {													
+					if(pUnderItemData && !pUnderItemData.isChild) {													
 						var pL:Number = pIndex;					
 														
 						for(var i:int=pL;i<dataProvider.length;i++){				
@@ -164,6 +172,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 							
 							pVectorItems.push(pGetItem);							
 						}						
+					} else if(pUnderItemData && pUnderItemData.isChild) {
+						pIndex = droppedObject.backIndex;
 					}
 					
 				} else {

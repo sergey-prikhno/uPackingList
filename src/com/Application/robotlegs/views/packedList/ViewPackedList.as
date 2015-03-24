@@ -4,6 +4,8 @@ package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
 	import com.Application.robotlegs.views.components.bottomMenu.EventBottomMenu;
+	import com.Application.robotlegs.views.components.searchInput.EventSearchInput;
+	import com.Application.robotlegs.views.components.searchInput.SearchInput;
 	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
 	import com.Application.robotlegs.views.packedList.listPacked.ListPacked;
 	import com.common.Constants;
@@ -14,6 +16,9 @@ package com.Application.robotlegs.views.packedList {
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	
@@ -40,6 +45,8 @@ package com.Application.robotlegs.views.packedList {
 		
 		private var _bottomMenu:BottomMenu;
 		private var _tableName:VOTableName;
+		
+		private var _search:SearchInput;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -67,10 +74,21 @@ package com.Application.robotlegs.views.packedList {
 			
 			if(_bottomMenu){
 				_bottomMenu.removeEventListener(EventBottomMenu.COLLAPSE, _handlerCollapse);
+				_bottomMenu.removeEventListener(EventBottomMenu.SEARCH, _handlerSearch);
 				_bottomMenu.destroy();
 				removeChild(_bottomMenu);
 				_bottomMenu = null;
 			}			
+			
+			
+			if(_search){
+				_search.removeEventListener(EventSearchInput.CANCEL, _handlerCancelSearch);
+				_search.removeEventListener(EventSearchInput.CHANGE, _handlerChange);
+				_search.destroy();
+				removeChild(_search);
+				_search = null;
+			}
+							
 			
 			_verticalLayout = null;
 			
@@ -158,9 +176,15 @@ package com.Application.robotlegs.views.packedList {
 			return ViewPackedList.globalStyleProvider;
 		}
 		
-		private var _aaa:Vector.<VOPackedItem>;
-		override protected function _initialize():void{
+		//private var _aaa:Vector.<VOPackedItem>;
+		override protected function _initialize():void{			
 			super._initialize();
+
+			_search = new SearchInput();		
+			_search.addEventListener(EventSearchInput.CANCEL, _handlerCancelSearch);
+			_search.addEventListener(EventSearchInput.CHANGE, _handlerChange);
+			addChild(_search);			
+			swapChildren(_search,_header);
 			
 			_verticalLayout = new VerticalLayout();
 			_verticalLayout.useVirtualLayout = true;			
@@ -177,7 +201,7 @@ package com.Application.robotlegs.views.packedList {
 			addChild(_list);	
 			
 			
-			var pChild1:VOPackedItem = new VOPackedItem();
+		/*	var pChild1:VOPackedItem = new VOPackedItem();
 			pChild1.isChild = true;
 			pChild1.parentId = 2;
 			pChild1.id = 1;
@@ -277,7 +301,7 @@ package com.Application.robotlegs.views.packedList {
 			_aaa.push(p5);
 			_aaa.push(p6);
 			_aaa.push(p7);
-			_aaa.push(p8);
+			_aaa.push(p8);*/
 			
 			if(_items && _items.length > 0){
 				_list.dataProvider = new ListCollection(_items);
@@ -313,29 +337,36 @@ package com.Application.robotlegs.views.packedList {
 			_bottomMenu.isPack = true;
 			addChild(_bottomMenu);
 			_bottomMenu.addEventListener(EventBottomMenu.COLLAPSE, _handlerCollapse);
-			
+			_bottomMenu.addEventListener(EventBottomMenu.SEARCH, _handlerSearch);
+						
 			
 		}
 		
 		
 		override protected function draw():void{
 			super.draw();
-						
-			if(_header){										
-				_header.width = _nativeStage.fullScreenWidth;
-			}
-			
+												
 			if(_bottomMenu){
 				_bottomMenu.width = _nativeStage.fullScreenWidth;
 				_bottomMenu.height = int(88*_scaleHeight);
 				_bottomMenu.y = _nativeStage.stageHeight - _bottomMenu.height; 				
 			}
+						
+			if(_search && _search.width == 0){
+				_search.width = int(_nativeStage.fullScreenWidth);
+				_search.height = _header.height;
+				_search.validate();
+				_search.x = int(_nativeStage.fullScreenWidth/2 - _search.width/2);
+				_search.y = 0;
+			}
 			
 			if(_list){															
-				_list.y = _header.height;
+				//_list.y = _header.height;
+				_list.y = int(_search.y + _search.height);
 				_list.height = int(_nativeStage.fullScreenHeight- _header.height-_bottomMenu.height);
 				_list.validate();
-			}
+			}						
+						
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -377,30 +408,132 @@ package com.Application.robotlegs.views.packedList {
 		
 		
 		private function _handlerCollapse(event:EventBottomMenu):void{
-			
-			if(_list && _list.dataProvider && _list.dataProvider.length > 0 && _items && _items.length > 0){
-				
-				for(var i:int=0;i<_items.length;i++){				
-					var pParentItem:VOPackedItem = VOPackedItem(_items[i]);					
-						pParentItem.isOpen = false;		
-						
-						if(pParentItem.isChild){
-							_items.splice(i,1);
-							i--;
-						}												
-				}
-						
-				_list.dataProvider = new ListCollection(_items);
-				_list.validate();															
-			}					
+			_collapseItems();
+					
 		}
+		
+		
+		/**
+		 * 
+		 * show Search
+		 * 
+		 */
+		private function _handlerSearch(event:EventBottomMenu):void{
 			
+			if(_search.y == 0){
+								
+				var pTween:Tween = new Tween(_search,.3,Transitions.EASE_OUT);
+					pTween.moveTo(_search.x,_header.height);
+					pTween.onUpdate = onUpdate;
+					pTween.onComplete = onComplete;
+				
+					Starling.juggler.add(pTween);
+			}
+			
+		}
+		
+		
+		
+		private function _handlerCancelSearch(event:EventSearchInput):void{
+			_collapseItems();
+			
+			var pTween:Tween = new Tween(_search,.3,Transitions.EASE_OUT);
+				pTween.moveTo(_search.x,0);
+				pTween.onUpdate = onUpdate;
+				pTween.onComplete = onComplete;
+			
+			Starling.juggler.add(pTween);						
+		}
+		
+		private function _handlerChange(event:EventSearchInput):void{
+			trace(_search.text);
+			
+			
+			var pFilteredVector:Vector.<VOPackedItem> = new Vector.<VOPackedItem>();
+			
+			if(_search.text.length > 0){
+				for(var i:int=0;i<_items.length;i++){
+					var pItem:VOPackedItem = VOPackedItem(_items[i]);
+					
+					if(!pItem.isChild){					
+						var pFilTemp:Vector.<VOPackedItem> = Vector.<VOPackedItem>(pItem.childrens).filter(_searchFilter);					
+						pFilteredVector = pFilteredVector.concat(pFilTemp);					
+					}			
+				}
+			}
+			
+			_list.dataProvider = new ListCollection(pFilteredVector);
+		}				
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
+		private function onUpdate():void{
+			if(_list){
+				_list.y = int(_search.y + _search.height);												
+			}
+		}
 		
+		private function onComplete():void{
+				
+			_list.y = int(_search.y + _search.height);
+		
+			if(_search.y == 0){
+				_list.isDragable = true;				
+				//_list.height = int(_nativeStage.fullScreenHeight- _header.height-_bottomMenu.height);
+			} else {
+				_list.isDragable = false;
+				//_list.height = int(_nativeStage.fullScreenHeight- (_header.height*3));				
+			}
+			 			
+			//_list.validate();				
+								
+			Starling.juggler.removeTweens(_search);
+		}
+		
+		/**
+		 * 
+		 * Search Filter
+		 * 
+		 */
+		private function _searchFilter(item:VOPackedItem, index:int, vector:Vector.<VOPackedItem>):Boolean {
+			var pIsIsset:Boolean = false;
+			// your code here
+			
+			var pLabel:String = item.label.toLowerCase();
+			var pSearch:String = _search.text.toLowerCase();
+			
+			if(pLabel.indexOf(pSearch) >= 0){
+				pIsIsset = true;
+			}
+			
+			return pIsIsset;
+		}
+		
+		
+		/**
+		 * 
+		 * Collapse Items
+		 * 
+		 */
+		private function _collapseItems():void{
+			if(_list && _items && _items.length > 0){
+				
+				for(var i:int=0;i<_items.length;i++){				
+					var pParentItem:VOPackedItem = VOPackedItem(_items[i]);					
+					pParentItem.isOpen = false;		
+					
+					if(pParentItem.isChild){
+						_items.splice(i,1);
+						i--;
+					}												
+				}
+				
+				_list.dataProvider = new ListCollection(_items);
+				_list.validate();															
+			}			
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  END CLASS  

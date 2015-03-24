@@ -1,43 +1,42 @@
-package com.Application.robotlegs.views {
+package com.Application.robotlegs.views.components.searchInput {
+	import com.common.Constants;
+	
 	import flash.display.Stage;
 	
 	import ch.ala.locale.LocaleManager;
 	
-	import feathers.controls.Header;
-	import feathers.controls.Screen;
-	import feathers.display.Scale9Image;
-	import feathers.textures.Scale9Textures;
+	import feathers.controls.Button;
+	import feathers.controls.TextInput;
+	import feathers.core.FeathersControl;
 	
 	import starling.core.Starling;
+	import starling.events.Event;
 	
-	public class ViewAbstract extends Screen {		
+	public class SearchInput extends FeathersControl {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		protected var _resourceManager:LocaleManager;		
-		protected var _nativeStage:Stage;
+		private var _textInput:TextInput;
+		private var _buttonCancel:Button;
+		private var _nativeStage:Stage;
 		
-		protected var _scaleWidth:Number = 1;
-		protected var _scaleHeight:Number = 1;
-		
-		protected var _baseBackground:Scale9Image;
-		
-		protected var _header:Header;
-		
+		private var _text:String = "";
+		protected var _resourceManager:LocaleManager;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function ViewAbstract() {
+		public function SearchInput() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -45,83 +44,94 @@ package com.Application.robotlegs.views {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function activate():void{
-			trace("activate");
-						
-		}
-		
 		public function destroy():void{
-			trace("destroy");
 			
-			if(_baseBackground){				
-				removeChild(_baseBackground);
-				_baseBackground = null;
+			if(_textInput){
+				_textInput.removeEventListener(Event.CHANGE, _handlerChange);
+				removeChild(_textInput);
+				_textInput = null;
 			}
-		}				
+						 
+			if(_buttonCancel){
+				_buttonCancel.removeEventListener(Event.TRIGGERED, _handlerCancel);
+				removeChild(_buttonCancel);	
+				_buttonCancel = null;
+			}
+								
+		}		
+		
+		public function reset():void{
+			if(_textInput){
+				_textInput.text = "";
+			}
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function set scaleWidth(value:Number):void{
-			_scaleWidth = value;
-		}
+		public function get text():String { return _text;}
 		
-		public function set scaleHeight(value:Number):void{
-			_scaleHeight = value;
-		}
-		
-		public function set baseBackground(value:Scale9Textures):void{
-			_baseBackground = new Scale9Image(value);	
-			invalidate(INVALIDATION_FLAG_STYLES);
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		// must ovveride in sub class
-		protected function _initialize():void{
-									
-		}		
-		
-		override protected function initialize():void{	
+		override protected function initialize():void{
 			super.initialize();
 			
 			_resourceManager = LocaleManager.getInstance();
 			_nativeStage = Starling.current.nativeStage;
-						
-			_header = new Header();
-			addChild(_header);
 			
-			_initialize();	
-		}		
+			_textInput = new TextInput();
+			_textInput.prompt = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "search.prompt");
+			_textInput.addEventListener(Event.CHANGE, _handlerChange);
+			addChild(_textInput);
+			
+			_buttonCancel = new Button();
+			_buttonCancel.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.cancel");
+			_buttonCancel.addEventListener(Event.TRIGGERED, _handlerCancel);
+			addChild(_buttonCancel);					
+		}
 		
 		
 		override protected function draw():void{
 			super.draw();
 			
-			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
-			
-			if(stylesInvalid){			
-				if(_baseBackground && !contains(_baseBackground)){
-					_baseBackground.width = _nativeStage.fullScreenWidth;
-					_baseBackground.height = _nativeStage.fullScreenHeight;
-					addChildAt(_baseBackground, 0);
+			if(width != 0){
+				
+				if(_textInput){
+					_textInput.x = 0;
+					_textInput.y = 0;
+					_textInput.width = int(width/1.2);
+					_textInput.height = height;
+					_textInput.validate();
 				}
+				
+				
+				if(_buttonCancel){
+					_buttonCancel.width = int(width - _textInput.width);
+					_buttonCancel.height = height;
+					_buttonCancel.validate();
+					_buttonCancel.x = int(width - _buttonCancel.width);
+					_buttonCancel.y = 0;
+				}
+								
 			}
-			
-			if(_header){										
-				_header.width = _nativeStage.fullScreenWidth;
-			}
-						
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		private function _handlerChange(event:Event):void{
+			_text = _textInput.text;
+			dispatchEvent(new EventSearchInput(EventSearchInput.CHANGE));
+		}
 		
+		private function _handlerCancel(event:Event):void{			
+			dispatchEvent(new EventSearchInput(EventSearchInput.CANCEL));
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
