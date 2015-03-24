@@ -26,18 +26,18 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var panel:Panel = new Panel();
 	 * panel.title = "Is it time to party?";
-	 *
+	 * 
 	 * var layout:HorizontalLayout = new HorizontalLayout();
 	 * layout.gap = 20;
 	 * layout.padding = 20;
 	 * panel.layout = layout;
-	 *
+	 * 
 	 * this.addChild( panel );
-	 *
+	 * 
 	 * var yesButton:Button = new Button();
 	 * yesButton.label = "Yes";
 	 * panel.addChild( yesButton );
-	 *
+	 * 
 	 * var noButton:Button = new Button();
 	 * noButton.label = "No";
 	 * panel.addChild( noButton );</listing>
@@ -1340,6 +1340,10 @@ package feathers.controls
 				this.footer.width = oldFooterWidth;
 				this.footer.height = oldFooterHeight;
 				this._ignoreFooterResizing = oldIgnoreFooterResizing;
+			}
+			else
+			{
+				this._bottomViewPortOffset += this._outerPaddingBottom;
 			}
 		}
 

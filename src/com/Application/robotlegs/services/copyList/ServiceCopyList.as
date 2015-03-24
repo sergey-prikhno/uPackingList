@@ -107,7 +107,7 @@ package com.Application.robotlegs.services.copyList {
 				for(var k:int=0;k<result.data.length;k++){
 					var pResChild:VOPackedItem = VOPackedItem(result.data[k]);															
 					
-					if(pResChild.isChild && pResChild.parentId == pParentItem.id){
+					if(pResChild.isChild && pResChild.parentId == pParentItem.item_id){
 						pParentItem.childrens.push(pResChild);																	
 					}
 					
@@ -174,6 +174,8 @@ package com.Application.robotlegs.services.copyList {
 					paramsItem["isChild"] = pItem.isChild.toString();
 					paramsItem["label"] = pItem.label;
 					paramsItem["isPacked"] = pItem.isPacked.toString();
+					paramsItem["orderIndex"] = pItem.orderIndex;
+					paramsItem["item_id"] = pItem.item_id;
 					
 					stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsItem);
 					
@@ -193,6 +195,8 @@ package com.Application.robotlegs.services.copyList {
 							paramsChild["isChild"] = pChild.isChild.toString();
 							paramsChild["label"] = pChild.label;
 							paramsChild["isPacked"] = pChild.isPacked.toString();
+							paramsChild["orderIndex"] = pChild.orderIndex;
+							paramsChild["item_id"] = pChild.item_id;
 							
 							stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsChild);
 						}
@@ -232,8 +236,7 @@ package com.Application.robotlegs.services.copyList {
 			for(var i:int=0;i<result.data.length;i++){
 				var pResItem:VOPackedItem = VOPackedItem(result.data[i]);								
 				
-				if(!pResItem.isChild){
-					pResItem.id = pResItem.parentId;
+				if(!pResItem.isChild){					
 					pParent.push(pResItem);
 				}				
 			}
@@ -245,7 +248,7 @@ package com.Application.robotlegs.services.copyList {
 				for(var k:int=0;k<result.data.length;k++){
 					var pResChild:VOPackedItem = VOPackedItem(result.data[k]);															
 					
-					if(pResChild.isChild && pResChild.parentId == pParentItem.id){
+					if(pResChild.isChild && pResChild.parentId == pParentItem.item_id){
 						pParentItem.childrens.push(pResChild);																	
 					}
 					
@@ -260,7 +263,7 @@ package com.Application.robotlegs.services.copyList {
 		
 		private function executeBatch_error(error:SQLError):void {
 			
-			trace("create table with default Complete");
+			trace("create Copy  table with default Complete");
 			//dispatch(new SQLErrorEvent(SQLErrorEvent.ERROR, false, false, error));
 		}
 		

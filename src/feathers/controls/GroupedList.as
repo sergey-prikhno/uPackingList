@@ -141,7 +141,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var list:GroupedList = new GroupedList();
-	 *
+	 * 
 	 * list.dataProvider = new HierarchicalCollection(
 	 * [
 	 *     {
@@ -169,7 +169,7 @@ package feathers.controls
 	 *         ]
 	 *     },
 	 * ]);
-	 *
+	 * 
 	 * list.itemRendererFactory = function():IGroupedListItemRenderer
 	 * {
 	 *     var renderer:DefaultGroupedListItemRenderer = new DefaultGroupedListItemRenderer();
@@ -177,9 +177,9 @@ package feathers.controls
 	 *     renderer.iconSourceField = "thumbnail";
 	 *     return renderer;
 	 * };
-	 *
+	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
-	 *
+	 * 
 	 * this.addChild( list );</listing>
 	 *
 	 * @see ../../../help/grouped-list.html How to use the Feathers GroupedList component
@@ -470,6 +470,13 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
@@ -2480,17 +2487,29 @@ package feathers.controls
 		 * After the next validation, scrolls the list so that the specified
 		 * item is visible. If <code>animationDuration</code> is greater than
 		 * zero, the scroll will animate. The duration is in seconds.
+		 * 
+		 * <p>The <code>itemIndex</code> parameter is optional. If set to
+		 * <code>-1</code>, the list will scroll to the start of the specified
+		 * group.</p>
 		 *
 		 * <p>In the following example, the list is scrolled to display the
 		 * third item in the second group:</p>
 		 *
 		 * <listing version="3.0">
 		 * list.scrollToDisplayIndex( 1, 2 );</listing>
+		 *
+		 * <p>In the following example, the list is scrolled to display the
+		 * third group:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.scrollToDisplayIndex( 2 );</listing>
 		 */
-		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int, animationDuration:Number = 0):void
+		public function scrollToDisplayIndex(groupIndex:int, itemIndex:int = -1, animationDuration:Number = 0):void
 		{
-			this.pendingHorizontalPageIndex = -1;
-			this.pendingVerticalPageIndex = -1;
+			//cancel any pending scroll to a different page or scroll position.
+			//we can have only one type of pending scroll at a time.
+			this.hasPendingHorizontalPageIndex = false;
+			this.hasPendingVerticalPageIndex = false;
 			this.pendingHorizontalScrollPosition = NaN;
 			this.pendingVerticalScrollPosition = NaN;
 			if(this.pendingGroupIndex == groupIndex &&
@@ -2666,10 +2685,17 @@ package feathers.controls
 		 */
 		override protected function handlePendingScroll():void
 		{
-			if(this.pendingGroupIndex >= 0 && this.pendingItemIndex >= 0)
+			if(this.pendingGroupIndex >= 0)
 			{
-				var item:Object = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
-				if(item is Object)
+				if(this.pendingItemIndex >= 0)
+				{
+					var pendingData:Object = this._dataProvider.getItemAt(this.pendingGroupIndex, this.pendingItemIndex);
+				}
+				else
+				{
+					pendingData = this._dataProvider.getItemAt(this.pendingGroupIndex);
+				}
+				if(pendingData is Object)
 				{
 					this.dataViewPort.getScrollPositionForIndex(this.pendingGroupIndex, this.pendingItemIndex, HELPER_POINT);
 					this.pendingGroupIndex = -1;

@@ -14,6 +14,7 @@ package feathers.controls.text
 
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.text.TextFormatAlign;
 
 	import starling.core.RenderSupport;
@@ -22,6 +23,7 @@ package feathers.controls.text
 	import starling.text.BitmapChar;
 	import starling.text.BitmapFont;
 	import starling.text.TextField;
+	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 
 	/**
@@ -465,6 +467,13 @@ package feathers.controls.text
 				fontSizeScale = 1;
 			}
 			var baseline:Number = font.baseline;
+			//for some reason, if we don't call a function right here,
+			//compiling with the flex 4.6 SDK will throw a VerifyError
+			//for a stack overflow.
+			//we could change the !== check back to isNaN() instead, but
+			//isNaN() can allocate an object, so we should call a different
+			//function without allocation.
+			this.doNothing();
 			if(baseline !== baseline) //isNaN
 			{
 				return font.lineHeight * fontSizeScale;
@@ -986,13 +995,26 @@ package feathers.controls.text
 		 */
 		protected function addCharacterToBatch(charData:BitmapChar, x:Number, y:Number, scale:Number, support:RenderSupport = null, parentAlpha:Number = 1):void
 		{
+			var texture:Texture = charData.texture;
+			var frame:Rectangle = texture.frame;
+			if(frame)
+			{
+				if(frame.width === 0 || frame.height === 0)
+				{
+					return;
+				}
+			}
+			else if(texture.width === 0 || texture.height === 0)
+			{
+				return;
+			}
 			if(!HELPER_IMAGE)
 			{
-				HELPER_IMAGE = new Image(charData.texture);
+				HELPER_IMAGE = new Image(texture);
 			}
 			else
 			{
-				HELPER_IMAGE.texture = charData.texture;
+				HELPER_IMAGE.texture = texture;
 				HELPER_IMAGE.readjustSize();
 			}
 			HELPER_IMAGE.scaleX = HELPER_IMAGE.scaleY = scale;
@@ -1150,6 +1172,13 @@ package feathers.controls.text
 			}
 			return this._text;
 		}
+
+		/**
+		 * @private
+		 * This function is here to work around a bug in the Flex 4.6 SDK
+		 * compiler. For explanation, see the places where it gets called.
+		 */
+		protected function doNothing():void {}
 	}
 }
 

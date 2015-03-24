@@ -125,7 +125,7 @@ package com.Application.robotlegs.views.welcome {
 				_scrollContainer.removeChild(_labelAlwaysShow);	
 				_labelAlwaysShow = null;
 			}					
-				
+			
 			if(_toggleButton){						
 				_scrollContainer.removeChild(_toggleButton);
 				_toggleButton = null;
@@ -141,8 +141,8 @@ package com.Application.robotlegs.views.welcome {
 				removeChild(_scrollContainer);
 				_scrollContainer = null;
 			}			
-					
-								
+			
+			
 			
 			super.destroy();			
 		}
@@ -157,7 +157,7 @@ package com.Application.robotlegs.views.welcome {
 		override protected function get defaultStyleProvider():IStyleProvider {
 			return ViewWelcome.globalStyleProvider;
 		}
-				
+		
 		public function set baseTextFormat(value:ElementFormat):void{
 			_baseTextFormat = value;
 			_updateTextFormats();						
@@ -173,7 +173,7 @@ package com.Application.robotlegs.views.welcome {
 		//---------------------------------------------------------------------------------------------------------
 		override protected function _initialize():void 	{			
 			super._initialize();			
-					
+			
 			if(_header){
 				removeChild(_header);
 				_header = null;
@@ -245,7 +245,7 @@ package com.Application.robotlegs.views.welcome {
 			_labelNiceJourney.wordWrap = true;
 			_labelNiceJourney.text = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "welcomScreen.niceJourney");
 			_scrollContainer.addChild(_labelNiceJourney);			
-				
+			
 			
 			_labelAlwaysShow = new Label();
 			_labelAlwaysShow.maxWidth =_labelTitle.maxWidth;
@@ -267,15 +267,15 @@ package com.Application.robotlegs.views.welcome {
 		
 		
 		private function _updateTextFormats():void{
-										
+			
 			if(_labelTitle){
 				_labelTitle.textRendererProperties.elementFormat = _baseTextFormat;
 				_labelTitle.textRendererProperties.elementFormat = _baseTextFormat;
 				_labelTitle.validate();
 				_labelTitle.x = int(_nativeStage.fullScreenWidth/2 - _labelTitle.width/2);
-				_labelTitle.y = int(40*_scaleHeight);
+				_labelTitle.y = int(30*_scaleHeight);
 			}
-				
+			
 			if(_labelDescription){				
 				_labelDescription.textRendererProperties.elementFormat = _baseTextFormat;				
 				_labelDescription.validate();
@@ -287,7 +287,7 @@ package com.Application.robotlegs.views.welcome {
 				_labelCreate.textRendererProperties.elementFormat = _baseTextFormat;				
 				_labelCreate.validate();
 				_labelCreate.x = _labelDescription.x;
-				_labelCreate.y = int(_labelDescription.y + _labelDescription.height*3);
+				_labelCreate.y = int(_labelDescription.y + _labelDescription.height*2);
 			}
 			
 			if(_labelCreateDescription){				
@@ -325,27 +325,27 @@ package com.Application.robotlegs.views.welcome {
 				_labelPackDescription.y = int(_labelPack.y + _labelPack.height*1.5);
 			}
 			
-		
+			
 			if(_labelBottomDescription){												
 				_labelBottomDescription.textRendererProperties.elementFormat = _baseTextFormat;					
 				_labelBottomDescription.validate();				
 				_labelBottomDescription.x = int(_nativeStage.fullScreenWidth/2 - _labelBottomDescription.width/2);
-				_labelBottomDescription.y = int(_labelPackDescription.y + _labelPackDescription.height + 100*_scaleHeight);
+				_labelBottomDescription.y = int(_labelPackDescription.y + _labelPackDescription.height + 80*_scaleHeight);
 			}
 			
-		
+			
 			if(_labelNiceJourney){				
 				_labelNiceJourney.textRendererProperties.elementFormat = _baseTextFormat;				
 				_labelNiceJourney.validate();				
 				_labelNiceJourney.x = int(_nativeStage.fullScreenWidth/2 - _labelNiceJourney.width/2);
-				_labelNiceJourney.y = int(_labelBottomDescription.y + _labelBottomDescription.height + 60*_scaleHeight);
+				_labelNiceJourney.y = int(_labelBottomDescription.y + _labelBottomDescription.height + 40*_scaleHeight);
 			}
 			
 			if(_labelAlwaysShow){				
 				_labelAlwaysShow.textRendererProperties.elementFormat = _baseTextFormat;				
 				_labelAlwaysShow.validate();				
 				_labelAlwaysShow.x = _labelCreate.x;
-				_labelAlwaysShow.y = int(_labelNiceJourney.y + _labelNiceJourney.height + 50*_scaleHeight);
+				_labelAlwaysShow.y = int(_labelNiceJourney.y + _labelNiceJourney.height + 30*_scaleHeight);
 			}			
 			
 			

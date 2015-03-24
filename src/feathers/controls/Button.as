@@ -22,7 +22,6 @@ package feathers.controls
 	import flash.utils.getTimer;
 
 	import starling.core.RenderSupport;
-
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
@@ -2195,6 +2194,11 @@ package feathers.controls
 		/**
 		 * @private
 		 */
+		protected var _ignoreIconResizes:Boolean = false;
+
+		/**
+		 * @private
+		 */
 		override public function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			var scale:Number = 1;
@@ -2290,7 +2294,7 @@ package feathers.controls
 			{
 				return false;
 			}
-			this.refreshMaxLabelWidth(true);
+			this.refreshMaxLabelSize(true);
 			if(this.labelTextRenderer)
 			{
 				this.labelTextRenderer.measureText(HELPER_POINT);
@@ -2498,6 +2502,10 @@ package feathers.controls
 			{
 				if(oldIcon)
 				{
+					if(oldIcon is IFeathersControl)
+					{
+						IFeathersControl(oldIcon).removeEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
+					}
 					this.removeChild(oldIcon, false);
 				}
 				if(this.currentIcon)
@@ -2509,6 +2517,10 @@ package feathers.controls
 						index = this.getChildIndex(DisplayObject(this.labelTextRenderer));
 					}
 					this.addChildAt(this.currentIcon, index);
+					if(this.currentIcon is IFeathersControl)
+					{
+						IFeathersControl(this.currentIcon).addEventListener(FeathersEventType.RESIZE, currentIcon_resizeHandler);
+					}
 				}
 			}
 		}
@@ -2569,7 +2581,9 @@ package feathers.controls
 		 */
 		protected function layoutContent():void
 		{
-			this.refreshMaxLabelWidth(false);
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
+			this.refreshMaxLabelSize(false);
 			if(this._label && this.labelTextRenderer && this.currentIcon)
 			{
 				this.labelTextRenderer.validate();
@@ -2605,18 +2619,20 @@ package feathers.controls
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 		}
 
 		/**
 		 * @private
 		 */
-		protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
+		protected function refreshMaxLabelSize(forMeasurement:Boolean):void
 		{
 			if(this.currentIcon is IValidating)
 			{
 				IValidating(this.currentIcon).validate();
 			}
 			var calculatedWidth:Number = this.actualWidth;
+			var calculatedHeight:Number = this.actualHeight;
 			if(forMeasurement)
 			{
 				calculatedWidth = this.explicitWidth;
@@ -2624,28 +2640,33 @@ package feathers.controls
 				{
 					calculatedWidth = this._maxWidth;
 				}
+				calculatedHeight = this.explicitHeight;
+				if(calculatedHeight !== calculatedHeight) //isNaN
+				{
+					calculatedHeight = this._maxHeight;
+				}
 			}
-			if(this._label && this.labelTextRenderer && this.currentIcon)
+			if(this._label && this.labelTextRenderer)
 			{
-				if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
-					this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
+				this.labelTextRenderer.maxHeight = calculatedHeight - this._paddingTop - this._paddingBottom;
+				if(this.currentIcon)
 				{
 					var adjustedGap:Number = this._gap;
 					if(adjustedGap == Number.POSITIVE_INFINITY)
 					{
 						adjustedGap = this._minGap;
 					}
-					this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight - this.currentIcon.width - adjustedGap;
+					if(this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
+						this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE)
+					{
+						this.labelTextRenderer.maxWidth -= (this.currentIcon.width + adjustedGap);
+					}
+					if(this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM)
+					{
+						this.labelTextRenderer.maxHeight -= (this.currentIcon.height + adjustedGap);
+					}
 				}
-				else
-				{
-					this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
-				}
-
-			}
-			else if(this._label && this.labelTextRenderer && !this.currentIcon)
-			{
-				this.labelTextRenderer.maxWidth = calculatedWidth - this._paddingLeft - this._paddingRight;
 			}
 		}
 		
@@ -2991,6 +3012,18 @@ package feathers.controls
 			}
 			this.resetTouchState();
 			this.trigger();
+		}
+
+		/**
+		 * @private
+		 */
+		protected function currentIcon_resizeHandler():void
+		{
+			if(this._ignoreIconResizes)
+			{
+				return;
+			}
+			this.invalidate(INVALIDATION_FLAG_SIZE);
 		}
 	}
 }

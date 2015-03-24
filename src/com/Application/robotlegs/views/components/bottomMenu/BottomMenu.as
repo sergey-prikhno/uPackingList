@@ -4,6 +4,7 @@ package com.Application.robotlegs.views.components.bottomMenu{
 	import feathers.skins.IStyleProvider;
 	
 	import starling.display.Quad;
+	import starling.events.Event;
 	
 	public class BottomMenu extends FeathersControl{
 		
@@ -56,7 +57,52 @@ package com.Application.robotlegs.views.components.bottomMenu{
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public function destroy():void{
+			
+			if(_buttonHome){				 
+				_buttonHome.removeEventListener(Event.TRIGGERED, _handlerHome);
+				removeChild(_buttonHome);
+				_buttonHome = null;
+			}
+			
+			if(_buttonSearch){
+				_buttonSearch.removeEventListener(Event.TRIGGERED, _handlerSearch);				
+				removeChild(_buttonSearch);
+				_buttonSearch = null;
+			}
+			
+			if(_buttonPack){				 
+				_buttonPack.removeEventListener(Event.TRIGGERED, _handlerPack);
+				removeChild(_buttonPack);
+				_buttonPack = null;
+			}
+			
+			
+			if(_buttonCollapse){
+				_buttonCollapse.removeEventListener(Event.TRIGGERED, _handlerCollapse);
+				removeChild(_buttonCollapse);
+				_buttonCollapse = null;
+			}
+			 
+			if(_buttonUndo){				 
+				_buttonUndo.removeEventListener(Event.TRIGGERED, _handlerUndo);
+				removeChild(_buttonUndo);
+				_buttonUndo = null;
+			}
+			
+			if(_buttonMail){				 
+				_buttonMail.removeEventListener(Event.TRIGGERED, _handlerMail);
+				removeChild(_buttonMail);
+				_buttonMail = null;
+			}
+			
+			if(_buttonCheckAll){											
+				_buttonCheckAll.removeEventListener(Event.TRIGGERED, _handlerCheckAll);
+				removeChild(_buttonCheckAll);
+				_buttonCheckAll = null;
+			}
+			
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -91,48 +137,61 @@ package com.Application.robotlegs.views.components.bottomMenu{
 
 			if(_isHome && _isSearch && _isPack && !_isCollapse && !_isUndo && !_isMail && !_isCheckAll){
 				_buttonHome = new Button();
+				_buttonHome.addEventListener(Event.TRIGGERED, _handlerHome);
 				addChild(_buttonHome);
 			
 				_buttonSearch = new Button();
+				_buttonSearch.addEventListener(Event.TRIGGERED, _handlerSearch);				
 				addChild(_buttonSearch);
 	
 				_buttonPack = new Button();
+				_buttonPack.addEventListener(Event.TRIGGERED, _handlerPack);
 				addChild(_buttonPack);
 			}
 			
 			if(_isHome && _isSearch && _isPack && _isCollapse && !_isUndo && !_isMail && !_isCheckAll){
 				_buttonHome = new Button();
+				_buttonHome.addEventListener(Event.TRIGGERED, _handlerHome);
 				addChild(_buttonHome);
 				
 				_buttonSearch = new Button();
+				_buttonSearch.addEventListener(Event.TRIGGERED, _handlerSearch);
 				addChild(_buttonSearch);
 				
 				_buttonCollapse = new Button();
+				_buttonCollapse.addEventListener(Event.TRIGGERED, _handlerCollapse);
 				addChild(_buttonCollapse);
 				
 				_buttonPack = new Button();
+				_buttonPack.addEventListener(Event.TRIGGERED, _handlerPack);
 				addChild(_buttonPack);
 			}
 			
 			if(_isHome && _isSearch && !_isPack && !_isCollapse && _isUndo && _isMail && _isCheckAll){
 				_buttonHome = new Button();
+				_buttonHome.addEventListener(Event.TRIGGERED, _handlerHome);
 				addChild(_buttonHome);
 				
 				_buttonSearch = new Button();
+				_buttonSearch.addEventListener(Event.TRIGGERED, _handlerSearch);
 				addChild(_buttonSearch);
 				
 				_buttonUndo = new Button();
+				_buttonUndo.addEventListener(Event.TRIGGERED, _handlerUndo);
 				addChild(_buttonUndo);
 				
 				_buttonMail = new Button();
+				_buttonMail.addEventListener(Event.TRIGGERED, _handlerMail);
 				addChild(_buttonMail);
 	
 				_buttonCheckAll = new Button();
+				_buttonCheckAll.addEventListener(Event.TRIGGERED, _handlerCheckAll);
 				addChild(_buttonCheckAll);
 			}
 			
 			if(_isHome && !_isSearch && !_isPack && !_isCollapse && !_isUndo && !_isMail && !_isCheckAll){
 				_buttonHome = new Button();
+				_buttonHome.addEventListener(Event.TRIGGERED, _handlerHome);
 				addChild(_buttonHome);
 			}	
 		}
@@ -239,8 +298,33 @@ package com.Application.robotlegs.views.components.bottomMenu{
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		private function _handlerHome(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.HOME));
+		}
 		
+		private function _handlerSearch(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.SEARCH));
+		}
 		
+		private function _handlerPack(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.PACK));
+		}
+		
+		private function _handlerCollapse(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.COLLAPSE));
+		}
+		
+		private function _handlerUndo(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.UNDO));
+		}
+		
+		private function _handlerMail(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.MAIL));
+		}
+		
+		private function _handlerCheckAll(event:Event):void{
+			dispatchEvent(new EventBottomMenu(EventBottomMenu.CHECK_ALL));
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

@@ -58,11 +58,11 @@ package feathers.controls
 	 * layout.padding = 20;
 	 * container.layout = layout;
 	 * this.addChild( container );
-	 *
+	 * 
 	 * var yesButton:Button = new Button();
 	 * yesButton.label = "Yes";
 	 * container.addChild( yesButton );
-	 *
+	 * 
 	 * var noButton:Button = new Button();
 	 * noButton.label = "No";
 	 * container.addChild( noButton );</listing>
@@ -148,6 +148,13 @@ package feathers.controls
 		 * @see feathers.controls.Scroller#scrollBarDisplayMode
 		 */
 		public static const SCROLL_BAR_DISPLAY_MODE_FIXED:String = "fixed";
+
+		/**
+		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT
+		 *
+		 * @see feathers.controls.Scroller#scrollBarDisplayMode
+		 */
+		public static const SCROLL_BAR_DISPLAY_MODE_FIXED_FLOAT:String = "fixedFloat";
 
 		/**
 		 * @copy feathers.controls.Scroller#SCROLL_BAR_DISPLAY_MODE_NONE
@@ -627,8 +634,9 @@ package feathers.controls
 		{
 			var oldBypass:Boolean = this.displayListBypassEnabled;
 			this.displayListBypassEnabled = false;
-			return super.getChildIndex(child);
+			var index:int = super.getChildIndex(child);
 			this.displayListBypassEnabled = oldBypass;
+			return index;
 		}
 
 		/**
@@ -759,11 +767,6 @@ package feathers.controls
 				this.refreshMXMLContent();
 			}
 
-			if(sizeInvalid)
-			{
-				this.layoutViewPort.autoSizeMode = this._autoSizeMode;
-			}
-
 			if(layoutInvalid)
 			{
 				if(this._layout is IVirtualLayout)
@@ -777,6 +780,24 @@ package feathers.controls
 			this._ignoreChildChanges = true;
 			super.draw();
 			this._ignoreChildChanges = oldIgnoreChildChanges;
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function autoSizeIfNeeded():Boolean
+		{
+			var needsWidth:Boolean = this.explicitWidth !== this.explicitWidth; //isNaN
+			var needsHeight:Boolean = this.explicitHeight !== this.explicitHeight; //isNaN
+			if(!needsWidth && !needsHeight)
+			{
+				return false;
+			}
+			if(this._autoSizeMode == AUTO_SIZE_MODE_STAGE)
+			{
+				return this.setSizeInternal(this.stage.stageWidth, this.stage.stageHeight, false);
+			}
+			return super.autoSizeIfNeeded();
 		}
 
 		/**

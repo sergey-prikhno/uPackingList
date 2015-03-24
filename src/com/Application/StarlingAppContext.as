@@ -14,6 +14,7 @@ package com.Application {
 	import com.Application.robotlegs.controller.service.categories.CommandRemoveCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryItem;
+	import com.Application.robotlegs.controller.service.categories.CommandUpdateOrderIndexes;
 	import com.Application.robotlegs.controller.service.copyList.CommandCopyListFromExisting;
 	import com.Application.robotlegs.controller.service.settings.CommandUpdateSettings;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
@@ -140,6 +141,7 @@ package com.Application {
 			
 			commandMap.mapEvent(EventViewOpen.GET_VOOPEN_LIST_DATA, CommandGetVOOpenList, EventViewOpen);
 			commandMap.mapEvent(EventViewOpen.CREATE_NEW_LIST_FROM_EXISTING, CommandCreateNewListFromExisting, EventViewOpen);
+			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, CommandUpdateOrderIndexes, EventViewAbstract);
 			
 			//EentModel
 			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);

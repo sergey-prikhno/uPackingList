@@ -39,6 +39,8 @@ package com.Application.robotlegs.views.packedList {
 			
 			addViewListener(EventViewAbstract.REMOVE_PACKED_ITEM, _handlerRemoveItemDB, EventViewAbstract);			
 			addViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract); 
+			addViewListener(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, _handlerUpdateItemOrderIndexDB, EventViewAbstract);
+						
 			
 			dispatch(new EventViewAbstract(EventViewAbstract.GET_PACKED_ITEMS, false, null, _setPackedItems));
 		}
@@ -52,6 +54,7 @@ package com.Application.robotlegs.views.packedList {
 			
 			removeViewListener(EventViewAbstract.REMOVE_PACKED_ITEM, _handlerRemoveItemDB, EventViewAbstract);		
 			removeViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract);
+			removeViewListener(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, _handlerUpdateItemOrderIndexDB, EventViewAbstract);
 		}
 		
 	
@@ -80,6 +83,11 @@ package com.Application.robotlegs.views.packedList {
 		private function _handlerUpdateItemDB(event:EventViewAbstract):void{
 			event.stopPropagation();						
 			dispatch(new EventViewAbstract(EventViewAbstract.UPDATE_DB_PACKED_ITEM, false, event.data));
+		}
+		
+		private function _handlerUpdateItemOrderIndexDB(event:EventViewAbstract):void{
+			event.stopPropagation();						
+			dispatch(new EventViewAbstract(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, false, event.data));
 		}
 		
 		private function _handlerRemoveItemDB(event:EventViewAbstract):void{

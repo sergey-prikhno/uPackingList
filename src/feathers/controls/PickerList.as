@@ -10,7 +10,6 @@ package feathers.controls
 	import feathers.controls.popups.CalloutPopUpContentManager;
 	import feathers.controls.popups.IPopUpContentManager;
 	import feathers.controls.popups.VerticalCenteredPopUpContentManager;
-	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
 	import feathers.core.IToggle;
@@ -98,8 +97,9 @@ package feathers.controls
 	[Event(name="change",type="starling.events.Event")]
 
 	/**
-	 * A combo-box like list control. Displayed as a button. The list appears
-	 * on tap as a full-screen overlay.
+	 * Displays a button that may be triggered to display a pop-up list.
+	 * The list may be customized to display in different ways, such as a
+	 * drop-down, in a <code>Callout</code>, or as a modal overlay.
 	 *
 	 * <p>The following example creates a picker list, gives it a data provider,
 	 * tells the item renderer how to interpret the data, and listens for when
@@ -107,7 +107,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var list:PickerList = new PickerList();
-	 *
+	 * 
 	 * list.dataProvider = new ListCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
@@ -115,7 +115,7 @@ package feathers.controls
 	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
 	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 	 * ]);
-	 *
+	 * 
 	 * list.listProperties.itemRendererFactory = function():IListItemRenderer
 	 * {
 	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -123,9 +123,9 @@ package feathers.controls
 	 *     renderer.iconSourceField = "thumbnail";
 	 *     return renderer;
 	 * };
-	 *
+	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
-	 *
+	 * 
 	 * this.addChild( list );</listing>
 	 *
 	 * @see ../../../help/picker-list.html How to use the Feathers PickerList component

@@ -3224,7 +3224,7 @@ package feathers.controls.renderers
 			}
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
-			this.refreshMaxLabelWidth(true);
+			this.refreshMaxLabelSize(true);
 			if(this.labelTextRenderer)
 			{
 				this.labelTextRenderer.measureText(HELPER_POINT);
@@ -3921,7 +3921,9 @@ package feathers.controls.renderers
 		{
 			var oldIgnoreAccessoryResizes:Boolean = this._ignoreAccessoryResizes;
 			this._ignoreAccessoryResizes = true;
-			this.refreshMaxLabelWidth(false);
+			var oldIgnoreIconResizes:Boolean = this._ignoreIconResizes;
+			this._ignoreIconResizes = true;
+			this.refreshMaxLabelSize(false);
 			if(this._label && this.labelTextRenderer)
 			{
 				this.labelTextRenderer.validate();
@@ -4009,13 +4011,14 @@ package feathers.controls.renderers
 				this.labelTextRenderer.x += this._labelOffsetX;
 				this.labelTextRenderer.y += this._labelOffsetY;
 			}
+			this._ignoreIconResizes = oldIgnoreIconResizes;
 			this._ignoreAccessoryResizes = oldIgnoreAccessoryResizes;
 		}
 
 		/**
 		 * @private
 		 */
-		override protected function refreshMaxLabelWidth(forMeasurement:Boolean):void
+		override protected function refreshMaxLabelSize(forMeasurement:Boolean):void
 		{
 			var calculatedWidth:Number = this.actualWidth;
 			if(forMeasurement)
@@ -4027,6 +4030,16 @@ package feathers.controls.renderers
 				}
 			}
 			calculatedWidth -= (this._paddingLeft + this._paddingRight);
+			var calculatedHeight:Number = this.actualHeight;
+			if(forMeasurement)
+			{
+				calculatedHeight = this.explicitHeight;
+				if(calculatedHeight !== calculatedHeight) //isNaN
+				{
+					calculatedHeight = this._maxHeight;
+				}
+			}
+			calculatedHeight -= (this._paddingTop + this._paddingBottom);
 
 			var adjustedGap:Number = this._gap;
 			if(adjustedGap == Number.POSITIVE_INFINITY)
@@ -4049,7 +4062,9 @@ package feathers.controls.renderers
 
 			var hasIconToLeftOrRight:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_LEFT || this._iconPosition == ICON_POSITION_LEFT_BASELINE ||
 				this._iconPosition == ICON_POSITION_RIGHT || this._iconPosition == ICON_POSITION_RIGHT_BASELINE);
+			var hasIconToTopOrBottom:Boolean = this.currentIcon && (this._iconPosition == ICON_POSITION_TOP || this._iconPosition == ICON_POSITION_BOTTOM);
 			var hasAccessoryToLeftOrRight:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_LEFT || this._accessoryPosition == ACCESSORY_POSITION_RIGHT);
+			var hasAccessoryToTopOrBottom:Boolean = this.accessory && (this._accessoryPosition == ACCESSORY_POSITION_TOP || this._accessoryPosition == ACCESSORY_POSITION_BOTTOM);
 
 			if(this.accessoryLabel)
 			{
@@ -4070,15 +4085,12 @@ package feathers.controls.renderers
 				{
 					calculatedWidth -= (this.currentIcon.width + adjustedGap);
 				}
-				if(hasAccessoryToLeftOrRight)
-				{
-					calculatedWidth -= adjustedAccessoryGap;
-				}
 				if(calculatedWidth < 0)
 				{
 					calculatedWidth = 0;
 				}
 				this.accessoryLabel.maxWidth = calculatedWidth;
+				this.accessoryLabel.maxHeight = calculatedHeight;
 				if(this.currentIcon && !iconAffectsAccessoryLabelMaxWidth)
 				{
 					calculatedWidth -= (this.currentIcon.width + adjustedGap);
@@ -4089,7 +4101,11 @@ package feathers.controls.renderers
 				}
 				if(hasAccessoryToLeftOrRight)
 				{
-					calculatedWidth -= this.accessory.width;
+					calculatedWidth -= (this.accessory.width + adjustedAccessoryGap);
+				}
+				if(hasAccessoryToTopOrBottom)
+				{
+					calculatedHeight -= (this.accessory.height + adjustedAccessoryGap);
 				}
 			}
 			else if(this.iconLabel)
@@ -4103,15 +4119,12 @@ package feathers.controls.renderers
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
 				}
-				if(hasIconToLeftOrRight)
-				{
-					calculatedWidth -= adjustedGap;
-				}
 				if(calculatedWidth < 0)
 				{
 					calculatedWidth = 0;
 				}
 				this.iconLabel.maxWidth = calculatedWidth;
+				this.iconLabel.maxHeight = calculatedHeight;
 				if(this.accessory && !accessoryAffectsIconLabelMaxWidth)
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
@@ -4122,7 +4135,11 @@ package feathers.controls.renderers
 				}
 				if(hasIconToLeftOrRight)
 				{
-					calculatedWidth -= this.currentIcon.width;
+					calculatedWidth -= (this.currentIcon.width + adjustedGap);
+				}
+				if(hasIconToTopOrBottom)
+				{
+					calculatedHeight -= (this.currentIcon.height + adjustedGap);
 				}
 			}
 			else
@@ -4135,6 +4152,10 @@ package feathers.controls.renderers
 				{
 					calculatedWidth -= (adjustedGap + this.currentIcon.width);
 				}
+				if(hasIconToTopOrBottom)
+				{
+					calculatedHeight -= (adjustedGap + this.currentIcon.height);
+				}
 				if(this.accessory is IValidating)
 				{
 					IValidating(this.accessory).validate();
@@ -4143,14 +4164,23 @@ package feathers.controls.renderers
 				{
 					calculatedWidth -= (adjustedAccessoryGap + this.accessory.width);
 				}
+				if(hasAccessoryToTopOrBottom)
+				{
+					calculatedHeight -= (adjustedAccessoryGap + this.accessory.height);
+				}
 			}
 			if(calculatedWidth < 0)
 			{
 				calculatedWidth = 0;
 			}
+			if(calculatedHeight < 0)
+			{
+				calculatedHeight = 0;
+			}
 			if(this.labelTextRenderer)
 			{
 				this.labelTextRenderer.maxWidth = calculatedWidth;
+				this.labelTextRenderer.maxHeight = calculatedHeight;
 			}
 		}
 

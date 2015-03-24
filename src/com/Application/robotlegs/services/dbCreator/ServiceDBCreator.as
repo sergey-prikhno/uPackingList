@@ -53,6 +53,8 @@ package com.Application.robotlegs.services.dbCreator  {
 					paramsItem["isChild"] = pItem.isChild.toString();
 					paramsItem["label"] = pItem.label;
 					paramsItem["isPacked"] = pItem.isPacked.toString();	
+					paramsItem["orderIndex"] = pItem.orderIndex;
+					paramsItem["item_id"] = pItem.item_id;					
 		
 				stmts[stmts.length] = new QueuedStatement(INSERT_ITEMS_SQL, paramsItem);
 			}

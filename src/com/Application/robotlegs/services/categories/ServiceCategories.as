@@ -67,6 +67,8 @@ package com.Application.robotlegs.services.categories {
 							paramsItem["isChild"] = pItem.isChild.toString();
 							paramsItem["label"] = pItem.label;
 							paramsItem["isPacked"] = pItem.isPacked.toString();
+							paramsItem["orderIndex"] = pItem.orderIndex;
+							paramsItem["item_id"] = pItem.item_id;
 					
 						stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsItem);
 					
@@ -86,6 +88,8 @@ package com.Application.robotlegs.services.categories {
 								paramsChild["isChild"] = pChild.isChild.toString();
 								paramsChild["label"] = pChild.label;
 								paramsChild["isPacked"] = pChild.isPacked.toString();
+								paramsChild["orderIndex"] = pChild.orderIndex;
+								paramsChild["item_id"] = pChild.item_id;
 							
 							stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsChild);
 						}
@@ -137,6 +141,8 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["label"] = value.label;
 					paramsItem["isPacked"] = ""+value.isPacked+"";
 					paramsItem["id"] = value.id;
+					paramsItem["orderIndex"] = value.orderIndex;
+					paramsItem["item_id"] = value.item_id;
 					
 					_currentItem = value;
 					
@@ -162,6 +168,8 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["isChild"] = value.isChild.toString();
 					paramsItem["label"] = value.label;				
 					paramsItem["isPacked"] = value.isPacked.toString();
+					paramsItem["orderIndex"] = value.orderIndex;
+					paramsItem["item_id"] = value.item_id;
 						
 			
 				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(pSql, paramsItem)]), insert_result, database_error);
@@ -201,6 +209,38 @@ package com.Application.robotlegs.services.categories {
 				sqlRunner.executeModify(stmts, remove_result, database_error);			
 			}
 		}
+		
+		
+		public function updateRows(pValues:Vector.<VOPackedItem>,pTableName:String):void{
+			
+			if(pValues && pValues.length > 0 && pTableName.length > 0){
+			
+					pTableName = _updateName(pTableName);
+				
+					var stmts:Vector.<QueuedStatement> = new Vector.<QueuedStatement>();
+					var pSql:String = DefaultData.UPDATE_CATEGORY_TABLE_1+pTableName+DefaultData.UPDATE_CATEGORY_TABLE_2;
+					
+					var pLen:int = pValues.length;
+					for(var i:int=0;i<pLen;i++){
+						var pCurrentData:VOPackedItem = VOPackedItem(pValues[i]);
+																								
+						var paramsItem:Object = new Object();
+							paramsItem["parentId"] = pCurrentData.parentId;
+							paramsItem["isChild"] = ""+pCurrentData.isChild+"";
+							paramsItem["label"] = pCurrentData.label;
+							paramsItem["isPacked"] = ""+pCurrentData.isPacked+"";
+							paramsItem["id"] = pCurrentData.id;
+							paramsItem["orderIndex"] = pCurrentData.orderIndex;
+							paramsItem["item_id"] = pCurrentData.item_id;
+							
+							stmts[stmts.length] = new QueuedStatement(pSql,paramsItem);
+						
+					}
+					
+					sqlRunner.executeModify(stmts, updateRows_result, database_error);								
+			}
+			
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -220,10 +260,15 @@ package com.Application.robotlegs.services.categories {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		private function update_result(results:Vector.<SQLResult>):void {
-			dispatch(new EventServiceCategories(EventServiceCategories.UPDATED,false,_currentItem));
-			
+			dispatch(new EventServiceCategories(EventServiceCategories.UPDATED,false,_currentItem));			
 			trace("table Updated");
 		}
+		
+		
+		private function updateRows_result(results:Vector.<SQLResult>):void {						
+			trace("table Rows Updated");
+		}
+		
 		
 		private function database_error(error:SQLError):void {
 			trace("Database Error");
@@ -271,7 +316,7 @@ package com.Application.robotlegs.services.categories {
 				for(var k:int=0;k<result.data.length;k++){
 					var pResChild:VOPackedItem = VOPackedItem(result.data[k]);															
 					
-					if(pResChild.isChild && pResChild.parentId == pParentItem.id){
+					if(pResChild.isChild && pResChild.parentId == pParentItem.item_id){
 						pParentItem.childrens.push(pResChild);																	
 					}
 					

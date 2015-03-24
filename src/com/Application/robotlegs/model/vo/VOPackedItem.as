@@ -20,19 +20,24 @@ package com.Application.robotlegs.model.vo {
 		private var _label:String = "";
 		private var _childrens:Vector.<VOPackedItem> = new Vector.<VOPackedItem>;
 		private var _index:Number = 0;
+		private var _orderIndex:int = 1;
 		private var _isOpen:Boolean = false;
 		private var _isPacked:Boolean = false;
 		private var _packedCount:Number = 0;
+		private var _item_id:Number = 0;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function VOPackedItem(pLabel:String="",pId:Number = 0,pParentId:Number = 0,pIsChild:Boolean = false) {
+		public function VOPackedItem(pLabel:String="",pId:Number = 0,pParentId:Number = 0,pIsChild:Boolean = false,pOrderIndex:int = 0,pItem_id:int = 0) {
 			_id = pId;
 			_parentId = pParentId;
 			_isChild = pIsChild;
 			_label = pLabel;
+			_orderIndex = pOrderIndex;
+			_item_id = pItem_id;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -124,6 +129,19 @@ package com.Application.robotlegs.model.vo {
 			
 			return pCountPacked;
 		}
+		
+		
+		public function get orderIndex():int { return _orderIndex;} 
+		public function set orderIndex(value:int):void{
+			_orderIndex = value;
+		}
+				
+		
+		public function get item_id():int { return _item_id;} 
+		public function set item_id(value:int):void{
+			_item_id = value;
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

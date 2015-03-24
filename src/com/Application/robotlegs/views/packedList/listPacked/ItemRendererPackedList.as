@@ -8,9 +8,12 @@ package com.Application.robotlegs.views.packedList.listPacked {
 	
 	import feathers.controls.Label;
 	import feathers.controls.List;
+	import feathers.controls.Scroller;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.core.FeathersControl;
 	import feathers.core.IFocusDisplayObject;
+	import feathers.dragDrop.DragData;
+	import feathers.dragDrop.IDragSource;
 	import feathers.events.FeathersEventType;
 	import feathers.skins.IStyleProvider;
 	
@@ -26,7 +29,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 	import starling.textures.TextureSmoothing;
 	import starling.utils.deg2rad;
 	
-	public class ItemRendererPackedList extends FeathersControl implements IListItemRenderer, IFocusDisplayObject {						
+	public class ItemRendererPackedList extends FeathersControl implements IListItemRenderer, IFocusDisplayObject,IDragSource {						
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -42,10 +45,11 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		protected var _data:VOPackedItem;
 		protected var _owner:ListPacked;
 		protected var _index:int = -1;
+		protected var _backIndex:int = -1;
 		protected var _isSelected:Boolean = false;	
 		
 		
-		protected var _isLongPressEnabled:Boolean = false;
+		protected var _isLongPressEnabled:Boolean = true;
 		protected var touchPointID:int = -1;
 		protected var _hasLongPressed:Boolean = false;
 		protected var _touchBeginTime:int;
@@ -156,7 +160,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			if(!value)	{
 				return;
 			}
-			_data = VOPackedItem(value);
+						
+			_data = VOPackedItem(value);			
 			invalidate(INVALIDATION_FLAG_DATA);
 		}
 		
@@ -166,6 +171,11 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		
 		public function set index(value:int):void {
 			this._index = value;
+		}
+				
+		public function get backIndex():int{ return _backIndex;}
+		public function set backIndex(value:int):void{
+			_backIndex = value;
 		}
 		
 		public function get owner():List {
@@ -353,16 +363,13 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			
 			if(_label && _data){
 					
-				_label.x = int(_mainIcon.x + _mainIcon.width * 1.2);
-					
+				_label.x = int(_mainIcon.x + _mainIcon.width * 1.2);					
 					
 				if(_data.isChild) {					
 					_label.y = int(height/2 - _label.height/2);
 				} else {
 					_label.y = int(height/2 - _label.height);					
-				}
-								
-										
+				}																	
 			}
 			
 			
@@ -452,8 +459,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					_containerMain.addChild(_iconRemove);
 					_iconRemove.addEventListener(TouchEvent.TOUCH, _handlerRemove); 
 										 
-					
-					
+										
 					_label = new Label();
 					_containerMain.addChild(_label);					
 					
@@ -513,10 +519,10 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				} else {
 					
 					if(!_mainIcon){
-						_mainIcon = new Image(_atlas.getTexture("icon_"+_data.id));	
+						_mainIcon = new Image(_atlas.getTexture("icon_"+_data.item_id));	
 						_containerMain.addChild(_mainIcon);
 					} else {
-						_mainIcon.texture = _atlas.getTexture("icon_"+_data.id);
+						_mainIcon.texture = _atlas.getTexture("icon_"+_data.item_id);
 					}
 					
 				}
@@ -555,7 +561,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		private function completeAnimation():void{
 		//	Starling.juggler.removeTweens(this);
 		//	_owner.dataProvider.removeItem(_data);
-		}
+		}														
 		
 		protected function button_touchHandler(event:TouchEvent):void
 		{
@@ -583,8 +589,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					this.resetTouchState(touch);
 					//we we dispatched a long press, then triggered and change
 					//won't be able to happen until the next touch begins
-					if(!this._hasLongPressed && isInBounds)
-					{
+					if(!this._hasLongPressed && isInBounds) {
 						//this.dispatchEventWith(Event.TRIGGERED,true,_data);													
 						
 						if(_data.isChild){
@@ -611,6 +616,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 						} else if(_data.childrens && _data.childrens.length > 0){
 							
 							if(!_isEditTouch){
+								
+								
 								_data.index = _index;
 															
 								this.dispatchEventWith(EventViewPackedList.CLICK_ITEM,true,_data);
@@ -647,7 +654,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			{
 				touch = event.getTouch(this, TouchPhase.BEGAN);
 				if(touch) {
-					
+					_dragTouch = touch;
 					this.touchPointID = touch.id;
 					
 					if(this._isLongPressEnabled) {
@@ -660,7 +667,9 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				}				
 				
 			}
-		}
+		} 
+		
+		private var _dragTouch:Touch;
 		
 		protected function longPress_enterFrameHandler(event:Event):void {
 			var accumulatedTime:Number = (getTimer() - this._touchBeginTime) / 1000;
@@ -669,6 +678,46 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				this.removeEventListener(Event.ENTER_FRAME, longPress_enterFrameHandler);
 				this._hasLongPressed = true;
 				this.dispatchEventWith(FeathersEventType.LONG_PRESS);
+				
+				// logic for start drag
+				_dragTouch.getLocation(this.stage, HELPER_POINT);
+				
+				const isInBounds:Boolean = this.contains(this.stage.hitTest(HELPER_POINT, true));
+				if(isInBounds){
+					
+					if(!DragDropListPackedManager.isDragging){
+						
+						if(_data.isOpen && !_data.isChild){
+							this.dispatchEventWith(EventViewPackedList.CLICK_ITEM,true,_data);
+							_data.isOpen = false;								
+							_iconArrow.rotation = deg2rad(0);	
+						}										
+														
+						_owner.verticalScrollPolicy = Scroller.SCROLL_POLICY_OFF;
+						
+						var pItemRend:ItemRendererPackedList = new ItemRendererPackedList();
+						pItemRend.scaleWidth = _scaleWidth;
+						pItemRend.iconArrow = _iconArrowTexture;
+						pItemRend.iconEdit = _iconEditTexture;
+						pItemRend.iconBag = _iconBagTexture;
+						pItemRend.iconMark = _iconMarkTexture;
+						pItemRend.iconRemove = _iconRemoveTexture;
+						pItemRend.atlas = _atlas;			
+						pItemRend.width = width;
+						pItemRend.height = height;
+						pItemRend.x = x;
+						pItemRend.y = y;						
+						pItemRend.data = _data;
+						pItemRend.backIndex = index;
+						
+						var dragData:DragData = new DragData();
+						dragData.setDataForFormat(ListPacked.DRAG_FORMAT,pItemRend);															
+						DragDropListPackedManager.startDrag(pItemRend , _dragTouch, dragData, pItemRend, -pItemRend.width/ 2, -pItemRend.height/2);
+						
+						pItemRend.validate();						
+						_owner.dataProvider.removeItem(_data);						
+					}
+				}
 			}
 		}
 		
@@ -738,7 +787,16 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				_iconRemove.visible = _owner.isEditing;
 				draw();
 			}
+			
+			if(_iconArrow){
+				if(_data.isOpen){																	
+					_iconArrow.rotation = deg2rad(90);							
+				} else {														
+					_iconArrow.rotation = deg2rad(0);															
+				}	
+			}
 		}
+							
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  END CLASS  

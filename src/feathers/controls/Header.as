@@ -43,11 +43,13 @@ package feathers.controls
 	 * <listing version="3.0">
 	 * var header:Header = new Header();
 	 * header.title = "I'm a header";
+	 * 
 	 * var backButton:Button = new Button();
 	 * backButton.label = "Back";
 	 * backButton.styleNameList.add( Button.ALTERNATE_STYLE_NAME_BACK_BUTTON );
 	 * backButton.addEventListener( Event.TRIGGERED, backButton_triggeredHandler );
 	 * header.leftItems = new &lt;DisplayObject&gt;[ backButton ];
+	 * 
 	 * this.addChild( header );</listing>
 	 *
 	 * @see ../../../help/header.html How to use the Feathers Header component
@@ -1621,11 +1623,16 @@ package feathers.controls
 			{
 				return 0;
 			}
+			//first, we check if it's iOS or not. at this time, we only need to
+			//use extra padding on iOS. android and others are fine.
 			var os:String = Capabilities.os;
 			if(os.indexOf(IOS_NAME_PREFIX) != 0 || parseInt(os.substr(IOS_NAME_PREFIX.length, 1), 10) < STATUS_BAR_MIN_IOS_VERSION)
 			{
 				return 0;
 			}
+			//next, we check if the app is full screen or not. if it is full
+			//screen, then the status bar isn't visible, and we don't need the
+			//extra padding.
 			var nativeStage:Stage = Starling.current.nativeStage;
 			if(nativeStage.displayState != StageDisplayState.NORMAL)
 			{
@@ -1633,9 +1640,11 @@ package feathers.controls
 			}
 			if(DeviceCapabilities.dpi >= IOS_RETINA_MINIMUM_DPI)
 			{
-				return IOS_RETINA_STATUS_BAR_HEIGHT;
+				//retina devices have more padding than non-retina
+				//we also need to account for contentScaleFactor
+				return IOS_RETINA_STATUS_BAR_HEIGHT / Starling.current.contentScaleFactor;
 			}
-			return IOS_NON_RETINA_STATUS_BAR_HEIGHT;
+			return IOS_NON_RETINA_STATUS_BAR_HEIGHT / Starling.current.contentScaleFactor;
 		}
 
 		/**

@@ -26,6 +26,7 @@ package feathers.controls
 	import starling.display.DisplayObject;
 	import starling.events.Event;
 
+	[DefaultProperty("mxmlContent")]
 	/**
 	 * A generic container that supports layout. For a container that supports
 	 * scrolling and more robust skinning options, see <code>ScrollContainer</code>.
@@ -40,11 +41,11 @@ package feathers.controls
 	 * layout.padding = 20;
 	 * group.layout = layout;
 	 * this.addChild( group );
-	 *
+	 * 
 	 * var yesButton:Button = new Button();
 	 * yesButton.label = "Yes";
 	 * group.addChild( yesButton );
-	 *
+	 * 
 	 * var noButton:Button = new Button();
 	 * noButton.label = "No";
 	 * group.addChild( noButton );</listing>
@@ -57,12 +58,7 @@ package feathers.controls
 		/**
 		 * @private
 		 */
-		private static const HELPER_POINT:Point = new Point();
-
-		/**
-		 * @private
-		 */
-		private static const HELPER_MATRIX:Matrix = new Matrix();
+		private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
 		/**
 		 * @private
@@ -280,6 +276,10 @@ package feathers.controls
 				return;
 			}
 			this._clipContent = value;
+			if(!value)
+			{
+				this.clipRect = null;
+			}
 			this.invalidate(INVALIDATION_FLAG_CLIPPING);
 		}
 
@@ -563,6 +563,17 @@ package feathers.controls
 		{
 			if(this.currentBackgroundSkin && this.currentBackgroundSkin.hasVisibleArea)
 			{
+				var clipRect:Rectangle = this.clipRect;
+				if(clipRect)
+				{
+					clipRect = support.pushClipRect(this.getClipRect(stage, HELPER_RECTANGLE));
+					if(clipRect.isEmpty())
+					{
+						// empty clipping bounds - no need to render children.
+						support.popClipRect();
+						return;
+					}
+				}
 				var blendMode:String = this.blendMode;
 				support.pushMatrix();
 				support.transformMatrix(this.currentBackgroundSkin);
@@ -570,6 +581,10 @@ package feathers.controls
 				this.currentBackgroundSkin.render(support, parentAlpha * this.alpha);
 				support.blendMode = blendMode;
 				support.popMatrix();
+				if(clipRect)
+				{
+					support.popClipRect();
+				}
 			}
 			super.render(support, parentAlpha);
 		}
@@ -616,6 +631,12 @@ package feathers.controls
 			var scrollInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SCROLL);
 			var skinInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_SKIN);
 			var stateInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STATE);
+			var mxmlContentInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_MXML_CONTENT);
+
+			if(mxmlContentInvalid)
+			{
+				this.refreshMXMLContent();
+			}
 
 			//scrolling only affects the layout is requiresLayoutOnScroll is true
 			if(!layoutInvalid && scrollInvalid && this._layout && this._layout.requiresLayoutOnScroll)
@@ -833,24 +854,21 @@ package feathers.controls
 		 */
 		protected function refreshClipRect():void
 		{
-			if(this._clipContent)
+			if(!this._clipContent)
 			{
-				if(!this.clipRect)
-				{
-					this.clipRect = new Rectangle();
-				}
+				return;
+			}
 
-				var clipRect:Rectangle = this.clipRect;
-				clipRect.x = 0;
-				clipRect.y = 0;
-				clipRect.width = this.actualWidth;
-				clipRect.height = this.actualHeight;
-				this.clipRect = clipRect;
-			}
-			else
+			var clipRect:Rectangle = this.clipRect;
+			if(!clipRect)
 			{
-				this.clipRect = null;
+				clipRect = new Rectangle();
 			}
+			clipRect.x = 0;
+			clipRect.y = 0;
+			clipRect.width = this.actualWidth;
+			clipRect.height = this.actualHeight;
+			this.clipRect = clipRect;
 		}
 
 		/**

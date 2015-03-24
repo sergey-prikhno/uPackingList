@@ -4,5 +4,7 @@ CREATE TABLE main.categories
 	parentId int,
 	isChild String,
 	label String,
-	isPacked String
+	isPacked String,
+	orderIndex int,
+	item_id int
 )

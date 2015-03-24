@@ -10,7 +10,7 @@ package com.Application.robotlegs.views {
 		public static const GET_PACKED_ITEMS:String = "GET_PACKED_ITEMS";
 		
 		public static const UPDATE_DB_PACKED_ITEM:String = "UPDATE_DB_PACKED_ITEM";
-
+		public static const UPDATE_DB_ORDER_INDEXES:String = "UPDATE_DB_ORDER_INDEXES";		
 		public static const REMOVE_DB_PACKED_ITEM:String = "REMOVE_DB_PACKED_ITEM";
 		public static const REMOVE_PACKED_ITEM:String = "REMOVE_PACKED_ITEM";
 		

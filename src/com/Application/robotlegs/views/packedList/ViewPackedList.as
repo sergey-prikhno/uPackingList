@@ -1,6 +1,8 @@
 package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
+	import com.Application.robotlegs.views.components.bottomMenu.EventBottomMenu;
 	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
 	import com.Application.robotlegs.views.packedList.listPacked.ListPacked;
 	import com.common.Constants;
@@ -34,6 +36,8 @@ package com.Application.robotlegs.views.packedList {
 		private var _editButton:Button;
 		
 		private var _items:Vector.<VOPackedItem>;
+		
+		private var _bottomMenu:BottomMenu;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -48,17 +52,23 @@ package com.Application.robotlegs.views.packedList {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		override public function destroy():void{
-						
+			
 			if(_list){			
 				_list.dataProvider= null;
-				removeChild(_list);
+				removeChild(_list,true);
 				_list = null;
 			}
 			
 			if(_editButton){
 				_editButton.removeEventListener(Event.TRIGGERED, _handlerEditListItems);
-			}
-															
+			}			
+			
+			if(_bottomMenu){
+				_bottomMenu.removeEventListener(EventBottomMenu.COLLAPSE, _handlerCollapse);
+				_bottomMenu.destroy();
+				removeChild(_bottomMenu);
+				_bottomMenu = null;
+			}			
 			
 			_verticalLayout = null;
 			
@@ -83,7 +93,7 @@ package com.Application.robotlegs.views.packedList {
 					}					
 				}
 				
-								
+				
 				if(pData.isChild){
 					
 					var pLengthParent:int = _list.dataProvider.length;
@@ -96,7 +106,7 @@ package com.Application.robotlegs.views.packedList {
 							
 							for(var k:int=0;k<pParentLen; k++){
 								var pFindChild:VOPackedItem = VOPackedItem(pGetParentItem.childrens[k]);
-									
+								
 								if(pData.id == pFindChild.id){									
 									pGetParentItem.childrens.splice(k,1);
 									_list.dispatchEvent(new EventViewPackedList(EventViewPackedList.UPDATE_PACKED_ITEM, false, pData));	
@@ -108,7 +118,7 @@ package com.Application.robotlegs.views.packedList {
 							break;
 						}											
 					}
-																				
+					
 				}
 				
 				_list.dataProvider.removeItem(pData);
@@ -138,7 +148,7 @@ package com.Application.robotlegs.views.packedList {
 			return ViewPackedList.globalStyleProvider;
 		}
 		
-		
+		private var _aaa:Vector.<VOPackedItem>;
 		override protected function _initialize():void{
 			super._initialize();
 			
@@ -150,7 +160,7 @@ package com.Application.robotlegs.views.packedList {
 			_list.width = _nativeStage.stageWidth;
 			_list.itemRendererFactory = function():IListItemRenderer{
 				var renderer:ItemRendererPackedList = new ItemRendererPackedList();
-								
+				
 				return renderer;
 			};
 			
@@ -158,100 +168,111 @@ package com.Application.robotlegs.views.packedList {
 			
 			
 			var pChild1:VOPackedItem = new VOPackedItem();
-				pChild1.isChild = true;
-				pChild1.parentId = 2;
-				pChild1.id = 1;
-				pChild1.label = "1 Child Parent 2";
-				
-				var pChild2:VOPackedItem = new VOPackedItem();
-				pChild2.isChild = true;
-				pChild2.parentId = 2;
-				pChild2.id = 2;
-				pChild2.label = "2 Child Parent 2";
-				
-				var pChild3:VOPackedItem = new VOPackedItem();
-				pChild3.isChild = true;
-				pChild3.parentId = 2;
-				pChild3.id = 3;
-				pChild3.label = "3 Child Parent 2";
-				///////////////////////////////
+			pChild1.isChild = true;
+			pChild1.parentId = 2;
+			pChild1.id = 1;
+			pChild1.label = "1 Child Parent 2";
+			
+			var pChild2:VOPackedItem = new VOPackedItem();
+			pChild2.isChild = true;
+			pChild2.parentId = 2;
+			pChild2.id = 2;
+			pChild2.label = "2 Child Parent 2";
+			
+			var pChild3:VOPackedItem = new VOPackedItem();
+			pChild3.isChild = true;
+			pChild3.parentId = 2;
+			pChild3.id = 3;
+			pChild3.label = "3 Child Parent 2";
+			///////////////////////////////
 			
 			var p1:VOPackedItem = new VOPackedItem();
-				p1.id = 1;
-				p1.label = "Preparations";
+			p1.id = 1;
+			p1.label = "Preparations";
 			
 			var p2:VOPackedItem = new VOPackedItem();
-				p2.id = 2;
-				p2.label = "Accessories";
-				
-				var pChildren:Vector.<VOPackedItem> = new Vector.<VOPackedItem>();
-					pChildren.push(pChild1);
-					pChildren.push(pChild2);
-					pChildren.push(pChild3);
-					
-				p2.childrens = pChildren;
+			p2.id = 2;
+			p2.label = "Accessories";
 			
-				var p3:VOPackedItem = new VOPackedItem();
-				p3.id = 3;
-				p3.label = "Hygiene";
-				
-				var p4:VOPackedItem = new VOPackedItem();
-				p4.id = 4;
-				p4.label = "Health";
-				
-				var p5:VOPackedItem = new VOPackedItem();
-				p5.id = 5;
-				p5.label = "Hats";
-				
-				var p6:VOPackedItem = new VOPackedItem();
-				p6.id = 6;
-				p6.label = "Money";
-				
-				var p7:VOPackedItem = new VOPackedItem();
-				p7.id = 7;
-				p7.label = "Children's accessories";
-				
-				var p8:VOPackedItem = new VOPackedItem();
-				p8.id = 8;
-				p8.label = "Documents";
-				
-				var p9:VOPackedItem = new VOPackedItem();
-				p9.id = 9;
-				p9.label = "Shoes";
-				
-				var p10:VOPackedItem = new VOPackedItem();
-				p10.id = 10;
-				p10.label = "Clothes";
-				
-				var p11:VOPackedItem = new VOPackedItem();
-				p11.id = 11;
-				p11.label = "Tableware";
-				
-				var p12:VOPackedItem = new VOPackedItem();
-				p12.id = 12;
-				p12.label = "Food";
-				
-				var p13:VOPackedItem = new VOPackedItem();
-				p13.id = 13;
-				p13.label = "Sport";
-				
-				var p14:VOPackedItem = new VOPackedItem();
-				p14.id = 14;
-				p14.label = "Luggage";
-				
-				var p15:VOPackedItem = new VOPackedItem();
-				p15.id = 15;
-				p15.label = "Gadgets";
-				
-				var p16:VOPackedItem = new VOPackedItem();
-				p16.id = 16;
-				p16.label = "Before leaving";
-				
+			var pChildren:Vector.<VOPackedItem> = new Vector.<VOPackedItem>();
+			pChildren.push(pChild1);
+			pChildren.push(pChild2);
+			pChildren.push(pChild3);
+			
+			p2.childrens = pChildren;
+			
+			var p3:VOPackedItem = new VOPackedItem();
+			p3.id = 3;
+			p3.label = "Hygiene";
+			
+			var p4:VOPackedItem = new VOPackedItem();
+			p4.id = 4;
+			p4.label = "Health";
+			
+			var p5:VOPackedItem = new VOPackedItem();
+			p5.id = 5;
+			p5.label = "Hats";
+			
+			var p6:VOPackedItem = new VOPackedItem();
+			p6.id = 6;
+			p6.label = "Money";
+			
+			var p7:VOPackedItem = new VOPackedItem();
+			p7.id = 7;
+			p7.label = "Children's accessories";
+			
+			var p8:VOPackedItem = new VOPackedItem();
+			p8.id = 8;
+			p8.label = "Documents";
+			
+			var p9:VOPackedItem = new VOPackedItem();
+			p9.id = 9;
+			p9.label = "Shoes";
+			
+			var p10:VOPackedItem = new VOPackedItem();
+			p10.id = 10;
+			p10.label = "Clothes";
+			
+			var p11:VOPackedItem = new VOPackedItem();
+			p11.id = 11;
+			p11.label = "Tableware";
+			
+			var p12:VOPackedItem = new VOPackedItem();
+			p12.id = 12;
+			p12.label = "Food";
+			
+			var p13:VOPackedItem = new VOPackedItem();
+			p13.id = 13;
+			p13.label = "Sport";
+			
+			var p14:VOPackedItem = new VOPackedItem();
+			p14.id = 14;
+			p14.label = "Luggage";
+			
+			var p15:VOPackedItem = new VOPackedItem();
+			p15.id = 15;
+			p15.label = "Gadgets";
+			
+			var p16:VOPackedItem = new VOPackedItem();
+			p16.id = 16;
+			p16.label = "Before leaving";
+			
 			//_list.dataProvider = new ListCollection([p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16]);
+			
+			_aaa = new Vector.<VOPackedItem>();
+			_aaa.push(p1);
+			_aaa.push(p2);
+			_aaa.push(p3);
+			_aaa.push(p4);
+			_aaa.push(p5);
+			_aaa.push(p6);
+			_aaa.push(p7);
+			_aaa.push(p8);
+			
 			if(_items && _items.length > 0){
 				_list.dataProvider = new ListCollection(_items);
 			}
-				
+			
 			_list.addEventListener(EventViewPackedList.CLICK_ITEM, _handlerItemClick);
 			
 			
@@ -265,29 +286,44 @@ package com.Application.robotlegs.views.packedList {
 			_editButton.addEventListener(Event.TRIGGERED, _handlerEditListItems);
 			
 			var pLeftButtons:Vector.<DisplayObject> = new Vector.<DisplayObject>;
-				pLeftButtons.push(_backButton);
+			pLeftButtons.push(_backButton);
 			
 			var pRightButtons:Vector.<DisplayObject> = new Vector.<DisplayObject>;
-				pRightButtons.push(_editButton);
+			pRightButtons.push(_editButton);
 			
 			
 			_header.leftItems = pLeftButtons;
 			_header.rightItems = pRightButtons;
+			
+			
+			_bottomMenu = new BottomMenu();
+			_bottomMenu.isHome = true;
+			_bottomMenu.isSearch = true;
+			_bottomMenu.isCollapse = true;
+			_bottomMenu.isPack = true;
+			addChild(_bottomMenu);
+			_bottomMenu.addEventListener(EventBottomMenu.COLLAPSE, _handlerCollapse);
+			
+			
 		}
 		
 		
 		override protected function draw():void{
 			super.draw();
 						
+			if(_header){										
+				_header.width = _nativeStage.fullScreenWidth;
+			}
 			
-			if(_header){				
-				//create or Edit				
-				_header.width = _nativeStage.stageWidth;
+			if(_bottomMenu){
+				_bottomMenu.width = _nativeStage.fullScreenWidth;
+				_bottomMenu.height = int(88*_scaleHeight);
+				_bottomMenu.y = _nativeStage.stageHeight - _bottomMenu.height; 				
 			}
 			
 			if(_list){															
 				_list.y = _header.height;
-				_list.height = int(_nativeStage.fullScreenHeight- _header.height);
+				_list.height = int(_nativeStage.fullScreenHeight- _header.height-_bottomMenu.height);
 				_list.validate();
 			}
 		}
@@ -311,12 +347,12 @@ package com.Application.robotlegs.views.packedList {
 						_list.dataProvider.addItemAt(pData.childrens[i],pData.index+1);
 					}					
 				} else {										
+					
 					var pListLength:Number = _list.dataProvider.length-1;					
 					for(var j:int=pLenght; j>= 0 ;j--){						
 						_list.dataProvider.removeItem(pData.childrens[j]);						
-					}														
-				}
-								
+					}				
+				}				
 			}						
 		}
 		
@@ -328,12 +364,32 @@ package com.Application.robotlegs.views.packedList {
 		private function _handlerBackbutton(event:Event):void{
 			dispatchEvent(new EventViewPackedList(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN));
 		}
+		
+		
+		private function _handlerCollapse(event:EventBottomMenu):void{
+			
+			if(_list && _list.dataProvider && _list.dataProvider.length > 0 && _items && _items.length > 0){
+				
+				for(var i:int=0;i<_items.length;i++){				
+					var pParentItem:VOPackedItem = VOPackedItem(_items[i]);					
+						pParentItem.isOpen = false;		
+						
+						if(pParentItem.isChild){
+							_items.splice(i,1);
+							i--;
+						}												
+				}
+						
+				_list.dataProvider = new ListCollection(_items);
+				_list.validate();															
+			}					
+		}
+			
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

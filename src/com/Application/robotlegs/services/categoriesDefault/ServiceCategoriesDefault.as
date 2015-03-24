@@ -80,7 +80,7 @@ package com.Application.robotlegs.services.categoriesDefault {
 				for(var k:int=0;k<result.data.length;k++){
 					var pResChild:VOPackedItem = VOPackedItem(result.data[k]);															
 					
-					if(pResChild.isChild && pResChild.parentId == pParentItem.id){
+					if(pResChild.isChild && pResChild.parentId == pParentItem.item_id){
 						pParentItem.childrens.push(pResChild);																	
 					}
 								

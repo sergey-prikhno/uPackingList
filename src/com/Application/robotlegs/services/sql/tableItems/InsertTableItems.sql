@@ -3,12 +3,16 @@ INSERT INTO main.categories
 	parentId,
 	isChild,
 	label,
-	isPacked	
+	isPacked,
+	orderIndex,
+	item_id	
 )
 VALUES
 (
 	:parentId,
 	:isChild,
 	:label,
-	:isPacked	
+	:isPacked,
+	:orderIndex,
+	:item_id	
 )

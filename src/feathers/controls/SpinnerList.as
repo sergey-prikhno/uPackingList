@@ -31,7 +31,7 @@ package feathers.controls
 	 *
 	 * <listing version="3.0">
 	 * var list:SpinnerList = new SpinnerList();
-	 *
+	 * 
 	 * list.dataProvider = new ListCollection(
 	 * [
 	 *     { text: "Milk", thumbnail: textureAtlas.getTexture( "milk" ) },
@@ -39,7 +39,7 @@ package feathers.controls
 	 *     { text: "Bread", thumbnail: textureAtlas.getTexture( "bread" ) },
 	 *     { text: "Chicken", thumbnail: textureAtlas.getTexture( "chicken" ) },
 	 * ]);
-	 *
+	 * 
 	 * list.itemRendererFactory = function():IListItemRenderer
 	 * {
 	 *     var renderer:DefaultListItemRenderer = new DefaultListItemRenderer();
@@ -47,9 +47,9 @@ package feathers.controls
 	 *     renderer.iconSourceField = "thumbnail";
 	 *     return renderer;
 	 * };
-	 *
+	 * 
 	 * list.addEventListener( Event.CHANGE, list_changeHandler );
-	 *
+	 * 
 	 * this.addChild( list );</listing>
 	 *
 	 * <p><strong>Beta Component:</strong> This is a new component, and its APIs
@@ -99,7 +99,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * <code>SpinnerList</code> requires that the <code>snapToPages</code>
+		 * property is set to <code>true</code>. Attempts to set it to
+		 * <code>false</code> will result in a runtime error.
+		 *
+		 * @throws ArgumentError SpinnerList requires snapToPages to be true.
 		 */
 		override public function set snapToPages(value:Boolean):void
 		{
@@ -111,7 +115,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * <code>SpinnerList</code> requires that the <code>allowMultipleSelection</code>
+		 * property is set to <code>false</code>. Attempts to set it to
+		 * <code>true</code> will result in a runtime error.
+		 *
+		 * @throws ArgumentError SpinnerList requires allowMultipleSelection to be false.
 		 */
 		override public function set allowMultipleSelection(value:Boolean):void
 		{
@@ -123,7 +131,11 @@ package feathers.controls
 		}
 
 		/**
-		 * @private
+		 * <code>SpinnerList</code> requires that the <code>isSelectable</code>
+		 * property is set to <code>true</code>. Attempts to set it to
+		 * <code>false</code> will result in a runtime error.
+		 *
+		 * @throws ArgumentError SpinnerList requires isSelectable to be true.
 		 */
 		override public function set isSelectable(value:Boolean):void
 		{
@@ -187,6 +199,12 @@ package feathers.controls
 		 * vertical center. If the list scrolls horizontally, the
 		 * <code>selectionOverlaySkin</code> will fill the entire height of the
 		 * list, and it will be positioned in the horizontal center.
+		 *
+		 * <p>The following example gives the spinner list a selection overlay
+		 * skin:</p>
+		 *
+		 * <listing version="3.0">
+		 * list.selectionOverlaySkin = new Scale9Image( textures );</listing>
 		 *
 		 * @default null
 		 */
@@ -272,10 +290,12 @@ package feathers.controls
 				if(this._maxVerticalPageIndex != this._minVerticalPageIndex)
 				{
 					this.pendingVerticalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._verticalPageIndex, this._maxVerticalPageIndex);
+					this.hasPendingVerticalPageIndex = this.pendingVerticalPageIndex !== this._verticalPageIndex;
 				}
 				else if(this._maxHorizontalPageIndex != this._minHorizontalPageIndex)
 				{
 					this.pendingHorizontalPageIndex = this.calculateNearestPageIndexForItem(itemIndex, this._horizontalPageIndex, this._maxHorizontalPageIndex);
+					this.hasPendingHorizontalPageIndex = this.pendingHorizontalPageIndex !== this._horizontalPageIndex;
 				}
 			}
 			super.handlePendingScroll();

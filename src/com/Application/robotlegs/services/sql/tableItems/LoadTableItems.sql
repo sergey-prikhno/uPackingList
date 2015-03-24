@@ -2,6 +2,8 @@ SELECT id,
 	parentId,
 	isChild,
 	label,
-	isPacked
+	isPacked,
+	orderIndex,
+	item_id
 FROM main.categories
-ORDER BY id
+ORDER BY orderIndex
