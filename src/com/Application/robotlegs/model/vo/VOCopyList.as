@@ -1,12 +1,6 @@
-package com.Application.robotlegs.views.main {
-	import com.Application.robotlegs.model.vo.VOMainMenu;
-	import com.Application.robotlegs.model.vo.VOOpenList;
-	import com.Application.robotlegs.views.EventViewAbstract;
-	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.EventRenderer;
-	import com.common.Constants;
-	
-	public class MediatorViewMain extends MediatorViewAbstract {		
+package com.Application.robotlegs.model.vo{
+	public class VOCopyList{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -20,41 +14,31 @@ package com.Application.robotlegs.views.main {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		private var _listNew:VOTableName;
+		private var _listCopy:VOTableName;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMain() 	{
-			super();
+		
+		public function VOCopyList(){
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-						
-			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
-						
-		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-					
-			removeViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);		
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewMain{
-			return ViewMain(viewComponent);
-		}
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -62,22 +46,12 @@ package com.Application.robotlegs.views.main {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------				
-		private function _handlerRendererClick(event:EventRenderer):void{
-			var pVO:VOMainMenu = VOMainMenu(event.payload);
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
-				dispatch(new EventViewAbstract(EventViewAbstract.CREATE_NEW_LIST));
-			}
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList") == pVO.title){
-				var pVOOpen:VOOpenList = new VOOpenList();
-				pVOOpen.isOpen = true;
-				dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, false, pVOOpen));
-			}
-		}
+		//---------------------------------------------------------------------------------------------------------
 		
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -91,6 +65,27 @@ package com.Application.robotlegs.views.main {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
+		public function get listCopy():VOTableName
+		{
+			return _listCopy;
+		}
+
+		public function set listCopy(value:VOTableName):void
+		{
+			_listCopy = value;
+		}
+
+		public function get listNew():VOTableName
+		{
+			return _listNew;
+		}
+
+		public function set listNew(value:VOTableName):void
+		{
+			_listNew = value;
+		}
+
 	}
 }

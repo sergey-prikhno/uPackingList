@@ -25,6 +25,9 @@ package com.Application.robotlegs.model {
 		
 		function get voOpenList():VOOpenList
 		function set voOpenList(value:VOOpenList):void
+	
+		function get copyingListData():VOTableName
+		function set copyingListData(value:VOTableName):void
 
 	}
 	

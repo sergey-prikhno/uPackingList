@@ -1,8 +1,10 @@
 package com.Application {
 	import com.Application.robotlegs.controller.CommandAddNewList;
 	import com.Application.robotlegs.controller.CommandCreateNewList;
+	import com.Application.robotlegs.controller.CommandCreateNewListFromExisting;
 	import com.Application.robotlegs.controller.CommandGetCreatedLists;
 	import com.Application.robotlegs.controller.CommandGetPackedItemsFunctionCallback;
+	import com.Application.robotlegs.controller.CommandGetVOOpenList;
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
 	import com.Application.robotlegs.controller.CommandSetNewListName;
 	import com.Application.robotlegs.controller.CommandUpdateVOOpenList;
@@ -12,6 +14,7 @@ package com.Application {
 	import com.Application.robotlegs.controller.service.categories.CommandRemoveCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryItem;
+	import com.Application.robotlegs.controller.service.copyList.CommandCopyListFromExisting;
 	import com.Application.robotlegs.controller.service.settings.CommandUpdateSettings;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureSql;
@@ -29,6 +32,8 @@ package com.Application {
 	import com.Application.robotlegs.services.categories.ServiceCategories;
 	import com.Application.robotlegs.services.categoriesDefault.IServiceCategoriesDefault;
 	import com.Application.robotlegs.services.categoriesDefault.ServiceCategoriesDefault;
+	import com.Application.robotlegs.services.copyList.IServiceCopyList;
+	import com.Application.robotlegs.services.copyList.ServiceCopyList;
 	import com.Application.robotlegs.services.dbCreator.IServiceDBCreator;
 	import com.Application.robotlegs.services.dbCreator.ServiceDBCreator;
 	import com.Application.robotlegs.services.settings.EventServiceSettings;
@@ -42,6 +47,7 @@ package com.Application {
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.open.EventViewOpen;
 	import com.Application.robotlegs.views.open.MediatorViewOpen;
 	import com.Application.robotlegs.views.open.ViewOpen;
 	import com.Application.robotlegs.views.packedList.MediatorViewPackedList;
@@ -104,6 +110,7 @@ package com.Application {
 			injector.mapSingletonOf(IServiceCategoriesDefault, ServiceCategoriesDefault);
 			injector.mapSingletonOf(IServiceCategories, ServiceCategories);
 			injector.mapSingletonOf(IServiceTableNames, ServiceTableNames);
+			injector.mapSingletonOf(IServiceCopyList, ServiceCopyList);
 						
 			//Command MAP									
 			commandMap.mapEvent(EventServiceAbstract.ERROR, CommandServiceError, EventServiceAbstract);			
@@ -131,8 +138,12 @@ package com.Application {
 			commandMap.mapEvent(EventViewAbstract.GET_CREATED_LISTS, CommandGetCreatedLists, EventViewAbstract);
 			commandMap.mapEvent(EventViewAbstract.ADD_NEW_LIST, CommandAddNewList, EventViewAbstract);
 			
+			commandMap.mapEvent(EventViewOpen.GET_VOOPEN_LIST_DATA, CommandGetVOOpenList, EventViewOpen);
+			commandMap.mapEvent(EventViewOpen.CREATE_NEW_LIST_FROM_EXISTING, CommandCreateNewListFromExisting, EventViewOpen);
+			
 			//EentModel
 			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);
+			commandMap.mapEvent(EventModel.COPY_LIST_FORM_EXISTING, CommandCopyListFromExisting, EventModel);
 			
 			
 			super.startup();

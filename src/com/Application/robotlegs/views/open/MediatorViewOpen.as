@@ -3,7 +3,6 @@ package com.Application.robotlegs.views.open {
 	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.http.robotlegs.model.modelLoading.EventActorLoader;
 	
 	public class MediatorViewOpen extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -18,6 +17,8 @@ package com.Application.robotlegs.views.open {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
+		private var _listData:VOTableName;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -38,7 +39,7 @@ package com.Application.robotlegs.views.open {
 			
 			addViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
 			
-			dispatch(new EventViewOpen(EventViewOpen.GET_VOOPEN_LIST_DATA, false, null, _setVOOpenListData));
+			
 			dispatch(new EventViewAbstract(EventViewAbstract.GET_CREATED_LISTS, false, null, _setLists));
 			
 		}
@@ -67,6 +68,11 @@ package com.Application.robotlegs.views.open {
 		
 		private function _setVOOpenListData(value:VOOpenList):void {
 			view.voOpenList = value;
+			if(value.isOpen){
+				dispatch(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, false, _listData));
+			}else{
+				dispatch(new EventViewOpen(EventViewOpen.CREATE_NEW_LIST_FROM_EXISTING, false, _listData));
+			}
 		}
 		
 		private function _setLists(value:Vector.<VOTableName>):void {
@@ -81,7 +87,8 @@ package com.Application.robotlegs.views.open {
 		//---------------------------------------------------------------------------------------------------------
 		private function _handlerGetPachedItems(event:EventViewAbstract):void{
 			event.stopPropagation();
-			dispatch(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, false, event.data));
+			_listData = VOTableName(event.data);
+			dispatch(new EventViewOpen(EventViewOpen.GET_VOOPEN_LIST_DATA, false, null, _setVOOpenListData));
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

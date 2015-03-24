@@ -2,6 +2,7 @@ package com.Application.robotlegs.model {
 
 	import com.Application.Main;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
+	import com.Application.robotlegs.model.vo.VOCopyList;
 	import com.Application.robotlegs.model.vo.VOOpenList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.model.vo.VOScreenID;
@@ -31,6 +32,8 @@ package com.Application.robotlegs.model {
 		private var _currentTableName:VOTableName;
 		
 		private var _voOpenList:VOOpenList;
+		
+		private var _copyingListData:VOTableName;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -55,6 +58,14 @@ package com.Application.robotlegs.model {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 
+		public function get copyingListData():VOTableName{
+			return _copyingListData;
+		}
+
+		public function set copyingListData(value:VOTableName):void{
+			_copyingListData = value;
+		}
+
 		public function get voOpenList():VOOpenList{return _voOpenList;}
 		public function set voOpenList(value:VOOpenList):void{_voOpenList = value;}
 
@@ -64,9 +75,15 @@ package com.Application.robotlegs.model {
 		}
 
 		public function set newList(value:VOTableName):void{
-			if(value.isScratch){
-				//_appLists.push(value);
+			if(value.isScratch && !_copyingListData){
 				dispatch(new EventModel(EventModel.INSERT_TABLE_NAMES, false, value)); 																
+			}
+			if(value.isScratch && _copyingListData){
+				var pVOCopy:VOCopyList = new VOCopyList();
+					pVOCopy.listCopy = _copyingListData;
+					pVOCopy.listNew = value;
+				dispatch(new EventModel(EventModel.COPY_LIST_FORM_EXISTING, false, pVOCopy)); 
+				_copyingListData = null;
 			}
 		}
 						

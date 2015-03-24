@@ -60,8 +60,6 @@ package com.Application.robotlegs.views.open{
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-
 
 		override public function destroy():void{
 			super.destroy();
@@ -82,6 +80,7 @@ package com.Application.robotlegs.views.open{
 			}
 		}
 		
+		public function get voOpenList():VOOpenList{return _voOpenList;}
 		public function set voOpenList(value:VOOpenList):void{_voOpenList = value;}
 		
 		override protected function get defaultStyleProvider():IStyleProvider {

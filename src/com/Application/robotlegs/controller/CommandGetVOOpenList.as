@@ -1,50 +1,48 @@
-package com.Application.robotlegs.views.main {
-	import com.Application.robotlegs.model.vo.VOMainMenu;
-	import com.Application.robotlegs.model.vo.VOOpenList;
-	import com.Application.robotlegs.views.EventViewAbstract;
-	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.EventRenderer;
-	import com.common.Constants;
+package com.Application.robotlegs.controller{
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.views.open.EventViewOpen;
 	
-	public class MediatorViewMain extends MediatorViewAbstract {		
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandGetVOOpenList extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		[Inject]
+		public var model:IModel;
 		
+		[Inject]
+		public var event:EventViewOpen;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMain() 	{
+		
+		public function CommandGetVOOpenList()
+		{
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-						
-			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
-						
-		}
-		
-		
-		override public function onRemove():void {
-			super.onRemove();
-					
-			removeViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);		
+		override public function execute():void{
+			var pFunction:Function = event.functionCallback;
+			pFunction(model.voOpenList);						
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -52,9 +50,7 @@ package com.Application.robotlegs.views.main {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewMain{
-			return ViewMain(viewComponent);
-		}
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -62,22 +58,12 @@ package com.Application.robotlegs.views.main {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------				
-		private function _handlerRendererClick(event:EventRenderer):void{
-			var pVO:VOMainMenu = VOMainMenu(event.payload);
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
-				dispatch(new EventViewAbstract(EventViewAbstract.CREATE_NEW_LIST));
-			}
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList") == pVO.title){
-				var pVOOpen:VOOpenList = new VOOpenList();
-				pVOOpen.isOpen = true;
-				dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, false, pVOOpen));
-			}
-		}
+		//---------------------------------------------------------------------------------------------------------
 		
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -91,6 +77,7 @@ package com.Application.robotlegs.views.main {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }

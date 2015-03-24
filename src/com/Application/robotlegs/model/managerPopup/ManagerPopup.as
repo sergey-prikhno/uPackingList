@@ -161,7 +161,7 @@ package com.Application.robotlegs.model.managerPopup {
 		private function _handlerPopupCreateUseExisting(event:EventPopupCreateListExisting):void{
 			_removePopupCreateListExisting();
 			var pVOOpen:VOOpenList = new VOOpenList();
-			dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, pVOOpen));
+			dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, false, pVOOpen));
 		}
 		
 		

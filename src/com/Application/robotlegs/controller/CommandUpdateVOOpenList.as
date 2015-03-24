@@ -1,7 +1,6 @@
 package com.Application.robotlegs.controller{
 	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.vo.VOOpenList;
-	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	
 	import org.robotlegs.starling.mvcs.Command;
