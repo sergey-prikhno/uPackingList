@@ -37,7 +37,7 @@ package com.Application.robotlegs.controller {
 		//---------------------------------------------------------------------------------------------------------
 		override public function execute():void{
 			var pFunction:Function = event.functionCallback;
-			pFunction(model.currentCategories);						
+			pFunction(model.currentCategories,model.currentTableName);						
 		}			
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

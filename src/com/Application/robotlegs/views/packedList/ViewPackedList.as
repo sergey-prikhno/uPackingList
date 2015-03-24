@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
 	import com.Application.robotlegs.views.components.bottomMenu.EventBottomMenu;
@@ -38,6 +39,7 @@ package com.Application.robotlegs.views.packedList {
 		private var _items:Vector.<VOPackedItem>;
 		
 		private var _bottomMenu:BottomMenu;
+		private var _tableName:VOTableName;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -139,6 +141,14 @@ package com.Application.robotlegs.views.packedList {
 			}
 		}
 		
+		
+		public function set tableName(value:VOTableName):void{
+			_tableName = value;
+			
+			if(_header){
+				_header.title = _tableName.title;
+			}
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.services.categories.EventServiceCategories;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
@@ -72,8 +73,9 @@ package com.Application.robotlegs.views.packedList {
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private function _setPackedItems(value:Vector.<VOPackedItem>):void {
+		private function _setPackedItems(value:Vector.<VOPackedItem>,pTableName:VOTableName):void {
 			view.items = value;
+			view.tableName = pTableName;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
