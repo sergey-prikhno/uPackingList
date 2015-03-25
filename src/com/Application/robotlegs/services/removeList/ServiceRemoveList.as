@@ -1,6 +1,7 @@
 package com.Application.robotlegs.services.removeList {
 	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.common.DefaultData;
 	import com.probertson.data.QueuedStatement;
 	import com.probertson.data.SQLRunner;
 	
@@ -44,7 +45,13 @@ package com.Application.robotlegs.services.removeList {
 		
 		public function removeList(value:VOTableName):void {
 			_currentDeleteItem = value;
-			sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(DELETE_LIST_SQL, {id:_currentDeleteItem.id})]), remove_result, database_error);
+			var stmts:Vector.<QueuedStatement> = new Vector.<QueuedStatement>();
+				stmts[stmts.length] = new QueuedStatement(DELETE_LIST_SQL, {id:_currentDeleteItem.id});
+				
+				var pDrop:String = DefaultData.DROP_TABLE + _currentDeleteItem.table_name;
+				stmts[stmts.length] = new QueuedStatement(pDrop)
+			
+			sqlRunner.executeModify(stmts, remove_result, database_error);
 		}
 	
 		//--------------------------------------------------------------------------------------------------------- 

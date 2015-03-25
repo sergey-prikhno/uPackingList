@@ -34,6 +34,7 @@ package com.common {
 		//Delete 		
 		public static const DELETE_CATEGORY_TABLE_1:String = " DELETE FROM main.";		
 		public static const DELETE_CATEGORY_TABLE_2:String = " WHERE id = :id";
+		public static const DROP_TABLE:String = "DROP TABLE ";
 		
 		
 		
