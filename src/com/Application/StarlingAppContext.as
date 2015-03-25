@@ -16,6 +16,7 @@ package com.Application {
 	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandUpdateOrderIndexes;
 	import com.Application.robotlegs.controller.service.copyList.CommandCopyListFromExisting;
+	import com.Application.robotlegs.controller.service.removeList.CommandRemoveDBList;
 	import com.Application.robotlegs.controller.service.settings.CommandUpdateSettings;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureSql;
@@ -37,6 +38,8 @@ package com.Application {
 	import com.Application.robotlegs.services.copyList.ServiceCopyList;
 	import com.Application.robotlegs.services.dbCreator.IServiceDBCreator;
 	import com.Application.robotlegs.services.dbCreator.ServiceDBCreator;
+	import com.Application.robotlegs.services.removeList.IServiceRemoveList;
+	import com.Application.robotlegs.services.removeList.ServiceRemoveList;
 	import com.Application.robotlegs.services.settings.EventServiceSettings;
 	import com.Application.robotlegs.services.settings.IServiceSettings;
 	import com.Application.robotlegs.services.settings.ServiceSettings;
@@ -112,6 +115,7 @@ package com.Application {
 			injector.mapSingletonOf(IServiceCategories, ServiceCategories);
 			injector.mapSingletonOf(IServiceTableNames, ServiceTableNames);
 			injector.mapSingletonOf(IServiceCopyList, ServiceCopyList);
+			injector.mapSingletonOf(IServiceRemoveList, ServiceRemoveList);
 						
 			//Command MAP									
 			commandMap.mapEvent(EventServiceAbstract.ERROR, CommandServiceError, EventServiceAbstract);			
@@ -142,6 +146,8 @@ package com.Application {
 			commandMap.mapEvent(EventViewOpen.GET_VOOPEN_LIST_DATA, CommandGetVOOpenList, EventViewOpen);
 			commandMap.mapEvent(EventViewOpen.CREATE_NEW_LIST_FROM_EXISTING, CommandCreateNewListFromExisting, EventViewOpen);
 			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, CommandUpdateOrderIndexes, EventViewAbstract);
+	
+			commandMap.mapEvent(EventViewAbstract.REMOVE_LIST, CommandRemoveDBList, EventViewAbstract);
 			
 			//EentModel
 			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);

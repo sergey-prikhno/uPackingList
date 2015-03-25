@@ -65,6 +65,12 @@ package com.Application.robotlegs.views.open{
 			super.destroy();
 		}
 		
+		
+		public function updateRemovedLists(value:VOTableName):void{
+			_list.dataProvider.removeItem(value);
+			_list.validate();
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -147,7 +153,8 @@ package com.Application.robotlegs.views.open{
 			super.draw();
 			
 			if(_header){
-				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");				
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.open");
+				_header.width = _nativeStage.stageWidth;
 			}
 			
 			if(_buttonAddNewList){
@@ -189,10 +196,11 @@ package com.Application.robotlegs.views.open{
 			if(_buttonEdit.label == "Edit"){
 				_buttonEdit.label = "Done";	
 				_buttonAddNewList.visible = true;
-				
+				_list.dispatchEvent(new EventViewOpen(EventViewOpen.EDIT_ACTAVATE));
 			}else{
 				_buttonEdit.label = "Edit";	
 				_buttonAddNewList.visible = false;
+				_list.dispatchEvent(new EventViewOpen(EventViewOpen.EDIT_DEACTAVATE));
 			}
 			
 			invalidate(INVALIDATION_FLAG_STYLES);

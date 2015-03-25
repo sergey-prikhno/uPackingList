@@ -1,7 +1,9 @@
 package com.Application.robotlegs.views.components.renderers{
 	import com.Application.robotlegs.model.vo.VOTableName;
 	import com.Application.robotlegs.views.EventViewAbstract;
+	import com.Application.robotlegs.views.open.EventViewOpen;
 	
+	import feathers.controls.Button;
 	import feathers.controls.Label;
 	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
@@ -40,6 +42,12 @@ package com.Application.robotlegs.views.components.renderers{
 		private var _labelTitle:Label;
 		
 		private var _quadBg:Quad;
+		
+		private var _isRemove:Boolean = false;
+		private var _isEditing:Boolean = false;
+		
+		private var _buttonRemove:Button;
+		private var _buttonDelete:Button;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -64,7 +72,20 @@ package com.Application.robotlegs.views.components.renderers{
 				removeChild(_labelTitle, true);
 				_labelTitle = null;
 			}
-			
+			if(_quadBg){
+				removeChild(_quadBg, true);
+				_quadBg = null;
+			}
+			if(_buttonRemove){
+				_buttonRemove.removeEventListener(Event.TRIGGERED, _handlerButtonRemove);
+				removeChild(_buttonRemove);
+				_buttonRemove = null;
+			}
+			if(_buttonDelete){
+				_buttonDelete.removeEventListener(Event.TRIGGERED, _handlerButtonDelete);
+				removeChild(_buttonDelete);
+				_buttonDelete = null;
+			}
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -91,6 +112,10 @@ package com.Application.robotlegs.views.components.renderers{
 				return;
 			}
 			this._owner = value;
+			if(this._owner){
+				this._owner.addEventListener(EventViewOpen.EDIT_ACTAVATE, _handlerEditActivate);
+				this._owner.addEventListener(EventViewOpen.EDIT_DEACTAVATE, _handlerEditDeactivate);
+			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
 		public function get data():Object{return this._data;}
@@ -127,6 +152,19 @@ package com.Application.robotlegs.views.components.renderers{
 				_labelTitle = new Label();
 				addChild(_labelTitle);
 			}
+			if(!_buttonRemove){
+				_buttonRemove = new Button();
+				_buttonRemove.addEventListener(Event.TRIGGERED, _handlerButtonRemove);
+				_buttonRemove.visible = false;
+				_buttonRemove.label = "+";
+				addChild(_buttonRemove);
+			}
+			if(!_buttonDelete){
+				_buttonDelete = new Button();
+				_buttonDelete.addEventListener(Event.TRIGGERED, _handlerButtonDelete);
+				_buttonDelete.visible = false;
+				addChild(_buttonDelete);
+			}
 			
 		}
 		
@@ -138,12 +176,30 @@ package com.Application.robotlegs.views.components.renderers{
 					_quadBg.width = actualWidth;
 				}
 				
+				if(_buttonRemove){
+					if(_isEditing){
+						_buttonRemove.visible = true;
+					}else{
+						_buttonRemove.visible = false;
+					}
+				}
+				
 				if(_labelTitle){	
 					_labelTitle.width = _owner.width - int(8*_scale);
 					_labelTitle.text = _data.title;
-					_labelTitle.x = int(8*_scale);
-					_labelTitle.y = int(24*_scale);
+					if(_buttonRemove && !_buttonRemove.visible){
+						_labelTitle.x = int(8*_scale);
+						_labelTitle.y = int(24*_scale);
+					}else if(_buttonRemove && _buttonRemove.visible){
+						_labelTitle.x = _buttonRemove.width +int(8*_scale);
+						_labelTitle.y =  int(24*_scale);
+					}
 					_labelTitle.validate();
+				}
+				if(_buttonDelete){
+					_buttonDelete.label = "Delete";
+					_buttonDelete.validate();
+					_buttonDelete.x = actualWidth - _buttonDelete.width; 
 				}
 				
 				if(_quadBg){
@@ -159,6 +215,30 @@ package com.Application.robotlegs.views.components.renderers{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		private function _handlerButtonRemove(event:Event):void{
+			if(_buttonRemove.label == "+"){
+				_buttonRemove.label = "-";
+				_buttonDelete.visible = true;
+			}else{
+				_buttonRemove.label = "+";
+				_buttonDelete.visible = false;
+			}
+		}
+		
+		private function _handlerButtonDelete(event:Event):void{
+			dispatchEvent(new EventViewAbstract(EventViewAbstract.REMOVE_LIST, true, _data));
+		}
+		
+		private function _handlerEditActivate(event:EventViewOpen):void{
+			_isEditing = true;
+			invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
+		private function _handlerEditDeactivate(event:EventViewOpen):void{
+			_isEditing = false;
+			invalidate(INVALIDATION_FLAG_STYLES);
+		}
+		
 		protected function removedFromStageHandler(event:starling.events.Event):void{
 			this.touchPointID = -1;
 		}
@@ -166,18 +246,7 @@ package com.Application.robotlegs.views.components.renderers{
 		protected function _touchHandler(event:TouchEvent):void{
 			var touch:Touch = event.getTouch(stage);
 			if(touch){
-				
-				/*if(touch.phase == TouchPhase.BEGAN) {
-				_isTouch = true;
-				}else if(touch.phase == TouchPhase.ENDED) {
-				if(_isTouch){
-				dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
-				}
-				}else if(touch.phase == TouchPhase.MOVED) {
-				_isTouch = false;
-				}*/
-				if(touch.phase == TouchPhase.ENDED) {
-					//dispatchEvent(new EventRenderer(EventRenderer.CLICK, _data, true));
+				if(touch.phase == TouchPhase.ENDED && !_owner.isScrolling && !_isEditing) {
 					dispatchEvent(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, true, _data));
 				}
 			}		

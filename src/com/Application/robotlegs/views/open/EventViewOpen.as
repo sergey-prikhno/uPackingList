@@ -5,6 +5,8 @@ package com.Application.robotlegs.views.open{
 				
 		public static const GET_VOOPEN_LIST_DATA:String = "GET_VOOPEN_LIST_DATA";
 		public static const CREATE_NEW_LIST_FROM_EXISTING:String = "CREATE_NEW_LIST_FROM_EXISTING";
+		public static const EDIT_DEACTAVATE:String = "EDIT_DEACTAVATE";
+		public static const EDIT_ACTAVATE:String = "EDIT_ACTAVATE";
 		
 		
 		private var _functionCallback:Function;

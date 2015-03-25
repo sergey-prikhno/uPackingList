@@ -21,6 +21,7 @@ package com.Application.robotlegs.views {
 		public static const BACK_TO_VIEW_MAIN_SCREEN:String = "BACK_TO_VIEW_MAIN_SCREEN";
 		public static const CREATE_NEW_LIST:String = "CREATE_NEW_LIST";	
 		public static const ADD_NEW_LIST:String = "ADD_NEW_LIST";	
+		public static const REMOVE_LIST:String = "REMOVE_LIST";	
 		
 		public static const ERROR:String = "ERROR";
 		

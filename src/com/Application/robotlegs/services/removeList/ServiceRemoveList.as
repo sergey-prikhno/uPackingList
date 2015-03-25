@@ -1,32 +1,39 @@
-package com.Application.robotlegs.views.open {
-	import com.Application.robotlegs.model.vo.VOOpenList;
+package com.Application.robotlegs.services.removeList {
+	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.model.vo.VOTableName;
-	import com.Application.robotlegs.services.removeList.EventServiceRemoveList;
-	import com.Application.robotlegs.views.EventViewAbstract;
-	import com.Application.robotlegs.views.MediatorViewAbstract;
+	import com.probertson.data.QueuedStatement;
+	import com.probertson.data.SQLRunner;
 	
-	public class MediatorViewOpen extends MediatorViewAbstract {		
+	import flash.data.SQLResult;
+	import flash.errors.SQLError;
+	
+	import org.robotlegs.starling.mvcs.Actor;
+	
+	public class ServiceRemoveList extends Actor implements IServiceRemoveList{		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		[Inject]
+		public var model:IModel;
 		
+		[Inject]
+		public var sqlRunner:SQLRunner;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _listData:VOTableName;
-		
+		private var _currentDeleteItem:VOTableName;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewOpen() 	{
+		public function ServiceRemoveList() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -34,37 +41,18 @@ package com.Application.robotlegs.views.open {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-						
-			
-			addViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
-			addViewListener(EventViewAbstract.REMOVE_LIST, _handlerRemoveList, EventViewAbstract);
-			
-			addContextListener(EventServiceRemoveList.REMOVED_LIST_DB, _handlerUpdateRemovedList, EventServiceRemoveList);
-			
-			dispatch(new EventViewAbstract(EventViewAbstract.GET_CREATED_LISTS, false, null, _setLists));
-			
+		
+		public function removeList(value:VOTableName):void {
+			_currentDeleteItem = value;
+			sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(DELETE_LIST_SQL, {id:_currentDeleteItem.id})]), remove_result, database_error);
 		}
-		
-		
-		override public function onRemove():void {
-			super.onRemove();
-					
-			removeViewListener(EventViewAbstract.GET_CATEGORY_DATA, _handlerGetPachedItems, EventViewAbstract);
-			removeViewListener(EventViewAbstract.REMOVE_LIST, _handlerRemoveList, EventViewAbstract);
-			
-			removeContextListener(EventServiceRemoveList.REMOVED_LIST_DB, _handlerUpdateRemovedList, EventServiceRemoveList);
-		}
-		
+	
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewOpen{
-			return ViewOpen(viewComponent);
-		}
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -72,39 +60,21 @@ package com.Application.robotlegs.views.open {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private function _setVOOpenListData(value:VOOpenList):void {
-			view.voOpenList = value;
-			if(value.isOpen){
-				dispatch(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, false, _listData));
-			}else{
-				dispatch(new EventViewOpen(EventViewOpen.CREATE_NEW_LIST_FROM_EXISTING, false, _listData));
-			}
+		private function remove_result(results:Vector.<SQLResult>):void {
+			trace("Delete list");
+			model.updateRemovedLists(_currentDeleteItem);
+			dispatch(new EventServiceRemoveList(EventServiceRemoveList.REMOVED_LIST_DB, false, _currentDeleteItem));	
 		}
 		
-		private function _setLists(value:Vector.<VOTableName>):void {
-			view.vectorLists = value;
+		private function database_error(error:SQLError):void {
+			trace("Error in delete list DB");
 		}
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerGetPachedItems(event:EventViewAbstract):void{
-			event.stopPropagation();
-			_listData = VOTableName(event.data);
-			dispatch(new EventViewOpen(EventViewOpen.GET_VOOPEN_LIST_DATA, false, null, _setVOOpenListData));
-		}
-		
-		private function _handlerRemoveList(event:EventViewAbstract):void{
-			trace("remove list");
-			dispatch(new EventViewAbstract(EventViewAbstract.REMOVE_LIST, false, VOTableName(event.data)));
-		}
-		
-		private function _handlerUpdateRemovedList(event:EventServiceRemoveList):void{
-			view.updateRemovedLists(VOTableName(event.data));
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -112,6 +82,10 @@ package com.Application.robotlegs.views.open {
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
 		
+		// ------- SQL statements -------		
+		[Embed(source="../sql/deleteList/DeleteList.sql", mimeType="application/octet-stream")]
+		private static const DeleteListStatement:Class;
+		private static const DELETE_LIST_SQL:String = new DeleteListStatement();
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

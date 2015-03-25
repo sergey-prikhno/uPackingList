@@ -51,6 +51,15 @@ package com.Application.robotlegs.model {
 		// 
 		//---------------------------------------------------------------------------------------------------------		
 
+		public function updateRemovedLists(value:VOTableName):void{
+			var pLength:int = _appLists.length;
+			for (var i:int = 0; i < pLength; i++){
+				if(value.id == _appLists[i].id){
+					_appLists.splice(i,1);
+					break;
+				}
+			}
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

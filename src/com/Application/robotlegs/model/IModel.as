@@ -28,6 +28,8 @@ package com.Application.robotlegs.model {
 	
 		function get copyingListData():VOTableName
 		function set copyingListData(value:VOTableName):void
+		
+		function updateRemovedLists(value:VOTableName):void
 
 	}
 	

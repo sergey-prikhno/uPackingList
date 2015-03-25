@@ -13,6 +13,7 @@ button.yes=Yes
 #header
 header.uPackingList=uPackingList
 header.settings=Settings
+header.open=Open
 
 title.newList=New List
 title.newListDesc=create new packing list
