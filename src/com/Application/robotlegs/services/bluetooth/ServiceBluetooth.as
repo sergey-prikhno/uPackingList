@@ -1,7 +1,9 @@
-package com.Application.robotlegs.views.settings{
-	import com.Application.robotlegs.views.MediatorViewAbstract;
+package com.Application.robotlegs.services.bluetooth{
+	import com.as3breeze.air.ane.android.Bluetooth;
 	
-	public class MediatorViewSettings extends MediatorViewAbstract {		
+	import org.robotlegs.starling.mvcs.Actor;
+	
+	public class ServiceBluetooth extends Actor implements IServiceBluetooth{		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -15,12 +17,14 @@ package com.Application.robotlegs.views.settings{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		private var _bluetooth:Bluetooth;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewSettings() 	{
+		public function ServiceBluetooth() {
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -28,18 +32,14 @@ package com.Application.robotlegs.views.settings{
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-			
-			addViewListener(EventViewSettings.USE_BLUETOOTH, _handlerUseBluetooth, EventViewSettings);
-			
-		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-		
-			removeViewListener(EventViewSettings.USE_BLUETOOTH, _handlerUseBluetooth, EventViewSettings);
+		public function load():void{
+			_bluetooth = Bluetooth.currentAdapter();
+			if(_bluetooth.isEnabled()){
+				
+			}else{
+				_bluetooth.enableBT();
+			}
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -55,15 +55,14 @@ package com.Application.robotlegs.views.settings{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		private function _handlerUseBluetooth(event:EventViewSettings):void{
-			dispatch(new EventViewSettings(EventViewSettings.USE_BLUETOOTH));
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

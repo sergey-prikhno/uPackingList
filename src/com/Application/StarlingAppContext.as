@@ -13,6 +13,7 @@ package com.Application {
 	import com.Application.robotlegs.controller.service.CommandServiceError;
 	import com.Application.robotlegs.controller.service.categories.CommandAddCategory;
 	import com.Application.robotlegs.controller.service.categories.CommandAddItemToCategory;
+	import com.Application.robotlegs.controller.service.bluetooth.CommandUseBluetooth;
 	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandRemoveCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
@@ -33,6 +34,8 @@ package com.Application {
 	import com.Application.robotlegs.model.managerPopup.EventManagerPopup;
 	import com.Application.robotlegs.model.managerPopup.IManagerPopup;
 	import com.Application.robotlegs.model.managerPopup.ManagerPopup;
+	import com.Application.robotlegs.services.bluetooth.IServiceBluetooth;
+	import com.Application.robotlegs.services.bluetooth.ServiceBluetooth;
 	import com.Application.robotlegs.services.categories.IServiceCategories;
 	import com.Application.robotlegs.services.categories.ServiceCategories;
 	import com.Application.robotlegs.services.categoriesDefault.IServiceCategoriesDefault;
@@ -63,6 +66,7 @@ package com.Application {
 	import com.Application.robotlegs.views.open.ViewOpen;
 	import com.Application.robotlegs.views.packedList.MediatorViewPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
+	import com.Application.robotlegs.views.settings.EventViewSettings;
 	import com.Application.robotlegs.views.settings.MediatorViewSettings;
 	import com.Application.robotlegs.views.settings.ViewSettings;
 	import com.Application.robotlegs.views.welcome.MediatorViewWelcome;
@@ -125,6 +129,7 @@ package com.Application {
 			injector.mapSingletonOf(IServiceTableNames, ServiceTableNames);
 			injector.mapSingletonOf(IServiceCopyList, ServiceCopyList);
 			injector.mapSingletonOf(IServiceRemoveList, ServiceRemoveList);
+			injector.mapSingletonOf(IServiceBluetooth, ServiceBluetooth);
 						
 			//Command MAP									
 			commandMap.mapEvent(EventServiceAbstract.ERROR, CommandServiceError, EventServiceAbstract);			
@@ -157,6 +162,8 @@ package com.Application {
 			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, CommandUpdateOrderIndexes, EventViewAbstract);
 	
 			commandMap.mapEvent(EventViewAbstract.REMOVE_LIST, CommandRemoveDBList, EventViewAbstract);
+	
+			commandMap.mapEvent(EventViewSettings.USE_BLUETOOTH, CommandUseBluetooth, EventViewSettings);
 			
 			//EentModel
 			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);

@@ -311,6 +311,8 @@
 		together in order to use AIR's NetworkInfo APIs-->
 			    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 			    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+			    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    			<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 			</manifest>
 			
 		]]></manifestAdditions>
@@ -328,5 +330,6 @@
 
 <extensions>
         <extensionID>com.freshplanet.AirNetworkInfo</extensionID>
+    
     </extensions>
 </application>

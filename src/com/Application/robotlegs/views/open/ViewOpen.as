@@ -13,6 +13,8 @@ package com.Application.robotlegs.views.open{
 	import feathers.controls.List;
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
+	import feathers.media.BaseMediaPlayer;
+	import feathers.media.VideoPlayer;
 	import feathers.skins.IStyleProvider;
 	
 	import starling.display.DisplayObject;
@@ -147,6 +149,7 @@ package com.Application.robotlegs.views.open{
 			_bottomMenu.isSearch = true;
 			_bottomMenu.isPack = true;
 			addChild(_bottomMenu);
+			
 		}
 		
 		override protected function draw():void{

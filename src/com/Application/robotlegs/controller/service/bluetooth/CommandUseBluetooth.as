@@ -1,45 +1,47 @@
-package com.Application.robotlegs.views.settings{
-	import com.Application.robotlegs.views.MediatorViewAbstract;
+package com.Application.robotlegs.controller.service.bluetooth{
+	import org.robotlegs.starling.mvcs.Command;
 	
-	public class MediatorViewSettings extends MediatorViewAbstract {		
+	public class CommandUseBluetooth extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		
+		/*[Inject]
+		public var service:IServiceBluetooth;
+		*/
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewSettings() 	{
+		
+		public function CommandUseBluetooth(){
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
+		
+		override public function execute():void{
+			/*if(Bluetooth.isSupported()){
+				service.load();
+			}else{
+				trace("Bluetooth is not supported");
+			}*/
 			
-			addViewListener(EventViewSettings.USE_BLUETOOTH, _handlerUseBluetooth, EventViewSettings);
-			
-		}
-		
-		
-		override public function onRemove():void {
-			super.onRemove();
-		
-			removeViewListener(EventViewSettings.USE_BLUETOOTH, _handlerUseBluetooth, EventViewSettings);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -55,15 +57,13 @@ package com.Application.robotlegs.views.settings{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		private function _handlerUseBluetooth(event:EventViewSettings):void{
-			dispatch(new EventViewSettings(EventViewSettings.USE_BLUETOOTH));
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -76,6 +76,7 @@ package com.Application.robotlegs.views.settings{
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }
