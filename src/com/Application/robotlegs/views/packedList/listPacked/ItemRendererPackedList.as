@@ -281,7 +281,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			}			
 			
 			
-			trace(" dispose");
+	//		trace(" dispose");
 			
 			_iconRemoveTexture = null;
 			_iconBagTexture = null;
@@ -438,7 +438,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					_iconEdit.pivotX = _iconEdit.pivotY = _iconEdit.width/2; 
 					_containerMain.addChild(_iconEdit); 	
 					_iconEdit.addEventListener(TouchEvent.TOUCH, _handlerTouch);
-					_iconEdit.visible = false;
+					
 					
 					_iconBag = new Image(_iconBagTexture);
 					_iconBag.smoothing = TextureSmoothing.TRILINEAR;
@@ -469,7 +469,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					
 					_refreshImage();
 																						
-					trace("created");								
+	//				trace("created");								
 				}
 			}
 		}
@@ -478,11 +478,11 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		private function _refreshImage():void{
 			
 			if(_data && _containerMain){	
-				trace("refresh");
+			//	trace("refresh");
 				
 				if(_data.isChild){
 					_backgroundChild.visible = true;
-				//	_iconEdit.visible = true;
+					_iconEdit.visible = true;
 					_iconBag.visible = true;
 					
 					if(_data.isPacked){
@@ -498,7 +498,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					
 				} else {
 					_backgroundChild.visible = false;
-				//	_iconEdit.visible = false;
+					_iconEdit.visible = false;
 					_iconMark.visible = false;
 					_iconBag.visible = false;
 					_background.visible = true;
@@ -722,7 +722,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			if(touch){
 				if(touch.phase == TouchPhase.ENDED) {
 					_isEditTouch = true;
-					trace("Edit");
+				//	trace("Edit");
 				}
 			}
 			
@@ -753,7 +753,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				if(touch.phase == TouchPhase.ENDED) {
 					_isEditTouch = true;
 					dispatchEvent(new EventViewAbstract(EventViewAbstract.REMOVE_PACKED_ITEM, true, _data));
-					trace("Delete");
+		//			trace("Delete");
 				}
 			}
 		}

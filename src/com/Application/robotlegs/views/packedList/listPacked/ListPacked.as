@@ -137,9 +137,16 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				if(droppedObject.y < droppedObject.height) {
 					pIndex = 0;
 				} else {
-					pIndex = Math.floor(droppedObject.y/droppedObject.height + verticalScrollPosition/droppedObject.height);
+				//	var pCalcIndex:Number = droppedObject.y/droppedObject.height;
+					
+					
+					
+					pIndex = Math.round(droppedObject.y/droppedObject.height + verticalScrollPosition/droppedObject.height);
+					
 				}
 							
+				trace("------------------->> "+pIndex);
+				
 				var pItemDroppedData:VOPackedItem = VOPackedItem(droppedObject.data);
 					
 			
@@ -149,6 +156,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				var pUnderItemData:VOPackedItem;
 				var pVectorItems:Vector.<VOPackedItem> = new Vector.<VOPackedItem>();				
 				
+				var pDroppedOrderIndex:int = 1;
 				
 				if(!pItemDroppedData.isChild){
 					
@@ -157,25 +165,30 @@ package com.Application.robotlegs.views.packedList.listPacked {
 						pUnderItemData = VOPackedItem(dataProvider.getItemAt(pIndex));							
 						
 						if(!pUnderItemData.isChild){
+							pDroppedOrderIndex = pItemDroppedData.orderIndex; 
 							pItemDroppedData.orderIndex = pUnderItemData.orderIndex;				
 							pVectorItems.push(pItemDroppedData);
 						}
 						
 					} catch(error:Error) { }
-										
-					
-					if(pUnderItemData && !pUnderItemData.isChild) {													
-						var pL:Number = pIndex;					
-														
-						for(var i:int=pL;i<dataProvider.length;i++){				
-							var pGetItem:VOPackedItem = VOPackedItem(dataProvider.getItemAt(i));	
-								pGetItem.orderIndex++;
-							
-							pVectorItems.push(pGetItem);							
-						}						
-					} else if(pUnderItemData && pUnderItemData.isChild) {
+																																		
+					if(pUnderItemData && pUnderItemData.isChild) {
 						pIndex = droppedObject.backIndex;
 					}
+					
+					
+					dataProvider.addItemAt(pItemDroppedData,pIndex);
+					
+					
+					for(var i:int=0;i<dataProvider.data.length;i++){	
+						var pItem:VOPackedItem = VOPackedItem(dataProvider.data[i]);
+						
+						if(!pItem.isChild){
+							pItem.orderIndex = i+1;
+							pVectorItems.push(pItem);						
+						}
+					}
+					
 					
 				} else {
 					//for Children
@@ -183,49 +196,73 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					try{						
 						pUnderItemData = VOPackedItem(dataProvider.getItemAt(pIndex));	
 						
-												
+					//	trace("Label "+pUnderItemData.label);	
+					//	trace("pIndex " + pIndex);
 						
 					}catch(error:Error){}
 					
 					
-					if(pUnderItemData && pUnderItemData.isChild && pItemDroppedData.parentId == pUnderItemData.parentId){
-						pItemDroppedData.orderIndex = pUnderItemData.orderIndex;				
-						pVectorItems.push(pItemDroppedData);						
+					if(pUnderItemData && !pUnderItemData.isChild && pItemDroppedData.parentId == pUnderItemData.item_id){								
+						pIndex++;
+					
+					} else if(pUnderItemData && !pUnderItemData.isChild && pItemDroppedData.parentId != pUnderItemData.item_id) {		
 						
-						trace("------------------------");
-						trace("title "+pItemDroppedData.label);
-						trace("orderIndex "+pItemDroppedData.orderIndex);
+						var pTempIndex:int = pIndex - 1;
+						var pTempItem:VOPackedItem; 
 						
-						var pLChild:Number = pIndex;					
 						
-						for(var l:int=pLChild;l<dataProvider.length;l++){				
-							var pGetItemChild:VOPackedItem = VOPackedItem(dataProvider.getItemAt(l));	
+						try{
+							pTempItem = dataProvider.data[pTempIndex];
+						}catch(error:Error){}
 						
-							if(pGetItemChild.isChild && pGetItemChild.parentId == pItemDroppedData.parentId){
-								pGetItemChild.orderIndex++;							
-								pVectorItems.push(pGetItemChild);
-								
-						/*		trace("------------------------");
-								trace("title "+pGetItemChild.label);
-								trace("orderIndex "+pGetItemChild.orderIndex);
-							*/	
-							} else {
-								break;
-							}													
-						}		
-					} else {
-											
+						if(pTempItem && pTempItem.isChild && pTempItem.parentId == pItemDroppedData.parentId){
+							
+						} else {						
+							pIndex = droppedObject.backIndex;
+						}
+					} else if(!pUnderItemData){
 						pIndex = droppedObject.backIndex;
-					}									
+					}
+					
+					
+					dataProvider.addItemAt(pItemDroppedData,pIndex);	
+					
+					if(pItemDroppedData.isChild){
+						
+						
+						for(var k:int=0;k<dataProvider.data.length;k++){	
+							var pItemCh:VOPackedItem = VOPackedItem(dataProvider.data[k]);
+							
+							if(pItemCh.isChild && pItemCh.parentId == pItemDroppedData.parentId){																							
+								pItemCh.orderIndex = k+1;										
+								pVectorItems.push(pItemCh);																																																			
+							}							
+						}					
+					}					
+																
 				}
 							
+								
 				
 				
-				
-				dataProvider.addItemAt(pItemDroppedData,pIndex);						
-						
 				droppedObject.dispose();
-				droppedObject = null;			
+				droppedObject = null;		
+				
+				
+				
+				///////////traceee
+			/*	for(var i:int=0;i<dataProvider.length; i++){
+					
+				//	if(pItemDroppedData.parentId ==VOPackedItem(dataProvider.data[i]).parentId){
+					trace(VOPackedItem(dataProvider.data[i]).label);
+					trace(VOPackedItem(dataProvider.data[i]).orderIndex);
+					trace("-------------------------------------------");
+				//	}
+				}
+				trace("+++++++++++++++++++++++++++++++++++++++++++++++++=");*/
+				////////////////////
+				
+				
 			
 				if(pVectorItems && pVectorItems.length){
 					dispatchEvent(new EventViewAbstract(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, true, pVectorItems));
