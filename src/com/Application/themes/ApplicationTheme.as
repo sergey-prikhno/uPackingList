@@ -1,6 +1,8 @@
 package com.Application.themes {
 	import com.Application.components.loadingIndicator.LoadingIndicator;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.addCategory.ViewAddCategory;
+	import com.Application.robotlegs.views.addItem.ViewAddItem;
 	import com.Application.robotlegs.views.components.bottomMenu.BottomMenu;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererMainMenu;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererOpenList;
@@ -75,6 +77,8 @@ package com.Application.themes {
 			this.getStyleProviderForClass(BottomMenu).defaultStyleFunction = this.setBottomMenuStyles;
 			this.getStyleProviderForClass(ViewOpen).defaultStyleFunction = this.setViewOpenStyles;		
 			this.getStyleProviderForClass(PopupRemoveItem).defaultStyleFunction = this.setPopupRemoveItemStyles;
+			this.getStyleProviderForClass(ViewAddCategory).defaultStyleFunction = this.setViewAddCategory;
+			this.getStyleProviderForClass(ViewAddItem).defaultStyleFunction = this.setViewAddItem;
 		}	
 	
 		protected function setLoadingIndicatorStyles(component:LoadingIndicator):void{
@@ -90,8 +94,7 @@ package com.Application.themes {
 		}
 		
 		protected function setViewMainStyles(view:ViewMain):void{
-			initializeViewAbstract(view);
-			
+			initializeViewAbstract(view);		
 		}
 		
 		protected function setViewWelcomeStyles(view:ViewWelcome):void{
@@ -148,6 +151,14 @@ package com.Application.themes {
 			setPopupAbstractStyles(view);	
 		}
 		
-
+		protected function setViewAddCategory(view:ViewAddCategory):void{
+			initializeViewAbstract(view);
+			view.atlas = atlas;
+			view.baseTextFormat = largeDarkElementFormat;
+		}
+		
+		protected function setViewAddItem(view:ViewAddItem):void{
+			initializeViewAbstract(view);			
+		}
 	}
 }

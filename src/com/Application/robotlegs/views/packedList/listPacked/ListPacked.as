@@ -86,13 +86,14 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		private function dragEnterHandler(event:DragDropPackedListEvent, dragData:DragData):void {
+
+			DragDropListPackedManager.limitYTopPos = y-((width/8)/4);
+			DragDropListPackedManager.limitYBottomPos = y+height-((width/8)/2);
 													
 			if(!dragData.hasDataForFormat(DRAG_FORMAT)) {
 				return;
 			}
 								
-			DragDropListPackedManager.limitYTopPos = y-((width/8)/2);
-			DragDropListPackedManager.limitYBottomPos = y+height-((width/8)/2);
 			
 			if(this.alpha != .5){				
 				completeAnimation();
@@ -180,7 +181,10 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					//for Children
 					
 					try{						
-						pUnderItemData = VOPackedItem(dataProvider.getItemAt(pIndex));													
+						pUnderItemData = VOPackedItem(dataProvider.getItemAt(pIndex));	
+						
+												
+						
 					}catch(error:Error){}
 					
 					

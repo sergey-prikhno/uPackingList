@@ -4,6 +4,8 @@ package com.Application {
 	import com.Application.robotlegs.model.vo.VOScreenID;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.addCategory.ViewAddCategory;
+	import com.Application.robotlegs.views.addItem.ViewAddItem;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.open.ViewOpen;
@@ -53,6 +55,8 @@ package com.Application {
 		public static const VIEW_SETTINGS:String = "VIEW_SETTINGS";
 		public static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
 		public static const VIEW_OPEN:String = "VIEW_OPEN";		
+		public static const VIEW_ADD_ITEM:String = "VIEW_ADD_ITEM";
+		public static const VIEW_ADD_CATEGORY:String = "VIEW_ADD_CATEGORY";
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;		
@@ -130,42 +134,44 @@ package com.Application {
 			
 			Starling.current.dispatchEvent(new Event(Event.ADDED_TO_STAGE,true));							
 			
-			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
-
-				mainMenuItem.pushTransition = Slide.createSlideLeftTransition();
+			var mainMenuItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);				
 				mainMenuItem.setScreenIDForPushEvent(EventViewMain.SHOW_SETTINGS_SCREEN, VIEW_SETTINGS);
+			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
 
 			
-			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);
-			settingsItem.pushTransition = Slide.createSlideRightTransition();
-			settingsItem.setScreenIDForPushEvent(EventViewSettings.SHOW_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
-			this._navigator.addScreen(VIEW_SETTINGS, settingsItem);
+			var settingsItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewSettings);			
+				settingsItem.setScreenIDForPushEvent(EventViewSettings.SHOW_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
+			this._navigator.addScreen(VIEW_SETTINGS, settingsItem);									
 			
 			
-			
-			this._navigator.addScreen(VIEW_MAIN_MENU, mainMenuItem);
-			
-			
-			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);
-				packedListItem.pushTransition = Slide.createSlideLeftTransition();
+			var packedListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);				
 				packedListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN_MENU);
 			this._navigator.addScreen(VIEW_PACKED_LIST, packedListItem);
 									
-			var openItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewOpen);
-				openItem.pushTransition = Slide.createSlideLeftTransition();
+			var openItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewOpen);				
 				openItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_VIEW_MAIN_SCREEN, VIEW_MAIN_MENU);
 			this._navigator.addScreen(VIEW_OPEN, openItem);
 									
+			
+			
+			var addItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewAddItem);				
+				addItem.setScreenIDForPushEvent(EventViewAbstract.BACK, VIEW_PACKED_LIST);				
+			this._navigator.addScreen(VIEW_ADD_ITEM, addItem);
+			
+			
+			
+			var addCategory:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewAddCategory);				
+				addCategory.setScreenIDForPushEvent(EventViewAbstract.BACK, VIEW_PACKED_LIST);				
+			this._navigator.addScreen(VIEW_ADD_CATEGORY, addCategory);
+			
 			
 			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);
 			_navigator.addEventListener(FeathersEventType.TRANSITION_COMPLETE, _handlerTransition);
 			
 			
 			if(_settings.welcome == "1"){
-				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);														
-			
-				viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);
-				viewStart.pushTransition = Fade.createFadeInTransition();					
+				var viewStart:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewWelcome);																	
+					viewStart.setScreenIDForPushEvent(EventMain.SHOW_VIEW_MAIN, VIEW_MAIN_MENU);						
 			
 				this._navigator.addScreen(VIEW_WELCOME, viewStart);				
 				this._navigator.pushScreen(VIEW_WELCOME);

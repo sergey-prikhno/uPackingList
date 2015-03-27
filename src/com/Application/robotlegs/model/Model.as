@@ -34,6 +34,8 @@ package com.Application.robotlegs.model {
 		private var _voOpenList:VOOpenList;
 		
 		private var _copyingListData:VOTableName;
+		
+		private var _isMore:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -111,9 +113,14 @@ package com.Application.robotlegs.model {
 		public function set currentCategories(value:Vector.<VOPackedItem>):void{
 			_currentCategories = value;	
 			
-			var pVO:VOScreenID = new VOScreenID();
-				pVO.screenID = Main.VIEW_PACKED_LIST;
-			dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
+			
+			if(!_isMore){
+				var pVO:VOScreenID = new VOScreenID();
+					pVO.screenID = Main.VIEW_PACKED_LIST;
+				dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
+			}
+			
+			_isMore = false;
 		}
 		
 		public function get currentTableName():VOTableName { return _currentTableName;}
@@ -121,6 +128,9 @@ package com.Application.robotlegs.model {
 			_currentTableName = value;							
 		}
 		
+		public function set isMore(value:Boolean):void{
+			_isMore = value;
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

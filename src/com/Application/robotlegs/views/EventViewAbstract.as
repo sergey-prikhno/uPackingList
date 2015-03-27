@@ -25,6 +25,14 @@ package com.Application.robotlegs.views {
 		
 		public static const ERROR:String = "ERROR";
 		
+		public static const BACK:String = "BACK";
+		
+		
+		public static const ADD_NEW_CATEGORY:String = "ADD_NEW_CATEGORY";
+		public static const ADD_NEW_ITEM_CATEGORY:String = "ADD_NEW_ITEM_CATEGORY";
+		
+		
+		public static const GET_DEFAULT_CATEGORIES:String = "GET_DEFAULT_CATEGORIES";
 		
 		private var _functionCallback:Function;
 		

@@ -4,6 +4,7 @@ SELECT id,
 	label,
 	isPacked,
 	orderIndex,
-	item_id
+	item_id,
+	icon_id
 FROM main.categories
 ORDER BY orderIndex

@@ -6,6 +6,7 @@ package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.views.components.bottomMenu.EventBottomMenu;
 	import com.Application.robotlegs.views.components.searchInput.EventSearchInput;
 	import com.Application.robotlegs.views.components.searchInput.SearchInput;
+	import com.Application.robotlegs.views.packedList.listPacked.CustomLayout;
 	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
 	import com.Application.robotlegs.views.packedList.listPacked.ListPacked;
 	import com.common.Constants;
@@ -13,13 +14,13 @@ package com.Application.robotlegs.views.packedList {
 	import feathers.controls.Button;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
-	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
 	
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	
 	public class ViewPackedList extends ViewAbstract {				
@@ -36,7 +37,7 @@ package com.Application.robotlegs.views.packedList {
 		//
 		//---------------------------------------------------------------------------------------------------------		
 		private var _list:ListPacked;
-		private var _verticalLayout:VerticalLayout;
+		private var _verticalLayout:CustomLayout;
 		
 		private var _backButton:Button;
 		private var _editButton:Button;
@@ -47,6 +48,12 @@ package com.Application.robotlegs.views.packedList {
 		private var _tableName:VOTableName;
 		
 		private var _search:SearchInput;
+		
+		
+		private var _containerAddButtons:Sprite;
+		
+		private var _buttonAddCategory:Button;
+		private var _buttonAddItem:Button;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -88,7 +95,23 @@ package com.Application.robotlegs.views.packedList {
 				removeChild(_search);
 				_search = null;
 			}
-							
+			
+			
+			if(_buttonAddCategory){
+				_buttonAddCategory.removeEventListener(Event.TRIGGERED, _handlerAddNewCategory);
+				_containerAddButtons.removeChild(_buttonAddCategory);	
+			}
+			 
+			if(_buttonAddItem){
+				_buttonAddItem.removeEventListener(Event.TRIGGERED, _handlerAddNewItem);
+				_containerAddButtons.removeChild(_buttonAddItem);
+				_buttonAddItem = null;
+			}
+			
+			if(_containerAddButtons){
+				removeChild(_containerAddButtons);
+				_containerAddButtons = null;			
+			}
 			
 			_verticalLayout = null;
 			
@@ -186,7 +209,7 @@ package com.Application.robotlegs.views.packedList {
 			addChild(_search);			
 			swapChildren(_search,_header);
 			
-			_verticalLayout = new VerticalLayout();
+			_verticalLayout = new CustomLayout();
 			_verticalLayout.useVirtualLayout = true;			
 			
 			_list = new ListPacked();			
@@ -340,6 +363,29 @@ package com.Application.robotlegs.views.packedList {
 			_bottomMenu.addEventListener(EventBottomMenu.SEARCH, _handlerSearch);
 						
 			
+			
+			_containerAddButtons = new Sprite();
+			addChild(_containerAddButtons);
+			_containerAddButtons.visible = false;
+			
+			
+			_buttonAddCategory = new Button();
+			_buttonAddCategory.width = int(_nativeStage.fullScreenWidth*0.9);
+			_buttonAddCategory.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.addnewCategory");
+			_buttonAddCategory.addEventListener(Event.TRIGGERED, _handlerAddNewCategory);
+			_containerAddButtons.addChild(_buttonAddCategory);
+			_buttonAddCategory.validate();
+			
+			_buttonAddItem = new Button();
+			_buttonAddItem.width = int(_nativeStage.fullScreenWidth*0.9);
+			_buttonAddItem.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.addnewItem");
+			_buttonAddItem.addEventListener(Event.TRIGGERED, _handlerAddNewItem);
+			_containerAddButtons.addChild(_buttonAddItem);
+			_buttonAddItem.validate();
+			_buttonAddItem.y = int(_buttonAddCategory.height*1.1);
+			
+			_containerAddButtons.x = int(_nativeStage.fullScreenWidth/2 - _containerAddButtons.width/2);
+			
 		}
 		
 		
@@ -360,7 +406,7 @@ package com.Application.robotlegs.views.packedList {
 				_search.y = 0;
 			}
 			
-			if(_list){															
+			if(_list && !_list.dataProvider){															
 				//_list.y = _header.height;
 				_list.y = int(_search.y + _search.height);
 				_list.height = int(_nativeStage.fullScreenHeight- _header.height-_bottomMenu.height);
@@ -400,6 +446,24 @@ package com.Application.robotlegs.views.packedList {
 		
 		private function _handlerEditListItems(event:Event):void{
 			_list.isEditing = !_list.isEditing; 
+			
+			_containerAddButtons.visible = _list.isEditing;
+			
+						
+			if(_list.isEditing){				
+				_containerAddButtons.y = int(_header.y + _header.height);
+				
+				_list.height = int(_nativeStage.fullScreenHeight- (_containerAddButtons.y+ _containerAddButtons.height) -_bottomMenu.height);
+				_list.y = int(_containerAddButtons.y + _containerAddButtons.height);
+				_editButton.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.done");				
+			} else {
+				_list.y = int(_search.y + _search.height);
+				_list.height = int(_nativeStage.fullScreenHeight- _header.height-_bottomMenu.height);
+				_editButton.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.edit");
+			}
+			
+			 
+			
 		}
 		
 		private function _handlerBackbutton(event:Event):void{
@@ -428,6 +492,9 @@ package com.Application.robotlegs.views.packedList {
 					pTween.onComplete = onComplete;
 				
 					Starling.juggler.add(pTween);
+					
+					
+					
 			}
 			
 		}
@@ -442,7 +509,15 @@ package com.Application.robotlegs.views.packedList {
 				pTween.onUpdate = onUpdate;
 				pTween.onComplete = onComplete;
 			
-			Starling.juggler.add(pTween);						
+			Starling.juggler.add(pTween);		
+			
+			_list.isDragable = true;
+			
+			if(!_list.isEditing){
+				_list.height = int(_nativeStage.fullScreenHeight- (_header.height+_bottomMenu.height + _header.y));
+			} else {
+				_list.height = int(_nativeStage.fullScreenHeight- (_header.height+_bottomMenu.height + _header.y)-_containerAddButtons.height);
+			}
 		}
 		
 		private function _handlerChange(event:EventSearchInput):void{
@@ -464,6 +539,27 @@ package com.Application.robotlegs.views.packedList {
 			
 			_list.dataProvider = new ListCollection(pFilteredVector);
 		}				
+		
+		
+		/**
+		 * 
+		 * Add new Category Handler
+		 * 
+		 */
+		private function _handlerAddNewCategory(event:Event):void{
+			_collapseItems();
+			dispatchEvent(new EventViewPackedList(EventViewPackedList.ADD_NEW_CATEGORY));
+		}
+		
+		/**
+		 * 
+		 * Add new Item Handler
+		 * 
+		 */
+		private function _handlerAddNewItem(event:Event):void{
+			_collapseItems();
+			dispatchEvent(new EventViewPackedList(EventViewPackedList.ADD_NEW_ITEM));
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
@@ -471,24 +567,37 @@ package com.Application.robotlegs.views.packedList {
 		//--------------------------------------------------------------------------------------------------------- 
 		private function onUpdate():void{
 			if(_list){
-				_list.y = int(_search.y + _search.height);												
+				if(!_list.isEditing){
+					_list.y = int(_search.y + _search.height);																	
+				} else {
+					_containerAddButtons.y = int(_search.y + _search.height);
+					_list.y = int(_containerAddButtons.y + _containerAddButtons.height);
+				}
 			}
 		}
 		
 		private function onComplete():void{
 				
-			_list.y = int(_search.y + _search.height);
-		
-			if(_search.y == 0){
-				_list.isDragable = true;				
-				//_list.height = int(_nativeStage.fullScreenHeight- _header.height-_bottomMenu.height);
+			if(!_list.isEditing){
+				_list.y = int(_search.y + _search.height);																	
 			} else {
-				_list.isDragable = false;
-				//_list.height = int(_nativeStage.fullScreenHeight- (_header.height*3));				
-			}
-			 			
-			//_list.validate();				
+				_containerAddButtons.y = int(_search.y + _search.height);
+				_list.y = int(_containerAddButtons.y + _containerAddButtons.height);
+			}				
 								
+			if(_search.y > 0){
+				_list.isDragable = false;
+				
+				if(!_list.isEditing){
+					_list.height = int(_nativeStage.fullScreenHeight- _search.y - _search.height-_bottomMenu.height);
+				} else {
+					_list.height = int(_nativeStage.fullScreenHeight- _search.y - _search.height-_bottomMenu.height- _containerAddButtons.height);
+				}
+				
+			} else {
+				_list.isDragable = true;
+			}
+			
 			Starling.juggler.removeTweens(_search);
 		}
 		

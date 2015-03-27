@@ -269,8 +269,7 @@ package com.Application.robotlegs.views.welcome {
 		private function _updateTextFormats():void{
 			
 			if(_labelTitle){
-				_labelTitle.textRendererProperties.elementFormat = _baseTextFormat;
-				_labelTitle.textRendererProperties.elementFormat = _baseTextFormat;
+				_labelTitle.textRendererProperties.elementFormat = _baseTextFormat;				
 				_labelTitle.validate();
 				_labelTitle.x = int(_nativeStage.fullScreenWidth/2 - _labelTitle.width/2);
 				_labelTitle.y = int(30*_scaleHeight);

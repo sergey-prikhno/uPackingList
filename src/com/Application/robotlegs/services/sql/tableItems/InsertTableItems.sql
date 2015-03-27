@@ -5,7 +5,8 @@ INSERT INTO main.categories
 	label,
 	isPacked,
 	orderIndex,
-	item_id	
+	item_id,
+	icon_id	
 )
 VALUES
 (
@@ -14,5 +15,6 @@ VALUES
 	:label,
 	:isPacked,
 	:orderIndex,
-	:item_id	
+	:item_id,
+	:icon_id	
 )

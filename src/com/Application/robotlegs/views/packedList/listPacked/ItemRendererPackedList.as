@@ -433,11 +433,12 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					_containerMain.addChild(_iconArrow);
 					
 					
-					_iconEdit = new Image(_iconEditTexture);
+					_iconEdit = new Image(_iconEditTexture);					
 					_iconEdit.smoothing = TextureSmoothing.TRILINEAR;
 					_iconEdit.pivotX = _iconEdit.pivotY = _iconEdit.width/2; 
 					_containerMain.addChild(_iconEdit); 	
 					_iconEdit.addEventListener(TouchEvent.TOUCH, _handlerTouch);
+					_iconEdit.visible = false;
 					
 					_iconBag = new Image(_iconBagTexture);
 					_iconBag.smoothing = TextureSmoothing.TRILINEAR;
@@ -481,7 +482,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				
 				if(_data.isChild){
 					_backgroundChild.visible = true;
-					_iconEdit.visible = true;
+				//	_iconEdit.visible = true;
 					_iconBag.visible = true;
 					
 					if(_data.isPacked){
@@ -497,7 +498,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					
 				} else {
 					_backgroundChild.visible = false;
-					_iconEdit.visible = false;
+				//	_iconEdit.visible = false;
 					_iconMark.visible = false;
 					_iconBag.visible = false;
 					_background.visible = true;
@@ -505,29 +506,13 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					_labelCount.visible = true;
 				}
 				
-				
-				
-				if(_data.isChild){
-					
-					if(!_mainIcon){
-						_mainIcon = new Image(_atlas.getTexture("icon_"+_data.parentId));
-						_containerMain.addChild(_mainIcon);
-					} else {
-						_mainIcon.texture = _atlas.getTexture("icon_"+_data.parentId);
-					}
-					
+																	
+				if(!_mainIcon){
+					_mainIcon = new Image(_atlas.getTexture("icon_"+_data.icon_id));
+					_containerMain.addChild(_mainIcon);
 				} else {
-					
-					if(!_mainIcon){
-						_mainIcon = new Image(_atlas.getTexture("icon_"+_data.item_id));	
-						_containerMain.addChild(_mainIcon);
-					} else {
-						_mainIcon.texture = _atlas.getTexture("icon_"+_data.item_id);
-					}
-					
-				}
-				
-					
+					_mainIcon.texture = _atlas.getTexture("icon_"+_data.icon_id);
+				}														
 				
 				
 				_label.text = _data.label;

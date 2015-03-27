@@ -176,6 +176,7 @@ package com.Application.robotlegs.services.copyList {
 					paramsItem["isPacked"] = "false";
 					paramsItem["orderIndex"] = pItem.orderIndex;
 					paramsItem["item_id"] = pItem.item_id;
+					paramsItem["icon_id"] = pItem.icon_id;
 					
 					stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsItem);
 					
@@ -197,6 +198,7 @@ package com.Application.robotlegs.services.copyList {
 							paramsChild["isPacked"] = "false";
 							paramsChild["orderIndex"] = pChild.orderIndex;
 							paramsChild["item_id"] = pChild.item_id;
+							paramsChild["icon_id"] = pChild.icon_id;
 							
 							stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsChild);
 						}

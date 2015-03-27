@@ -9,6 +9,12 @@ button.edit=Edit
 button.back=Back
 button.no=No
 button.yes=Yes
+button.done=Done
+button.addnewItem=Add new item...
+button.addnewCategory=Add new category...
+button.save=Save
+button.saveAndMore=Save and add more
+
 
 #header
 header.uPackingList=uPackingList
@@ -21,9 +27,9 @@ title.openList=Open
 title.openListDesc=open saved lists
 title.packList=Pack!
 title.packListDesc=pack the list - Business trip female (0%)
-
 title.create.list=Enter List name
-
+title.packList=Pack!
+title.tap=Tap to change image...
 
 #WelcomScreen
 welcomScreen.title=Welcome to uPackingList
@@ -42,6 +48,7 @@ welcomScreen.continue=Continue
 #popupRemove
 title.removeItem=Are you sure to delete the item from list
 title.removeCategory=Are you sure to delete the category from list
+
 
 #Search
 search.prompt=Search

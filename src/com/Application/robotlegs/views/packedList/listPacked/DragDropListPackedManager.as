@@ -326,16 +326,23 @@ package com.Application.robotlegs.views.packedList.listPacked
 					if(_limitYTopPos < pYPos && _limitYBottomPos > pYPos){
 						avatar.y = pYPos;
 						updateDropTarget(HELPER_POINT);
+					//	trace("111 ");
 					} else { 
+				//		trace("222 ");
 						
 						if(pYPos >_limitYBottomPos){
-							avatar.y = _limitYBottomPos;	
+							avatar.y = _limitYBottomPos;
+				//			trace("33333")
 						} else {
-							avatar.y = _limitYTopPos;	
+							avatar.y = _limitYTopPos;
+				//			trace("4444")
 						}						
 																			
 						_droppedHelper();						
 					}
+					
+				//	trace("_limitYTopPos "+_limitYTopPos);
+				//	trace("-------------------------------");
 				}
 				
 			}

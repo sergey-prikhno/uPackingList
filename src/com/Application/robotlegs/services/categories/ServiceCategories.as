@@ -26,7 +26,7 @@ package com.Application.robotlegs.services.categories {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _currentItem:VOPackedItem;				
+		private var _currentItem:VOPackedItem;		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -69,6 +69,7 @@ package com.Application.robotlegs.services.categories {
 							paramsItem["isPacked"] = pItem.isPacked.toString();
 							paramsItem["orderIndex"] = pItem.orderIndex;
 							paramsItem["item_id"] = pItem.item_id;
+							paramsItem["icon_id"] = pItem.icon_id;
 					
 						stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsItem);
 					
@@ -90,6 +91,7 @@ package com.Application.robotlegs.services.categories {
 								paramsChild["isPacked"] = pChild.isPacked.toString();
 								paramsChild["orderIndex"] = pChild.orderIndex;
 								paramsChild["item_id"] = pChild.item_id;
+								paramsChild["icon_id"] = pChild.icon_id;
 							
 							stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsChild);
 						}
@@ -143,6 +145,7 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["id"] = value.id;
 					paramsItem["orderIndex"] = value.orderIndex;
 					paramsItem["item_id"] = value.item_id;
+					paramsItem["icon_id"] = value.icon_id;
 					
 					_currentItem = value;
 					
@@ -170,6 +173,7 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["isPacked"] = value.isPacked.toString();
 					paramsItem["orderIndex"] = value.orderIndex;
 					paramsItem["item_id"] = value.item_id;
+					paramsItem["icon_id"] = value.icon_id;
 						
 			
 				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(pSql, paramsItem)]), insert_result, database_error);
@@ -232,6 +236,7 @@ package com.Application.robotlegs.services.categories {
 							paramsItem["id"] = pCurrentData.id;
 							paramsItem["orderIndex"] = pCurrentData.orderIndex;
 							paramsItem["item_id"] = pCurrentData.item_id;
+							paramsItem["icon_id"] = pCurrentData.icon_id;
 							
 							stmts[stmts.length] = new QueuedStatement(pSql,paramsItem);
 						
@@ -287,6 +292,7 @@ package com.Application.robotlegs.services.categories {
 			var result:SQLResult = results[0];
 			
 			trace("added New Row dont'forget about id in DB after Insert")
+			load(model.currentTableName.table_name)
 			if (result.rowsAffected > 0) {
 				var contactId:Number = result.lastInsertRowID;
 				//loadNewContact(contactId);

@@ -3,6 +3,7 @@ package com.Application {
 	import com.Application.robotlegs.controller.CommandCreateNewList;
 	import com.Application.robotlegs.controller.CommandCreateNewListFromExisting;
 	import com.Application.robotlegs.controller.CommandGetCreatedLists;
+	import com.Application.robotlegs.controller.CommandGetDefaultCategoriesFunctionCallback;
 	import com.Application.robotlegs.controller.CommandGetPackedItemsFunctionCallback;
 	import com.Application.robotlegs.controller.CommandGetVOOpenList;
 	import com.Application.robotlegs.controller.CommandMainFunctionCallback;
@@ -10,6 +11,8 @@ package com.Application {
 	import com.Application.robotlegs.controller.CommandUpdateVOOpenList;
 	import com.Application.robotlegs.controller.popup.CommandPopupRemove;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
+	import com.Application.robotlegs.controller.service.categories.CommandAddCategory;
+	import com.Application.robotlegs.controller.service.categories.CommandAddItemToCategory;
 	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandRemoveCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
@@ -49,6 +52,10 @@ package com.Application {
 	import com.Application.robotlegs.services.test.IServiceTest;
 	import com.Application.robotlegs.services.test.ServiceTest;
 	import com.Application.robotlegs.views.EventViewAbstract;
+	import com.Application.robotlegs.views.addCategory.MediatorViewAddCategory;
+	import com.Application.robotlegs.views.addCategory.ViewAddCategory;
+	import com.Application.robotlegs.views.addItem.MediatorViewAddItem;
+	import com.Application.robotlegs.views.addItem.ViewAddItem;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.open.EventViewOpen;
@@ -102,6 +109,8 @@ package com.Application {
 			mediatorMap.mapView(ViewSettings, MediatorViewSettings);
 			mediatorMap.mapView(ViewPackedList, MediatorViewPackedList);
 			mediatorMap.mapView(ViewOpen, MediatorViewOpen);
+			mediatorMap.mapView(ViewAddItem, MediatorViewAddItem);
+			mediatorMap.mapView(ViewAddCategory, MediatorViewAddCategory);
 		
 			
 			injector.mapSingletonOf(IModel, Model);
@@ -152,6 +161,11 @@ package com.Application {
 			//EentModel
 			commandMap.mapEvent(EventModel.INSERT_TABLE_NAMES, CommandInsertTableNames, EventModel);
 			commandMap.mapEvent(EventModel.COPY_LIST_FORM_EXISTING, CommandCopyListFromExisting, EventModel);
+			
+			commandMap.mapEvent(EventViewAbstract.ADD_NEW_ITEM_CATEGORY, CommandAddItemToCategory, EventViewAbstract);
+			commandMap.mapEvent(EventViewAbstract.ADD_NEW_CATEGORY, CommandAddCategory, EventViewAbstract);
+			
+			commandMap.mapEvent(EventViewAbstract.GET_DEFAULT_CATEGORIES, CommandGetDefaultCategoriesFunctionCallback, EventViewAbstract);
 			
 			
 			super.startup();

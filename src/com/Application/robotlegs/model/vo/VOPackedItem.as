@@ -25,19 +25,20 @@ package com.Application.robotlegs.model.vo {
 		private var _isPacked:Boolean = false;
 		private var _packedCount:Number = 0;
 		private var _item_id:Number = 0;
-		
+		private var _icon_id:Number = 0;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function VOPackedItem(pLabel:String="",pId:Number = 0,pParentId:Number = 0,pIsChild:Boolean = false,pOrderIndex:int = 0,pItem_id:int = 0) {
+		public function VOPackedItem(pLabel:String="",pId:Number = 0,pParentId:Number = 0,pIsChild:Boolean = false,pOrderIndex:int = 0,pItem_id:int = 0,pIcon_id:int = 0) {
 			_id = pId;
 			_parentId = pParentId;
 			_isChild = pIsChild;
 			_label = pLabel;
 			_orderIndex = pOrderIndex;
 			_item_id = pItem_id;
+			_icon_id = pIcon_id;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -140,6 +141,11 @@ package com.Application.robotlegs.model.vo {
 		public function get item_id():int { return _item_id;} 
 		public function set item_id(value:int):void{
 			_item_id = value;
+		}
+		
+		public function get icon_id():int { return _icon_id;} 
+		public function set icon_id(value:int):void{
+			_icon_id = value;
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
