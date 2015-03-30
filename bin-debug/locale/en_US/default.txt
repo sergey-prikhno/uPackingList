@@ -20,6 +20,7 @@ button.saveAndMore=Save and add more
 header.uPackingList=uPackingList
 header.settings=Settings
 header.open=Open
+header.pack=Pack
 
 title.newList=New List
 title.newListDesc=create new packing list

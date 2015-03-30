@@ -11,9 +11,9 @@ package com.Application {
 	import com.Application.robotlegs.controller.CommandUpdateVOOpenList;
 	import com.Application.robotlegs.controller.popup.CommandPopupRemove;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
+	import com.Application.robotlegs.controller.service.bluetooth.CommandUseBluetooth;
 	import com.Application.robotlegs.controller.service.categories.CommandAddCategory;
 	import com.Application.robotlegs.controller.service.categories.CommandAddItemToCategory;
-	import com.Application.robotlegs.controller.service.bluetooth.CommandUseBluetooth;
 	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandRemoveCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
@@ -64,6 +64,8 @@ package com.Application {
 	import com.Application.robotlegs.views.open.EventViewOpen;
 	import com.Application.robotlegs.views.open.MediatorViewOpen;
 	import com.Application.robotlegs.views.open.ViewOpen;
+	import com.Application.robotlegs.views.pack.MediatorViewPack;
+	import com.Application.robotlegs.views.pack.ViewPack;
 	import com.Application.robotlegs.views.packedList.MediatorViewPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.settings.EventViewSettings;
@@ -115,6 +117,7 @@ package com.Application {
 			mediatorMap.mapView(ViewOpen, MediatorViewOpen);
 			mediatorMap.mapView(ViewAddItem, MediatorViewAddItem);
 			mediatorMap.mapView(ViewAddCategory, MediatorViewAddCategory);
+			mediatorMap.mapView(ViewPack, MediatorViewPack);
 		
 			
 			injector.mapSingletonOf(IModel, Model);

@@ -9,6 +9,7 @@ package com.Application {
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.open.ViewOpen;
+	import com.Application.robotlegs.views.pack.ViewPack;
 	import com.Application.robotlegs.views.packedList.EventViewPackedList;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.robotlegs.views.settings.EventViewSettings;
@@ -28,7 +29,6 @@ package com.Application {
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
 	import feathers.motion.Fade;
-	import feathers.motion.Slide;
 	
 	import org.robotlegs.starling.mvcs.Context;
 	
@@ -57,6 +57,7 @@ package com.Application {
 		public static const VIEW_OPEN:String = "VIEW_OPEN";		
 		public static const VIEW_ADD_ITEM:String = "VIEW_ADD_ITEM";
 		public static const VIEW_ADD_CATEGORY:String = "VIEW_ADD_CATEGORY";
+		public static const VIEW_PACK:String = "VIEW_PACK";
 		
 		private var _navigator:StackScreenNavigator;				
 		private var _screenCurrent:ViewAbstract;		
@@ -163,6 +164,10 @@ package com.Application {
 			var addCategory:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewAddCategory);				
 				addCategory.setScreenIDForPushEvent(EventViewAbstract.BACK, VIEW_PACKED_LIST);				
 			this._navigator.addScreen(VIEW_ADD_CATEGORY, addCategory);
+			
+			var pack:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPack);				
+				pack.setScreenIDForPushEvent(EventViewAbstract.BACK, VIEW_MAIN_MENU);				
+			this._navigator.addScreen(VIEW_PACK, pack);
 			
 			
 			_navigator.addEventListener(FeathersEventType.TRANSITION_START, _handlerTransition);

@@ -1,15 +1,11 @@
-package com.Application.robotlegs.views.main {
-	import com.Application.Main;
-	import com.Application.robotlegs.model.EventModel;
-	import com.Application.robotlegs.model.vo.VOMainMenu;
+package com.Application.robotlegs.views.pack {
 	import com.Application.robotlegs.model.vo.VOOpenList;
-	import com.Application.robotlegs.model.vo.VOScreenID;
+	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.services.removeList.EventServiceRemoveList;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.EventRenderer;
-	import com.common.Constants;
 	
-	public class MediatorViewMain extends MediatorViewAbstract {		
+	public class MediatorViewPack extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -23,12 +19,14 @@ package com.Application.robotlegs.views.main {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		private var _listData:VOTableName;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewMain() 	{
+		public function MediatorViewPack() 	{
 			super();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -38,16 +36,15 @@ package com.Application.robotlegs.views.main {
 		//---------------------------------------------------------------------------------------------------------
 		override public function onRegister():void{	
 			super.onRegister();
-						
-			addViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);
-						
+			
+			//dispatch(new EventViewAbstract(EventViewAbstract.GET_CREATED_LISTS, false, null, _setLists));
+			
 		}
 		
 		
 		override public function onRemove():void {
 			super.onRemove();
-					
-			removeViewListener(EventRenderer.CLICK, _handlerRendererClick, EventRenderer);		
+			
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -55,8 +52,8 @@ package com.Application.robotlegs.views.main {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewMain{
-			return ViewMain(viewComponent);
+		public function get view():ViewPack{
+			return ViewPack(viewComponent);
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -65,27 +62,12 @@ package com.Application.robotlegs.views.main {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------				
-		private function _handlerRendererClick(event:EventRenderer):void{
-			var pVO:VOMainMenu = VOMainMenu(event.payload);
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.newList") == pVO.title){
-				dispatch(new EventViewAbstract(EventViewAbstract.CREATE_NEW_LIST));
-			}
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.openList") == pVO.title){
-				var pVOOpen:VOOpenList = new VOOpenList();
-				pVOOpen.isOpen = true;
-				dispatch(new EventViewAbstract(EventViewAbstract.OPEN_LIST, false, pVOOpen));
-			}
-			if(view.resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.packList") == pVO.title){
-				var pVOScreen:VOScreenID = new VOScreenID();
-					pVOScreen.screenID = Main.VIEW_PACK;
-					dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVOScreen));
-			}
-		}
+		//---------------------------------------------------------------------------------------------------------
 		
 		
 		//--------------------------------------------------------------------------------------------------------- 
